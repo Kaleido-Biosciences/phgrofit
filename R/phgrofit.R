@@ -9,6 +9,7 @@
 #'
 #' @examples
 #' phgrofit(phgropro_output,graphs = 10)
+#' @importFrom dplyr "%>%"
 phgrofit <- function(data,graphs = 1) {
 #Initializing the final data frame
 output = data.frame()
@@ -139,7 +140,7 @@ print(i)
             #Generating values in order to visualize u2
             u2_x = seq((u2_max_x_obs - 2),(u2_max_x_obs + 2), by = 0.1)
             u2_y = u2_x * u2_slope + u2_b
-            u2_graph = data_frame(u2_x,u2_y)
+            u2_graph = data.frame(u2_x,u2_y)
 
              if (which(Samples == i) <= graphs){
                 #Creating the OD600 plot
