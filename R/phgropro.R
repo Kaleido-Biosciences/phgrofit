@@ -13,10 +13,10 @@ phgropro = function(biotek_export,Plate_Type = 96){
 
     #Determining how to input the data based on plate type
     if(Plate_Type == 384){
-        raw_data = read.delim(biotek_export,row.names = NULL,col.names = 1:385,na.strings = c("?????",""),stringsAsFactors = FALSE)
+        raw_data = read.delim(biotek_export,row.names = NULL,header = FALSE,col.names = 1:385,na.strings = c("?????",""),stringsAsFactors = FALSE)
     }
     else if(Plate_Type == 96){
-        raw_data = read.delim(biotek_export,row.names = NULL,col.names = 1:97,na.strings = c("?????",""),stringsAsFactors = FALSE)
+        raw_data = read.delim(biotek_export,row.names = NULL,header = FALSE,col.names = 1:97,na.strings = c("?????",""),stringsAsFactors = FALSE)
     }
     else{
         print("Only 96 or 384 well plates are supported")
@@ -90,7 +90,7 @@ phgropro = function(biotek_export,Plate_Type = 96){
 
     #Combining the pH and OD600 data
     combined_data = dplyr::inner_join(OD600_output,pH_output, by = c("Sample.ID","Time")) %>%
-    select(-c(2,5))
+    dplyr::select(-c(2,5))
 
 
     #Time information is being loaded in time format, need to convert that to hours for ease of use.

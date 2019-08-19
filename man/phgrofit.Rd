@@ -11,9 +11,9 @@ phgrofit(data, graphs = 1)
 
 \item{graphs}{This is the number specifying how many graphs you would like to print to console. This is useful for visually inspecting the modeling.}
 }
+\value{
+The output pf
+}
 \description{
 phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
-}
-\examples{
-phgrofit(phgropro_output,graphs = 10)
 }

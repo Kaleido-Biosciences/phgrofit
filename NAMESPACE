@@ -3,5 +3,4 @@
 export("%>%")
 export(phgrofit)
 export(phgropro)
-importFrom(dplyr,"%>%")
 importFrom(magrittr,"%>%")

@@ -4,12 +4,11 @@
 #' @param data This is the input data that you would like to model. It will most often be the output off phgropro.
 #' @param graphs This is the number specifying how many graphs you would like to print to console. This is useful for visually inspecting the modeling.
 #'
-#' @return
+#' @return The output pf
 #' @export
 #'
 #' @examples
-#' phgrofit(phgropro_output,graphs = 10)
-#' @importFrom dplyr "%>%"
+#' @importFrom magrittr %>%
 phgrofit <- function(data,graphs = 1) {
 #Initializing the final data frame
 output = data.frame()
@@ -19,10 +18,10 @@ Samples = dplyr::distinct(data,Sample.ID) %>%
           dplyr::pull(Sample.ID)
 #Looping through each sample ID
 for(i in Samples){
-print(i)
  ### First we are going to determine all of necessary physiological descriptors that we can from OD600.###
             input = dplyr::filter(data,Sample.ID == i)
-
+            #Taking a random sample of n = graphs. This will allow us to randomly plot graphs so that our spot checking isn't skewed by the samples that occur first.
+            random_i = sample.int(length(Samples),graphs)
             #Conducting the spline interpolation for OD600
             OD600_model = smooth.spline(y = input$OD600,x =input$Time,spar = 0.75)
 
@@ -142,7 +141,7 @@ print(i)
             u2_y = u2_x * u2_slope + u2_b
             u2_graph = data.frame(u2_x,u2_y)
 
-             if (which(Samples == i) <= graphs){
+             if (i %in% random_i){
                 #Creating the OD600 plot
                 p1 = ggplot2::ggplot(input, aes(x= Time, y = OD600))+
                         ggplot2::geom_line(data = sp_OD600_graph, aes(sp_OD600_x,sp_OD600_y), color = "blue")+
