@@ -1,13 +1,27 @@
 #' Extract physiological parameters from kinetic pH and OD600 data
 #'
 #'phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
-#' @param data This is the input data that you would like to model. It will most often be the output off phgropro.
+#' @param data This is the input data that you would like to model. It is a tidy dataframe containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.
 #' @param graphs This is the number specifying how many graphs you would like to print to console. This is useful for visually inspecting the modeling.
 #'
-#' @return The output pf
+#' @return Tidy data frame of 8 values extracted from the spline interpolation.
+#' \itemize{
+#'  \item{"u1"}{ max growth rate during LEX1.}
+#'  \item{"u2"}{ max growth rate during LEX2}
+#'  \item{"RAc"}{ max rate of acidification during LEX1}
+#'  \item{"RBa"}{ max rate of basification during LEX2}
+#'  \item{"LLP_length"}{ length of lag phase}
+#'  \item{"LEX1_length"}{ length of first growth phase}
+#'  \item{"LTP_length "}{ length of transition phase}
+#'  \item{"LEX2_length"}{ length of 2nd growth phase occuring durring the basification.}
+#' }
+#'  \if{html}{\figure{phgrofit_example.png}}{Test}
+#'
 #' @export
 #'
 #' @examples
+#' ### When we want 10 random graphs to be generated from a tidy data frame named data.
+#' phgrofit(data, graphs = 10)
 #' @importFrom magrittr %>%
 phgrofit <- function(data,graphs = 1) {
 #Initializing the final data frame

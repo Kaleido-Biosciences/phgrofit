@@ -1,13 +1,14 @@
 #' Tidying data from biotek plate reader
 #'
-#'phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format serves as the input to pgrofit
-#' @param biotek_export .txt file that results from exporting data from the Biotek Gen5 software.
+#'phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format will oftern serve as the input to phgrofit.
+#' @param biotek_export .txt file that results from a specific format of exporting data from the Biotek Gen5 software.
 #' @param Plate_Type 96 or 384 specifying which plate type was ran on the plate reader.
 #'
-#' @return
+#' @return tidy data frame with a column for Sample ID, Time, OD600, and pH.
 #' @export
 #'
 #' @examples
+#' ### When we want to extract the data from from a 96 well plate run on the plate reader.
 #' phgropro(data = filepath,Plate_Type = 96)
 phgropro = function(biotek_export,Plate_Type = 96){
 
