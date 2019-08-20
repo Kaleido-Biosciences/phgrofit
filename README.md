@@ -13,8 +13,7 @@ Installation
 ------------
 
 ``` r
-#Not sure if this works yet, probably will look something like this:
-devtools::install_gitlab("vl32/cbayne/phgrofit")
+#Don't know how to do this yet. 
 ```
 
 <!-- badges: start -->
@@ -31,7 +30,8 @@ phgropro()
 
 Processes data from a biotek plate reader into a tidy format "Sample.ID", "Time", "OD600", and "pH". This function only works with the specific format of exported .txt file type, and there are many possible combinations that could be exported using the Gen5 software. The correct file input is described in the input section below.
 
-**Input:** 1. Plate\_Type : A specifically formatted .txt file resulting from an export of data using the biotek GEN5 software.
+**Input:**
+*biotek\_export* : A specifically formatted .txt file resulting from an export of data using the biotek GEN5 software.
 
 -   This file should have 97 columns if data from a 96 well plate and 385 if the data is from a 384 well plate.
 
@@ -41,20 +41,22 @@ Processes data from a biotek plate reader into a tidy format "Sample.ID", "Time"
 
 -   The thing that is most important when using phgropro is the spacing of the exported file. Above the matrix containing OD600 values, there is some data containing relevant information about the plate. The rows of this file arranged in the following manner:
 
-1.  **Top Row (\#x):***Field group:*, Artifact from GEN5 export
-2.  **Row (\#x + 1):***Plate ID:*, Contains information about the plate
-3.  **Row (\#x + 2):***Empty*
-4.  **Row (\#x + 3):***Empty*
-5.  **Row (\#x + 4):***OD600:600*, Specifies that the below measurements are OD600
-6.  **Row (\#x + 5):**Time and well name columns, this acts as a header.
-7.  **Row (\#x + 6 - \#x + 6 + number of timepoints):**OD600 values.
+1.  **Top Row (\#x):** *Field group:*, Artifact from GEN5 export
+2.  **Row (\#x + 1):** *Plate ID:*, Contains information about the plate
+3.  **Row (\#x + 2):** *Empty*
+4.  **Row (\#x + 3):** *Empty*
+5.  **Row (\#x + 4):** *OD600:600*, Specifies that the below measurements are OD600
+6.  **Row (\#x + 5):** \*Time and well name columns, this acts as a header.
+7.  **Row (\#x + 6 - \#x + 6 + number of timepoints):** OD600 values.
 8.  **Row (\#x + 6 + number of timepoints + 1):** pH\_Final, specifies that the measurements below are pH
-9.  **Row (\#x + 6 + number of timepoints + 2):**Time and well name columns, this acts as a header.
+9.  **Row (\#x + 6 + number of timepoints + 2):** Time and well name columns, this acts as a header.
 10. **Row (\#x + 6 + number of timepoints + 3 - \#x + 6 + (2 x number of timepoints) + 3 ):** pH values
 
 This pattern then repeats for the number of plates in the experiment
 
-This explanation ended up being pretty confusing. At the very bottom of this document in the "\#phgropro .txt input" section you can find an example file of the exported data once it is loaded into R. It needs to be in this format to work.
+*This explanation ended up being pretty confusing. At the very bottom of this document in the "\#phgropro .txt input" section you can find an example file containing all the rows and first 5 columns of the exported data once it is loaded into R. It needs to be in this format to work.*
+
+*Plate\_Type*, 96 or 384 to specify the type of plate that was run on the plate reader. **It is crucial to specify the correct plate type.**
 
 **Output:** A tidy data frame containing the columns "Sample.ID", "Time", "OD600", "pH". Each row is an observation at a given time point.
 
@@ -81,9 +83,7 @@ Uses [spline interpolation](physiologcihttps://en.wikipedia.org/wiki/Spline_inte
 3.  "RAc" max rate of acidification during LEX1
 4.  "RBa" max rate of basification during LEX2
 5.  "LLP\_length" length of lag phase
-6.  "LEX1\_length" length of first growth phase
-    7."LTP\_length " length of transition phase
-    8."LEX2\_length" length of 2nd growth phase occurring during the basification.
+6.  "LEX1\_length" length of first growth phase 7."LTP\_length " length of transition phase 8."LEX2\_length" length of 2nd growth phase occurring during the basification.
 
 ![Example from paper](./man/figures/phgrofit_example.png) **Examples.**
 
