@@ -1,0 +1,120 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+library(DT)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# phgrofit
+
+phgrofit is a R package designed to provide tools for making kinetic analysis of OD600 and pH data easy.
+
+The motivation for this package comes from the desire to process kinetic pH and OD600 data as described in this published [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3187081/). 
+
+In short, this package is designed to take OD600 and pH (gained using the BCECF method described in the paper above) kinetic readouts in either a 96 or 384 well format and process the data, extract physiological parameters, and cluster these parameters to infer relationships between compounds. 
+
+## Installation
+
+```{r installation, eval = FALSE}
+#Not sure if this works yet, probably will look something like this:
+devtools::install_gitlab("vl32/cbayne/phgrofit")
+```
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+#Function List
+
+phgropro() : used to process kinetic pH and OD600 data resulting from a standardized export from the Biotek Gen5 software. 
+
+phgrofit() : used to take a tidy data frame containing Sample_ID, Time, pH, and OD600 and extract relevant physiological parameters by conducting spline interpolation. 
+
+
+##phgropro()
+
+Processes data from a biotek plate reader into a tidy format "Sample.ID", "Time", "OD600", and "pH". This function only works with the specific format of exported .txt file type, and there are many possible combinations that could be exported using the Gen5 software. The correct file input is described in the input section below. 
+
+**Input:**
+1. Plate_Type : A specifically formatted .txt file resulting from an export of data using the biotek GEN5 software.
+
+- This file should have 97 columns if data from a 96 well plate and 385 if the data is from a 384 well plate.
+
+- Due to the way that the GEN5 software exports data, the OD600 data is contained in a matrix where column 1 is the time, and column 2: number of wells + 1 contain the OD600 data.  
+
+- The pH data has been calculated within the GEN5 software before export using a logistic regression from samples on a calibration plate. It is stored in a similar matrix to the OD600 data. 
+
+- The thing that is most important when using phgropro is the spacing of the exported file. Above the matrix containing OD600 values, there is some data containing relevant information about the plate. The rows of this file arranged in the following manner:
+
+1. **Top Row (#x):***Field group:*, Artifact from GEN5 export
+2. **Row (#x + 1):***Plate ID:*, Contains information about the plate
+3. **Row (#x + 2):***Empty*
+4. **Row (#x + 3):***Empty*
+5. **Row (#x + 4):***OD600:600*, Specifies that the below measurements are OD600
+6. **Row (#x + 5):**Time and well name columns, this acts as a header.
+7. **Row (#x + 6 - #x + 6 + number of timepoints):**OD600 values.
+8. **Row (#x + 6 + number of timepoints + 1):** pH_Final, specifies that the measurements below are pH
+9. **Row (#x + 6 + number of timepoints + 2):**Time and well name columns, this acts as a header.
+10. **Row (#x + 6 + number of timepoints + 3 - #x + 6 + (2 x number of timepoints) + 3 ):** pH values
+
+This pattern then repeats for the number of plates in the experiment
+
+This explanation ended up being pretty confusing. At the very bottom of this document in the "#phgropro .txt input" section you can find an example file of the exported data once it is loaded into R. It needs to be in this format to work. 
+
+
+
+
+**Output:**
+A tidy data frame containing the columns "Sample.ID", "Time", "OD600", "pH". Each row is an observation at a given time point. 
+
+**Examples:**
+
+```{r, eval = FALSE}
+#This code processes exported data from a 96 well plate and assigns it to a tidy data frame called output.
+output = phgropro(pathtofile.txt,Plate_Type = 96)
+```
+
+
+
+##phgrofit()
+
+Uses [spline interpolation](physiologcihttps://en.wikipedia.org/wiki/Spline_interpolation) to extract physiological parameters from kinetic OD600 and pH curves.
+
+**Input:**  
+1. data = A tidy data frame containing columns labeled "Sample.ID", "Time", "OD600", and "pH". This will most often be the output of phgropro.   
+2. graphs = the number of randomly sampled graphs displaying the fit and relevant parameters that you would like to spot check.  
+
+
+**Output:** A tidy data frame of 8 values extracted from the spline interpolation.If graphs > 0 then x number of randomly sampled graphs are printed to the console displaying the model fit and relevant parameters. 
+
+1. u1" max growth rate during LEX1. 
+2. "u2" max growth rate during LEX2.
+3. "RAc" max rate of acidification during LEX1
+4. "RBa" max rate of basification during LEX2
+5. "LLP_length" length of lag phase
+6. "LEX1_length" length of first growth phase  
+7."LTP_length " length of transition phase  
+8."LEX2_length" length of 2nd growth phase occurring during the basification.  
+
+![Example from paper](./man/figures/phgrofit_example.png)
+**Examples.** 
+
+```{r,eval= FALSE}
+#This code condct spline interpolation from data called tidydata here and extracts the relevant parameters to a data table called output. 10 randomly sampled graphs are printed to the console for spot checking. 
+output = phgrofit(data=tidydata,graphs = 10)
+```
+
+#phgropro .txt input
+```{r}
+biotek_export = "tests/testdata/phgropro_96_test.txt"
+raw_data = read.delim(biotek_export,row.names = NULL,header = FALSE,col.names = 1:97,na.strings = c("?????",""),stringsAsFactors = FALSE)
+
+print(raw_data[,1:5])
+```

@@ -15,9 +15,9 @@ phgropro(biotek_export, Plate_Type = 96)
 tidy data frame with a column for Sample ID, Time, OD600, and pH.
 }
 \description{
-phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format serves as the input to pgrofit
+phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format will oftern serve as the input to phgrofit.
 }
 \examples{
 ### When we want to extract the data from from a 96 well plate run on the plate reader.
-phgropro(data = filepath,Plate_Type = 96)
+output = phgropro(data = filepath.txt,Plate_Type = 96)
 }

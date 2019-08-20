@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' ### When we want to extract the data from from a 96 well plate run on the plate reader.
-#' phgropro(data = filepath,Plate_Type = 96)
+#' output = phgropro(data = filepath.txt,Plate_Type = 96)
 phgropro = function(biotek_export,Plate_Type = 96){
 
     #Determining how to input the data based on plate type

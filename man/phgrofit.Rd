@@ -12,7 +12,7 @@ phgrofit(data, graphs = 1)
 \item{graphs}{This is the number specifying how many graphs you would like to print to console. This is useful for visually inspecting the modeling.}
 }
 \value{
-Tidy data frame of 8 values extracted from the spline interpolation.
+A tidy data frame of 8 values extracted from the spline interpolation.If graphs > 0 then x number of randomly sampled graphs are generated displaying the model fit and relevant parameters.
 \itemize{
  \item{"u1"}{ max growth rate during LEX1.}
  \item{"u2"}{ max growth rate during LEX2}

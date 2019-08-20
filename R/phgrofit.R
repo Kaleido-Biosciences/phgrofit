@@ -4,7 +4,7 @@
 #' @param data This is the input data that you would like to model. It is a tidy dataframe containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.
 #' @param graphs This is the number specifying how many graphs you would like to print to console. This is useful for visually inspecting the modeling.
 #'
-#' @return Tidy data frame of 8 values extracted from the spline interpolation.
+#' @return A tidy data frame of 8 values extracted from the spline interpolation.If graphs > 0 then x number of randomly sampled graphs are generated displaying the model fit and relevant parameters.
 #' \itemize{
 #'  \item{"u1"}{ max growth rate during LEX1.}
 #'  \item{"u2"}{ max growth rate during LEX2}
