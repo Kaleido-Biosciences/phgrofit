@@ -71,7 +71,7 @@ output = phgropro(pathtofile.txt,Plate_Type = 96)
 phgrofit()
 ----------
 
-Uses [spline interpolation](physiologcihttps://en.wikipedia.org/wiki/Spline_interpolation) to extract physiological parameters from kinetic OD600 and pH curves.
+Uses [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) to extract physiological parameters from kinetic OD600 and pH curves.
 
 **Input:**
 1. data = A tidy data frame containing columns labeled "Sample.ID", "Time", "OD600", and "pH". This will most often be the output of phgropro.
