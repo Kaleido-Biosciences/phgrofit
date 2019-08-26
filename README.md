@@ -13,7 +13,8 @@ Installation
 ------------
 
 ``` r
-#Don't know how to do this yet. 
+install.packages("devtools")
+devtools::install_git('cbayne/phgrofit', auth_user = <USER_NAME>, password = <PW>)
 ```
 
 <!-- badges: start -->

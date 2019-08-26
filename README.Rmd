@@ -24,7 +24,9 @@ In short, this package is designed to take OD600 and pH (gained using the BCECF 
 ## Installation
 
 ```{r installation, eval = FALSE}
-#Don't know how to do this yet. 
+install.packages("devtools")
+devtools::install_git('cbayne/phgrofit', auth_user = <USER_NAME>, password = <PW>)
+
 ```
 
 <!-- badges: start -->
