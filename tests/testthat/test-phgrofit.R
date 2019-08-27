@@ -4,7 +4,8 @@ context("phgrofit data table of parameters")
 test_that("There are the correct number of rows",{
 
     data = read.csv(system.file("tests/testdata/phgrofit_test_data.csv",package = "phgrofit"))
-    output = phgrofit(data,graphs = 0)
+    metadata = read.csv(system.file("tests/testdata/384_Metadata.csv",package = "phgrofit"))
+    output = phgrofit(data,metadata)
 
         expect(nrow(output) == 44, "Wrong number of rows with test data set")
 
@@ -14,9 +15,11 @@ test_that("There are the correct number of rows",{
 test_that("The calculated u1 values are correct",{
 
     data = read.csv(system.file("tests/testdata/phgrofit_test_data.csv",package = "phgrofit"))
-    output = phgrofit(data,graphs = 0)
+    metadata = read.csv(system.file("tests/testdata/384_Metadata.csv",package = "phgrofit"))
+    output = phgrofit(data,metadata)
 
-        expect_equal(output[30,1],0.1849, tolerance = 0.001)
+
+        expect_equal(final_data[30,2],0.1849, tolerance = 0.001)
 })
 
 

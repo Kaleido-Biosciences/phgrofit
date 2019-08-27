@@ -23,19 +23,45 @@
 #' ### When we want 10 random graphs to be generated from a tidy data frame named data.
 #' phgrofit(data, graphs = 10)
 #' @importFrom magrittr %>%
-phgrofit <- function(data,graphs = 1) {
+phgrofit <- function(data,metadata) {
 #Initializing the final data frame
 output = data.frame()
+
+#Binding the data and metadata
+data = inner_join(data,metadata, by = "Sample.ID") %>%
+    mutate(Concat = paste0(Community,".",Compound,".",Compound_Concentration,".",Media))
+
+#Looking at each distinct combination of Community, Compound, Compound Concentration, and Media present in the data set so that each can be plotted.
+distinct_metadata = distinct(data,Concat) %>%
+    pull(Concat)
+
+#Looping through to determine what wells are distinct, randomly picking one to plot.
+
+randomized_unique = vector()
+for(i in distinct_metadata){
+    t0 = filter(data, Time == 0)
+    all_values = which(t0$Concat == i)
+    temp_randomized_unique = sample(all_values,1)
+   randomized_unique = cbind(randomized_unique,temp_randomized_unique)
+}
+
 
 #Pulling distinct Sample IDs so that this the fit is applied for every well
 Samples = dplyr::distinct(data,Sample.ID) %>%
           dplyr::pull(Sample.ID)
 #Looping through each sample ID
+
+#Initializing a count so we can keep track of which iteration we are on
+
+count = 0
+
 for(i in Samples){
+
+ #Keeping track of the iteration
+    count = count + 1
  ### First we are going to determine all of necessary physiological descriptors that we can from OD600.###
             input = dplyr::filter(data,Sample.ID == i)
-            #Taking a random sample of n = graphs. This will allow us to randomly plot graphs so that our spot checking isn't skewed by the samples that occur first.
-            random_i = sample.int(length(Samples),graphs)
+
             #Conducting the spline interpolation for OD600
             OD600_model = smooth.spline(y = input$OD600,x =input$Time,spar = 0.75)
 
@@ -155,12 +181,12 @@ for(i in Samples){
             u2_y = u2_x * u2_slope + u2_b
             u2_graph = data.frame(u2_x,u2_y)
 
-             if (i %in% random_i){
+             if (count %in% randomized_unique){
                 #Creating the OD600 plot
-                p1 = ggplot2::ggplot(input, aes(x= Time, y = OD600))+
-                        ggplot2::geom_line(data = sp_OD600_graph, aes(sp_OD600_x,sp_OD600_y), color = "blue")+
-                        ggplot2::geom_line(data = u1_graph,aes(u1_x,u1_y),linetype = "dashed",color = "red",size = 1.25)+
-                        ggplot2::geom_line(data = u2_graph,aes(u2_x,u2_y), linetype = "dashed",color = "red",size = 1.25)+
+                p1 = ggplot2::ggplot(input, ggplot2::aes(x= Time, y = OD600))+
+                        ggplot2::geom_line(data = sp_OD600_graph, ggplot2::aes(sp_OD600_x,sp_OD600_y), color = "blue")+
+                        ggplot2::geom_line(data = u1_graph,ggplot2::aes(u1_x,u1_y),linetype = "dashed",color = "red",size = 1.25)+
+                        ggplot2::geom_line(data = u2_graph,ggplot2::aes(u2_x,u2_y), linetype = "dashed",color = "red",size = 1.25)+
                         ggplot2::geom_point(size = 0.5)+
                         ggplot2::geom_vline(xintercept = LLP_start,color = "gray",linetype = "dashed")+
                         ggplot2::annotate("text", x = LLP_start, y = 1.2, angle = 90, label = "1",
@@ -182,10 +208,10 @@ for(i in Samples){
 
 
                 #Creating the pH plot
-                p2 = ggplot2::ggplot(input, aes(x= Time, y = pH))+
-                        ggplot2::geom_line(data = sp_pH_graph,aes(sp_pH_x,sp_pH_y), color = "blue")+
-                        ggplot2::geom_line(data = RBa_graph,aes(RBa_x,RBa_y),linetype ="dashed", color = "red",size = 1.25)+
-                        ggplot2::geom_line(data = RAc_graph, aes(RAc_x,RAc_y), linetype = "dashed", color = "red",size = 1.25)+
+                p2 = ggplot2::ggplot(input, ggplot2::aes(x= Time, y = pH))+
+                        ggplot2::geom_line(data = sp_pH_graph,ggplot2::aes(sp_pH_x,sp_pH_y), color = "blue")+
+                        ggplot2::geom_line(data = RBa_graph,ggplot2::aes(RBa_x,RBa_y),linetype ="dashed", color = "red",size = 1.25)+
+                        ggplot2::geom_line(data = RAc_graph, ggplot2::aes(RAc_x,RAc_y), linetype = "dashed", color = "red",size = 1.25)+
                         ggplot2::geom_point(size = 0.5)+
                         ggplot2::geom_vline(xintercept = LLP_start,color = "gray",linetype = "dashed")+
                         ggplot2::annotate("text", x = LLP_start, y = 7.1, angle = 90, label = "1",
@@ -200,18 +226,22 @@ for(i in Samples){
                         ggplot2::annotate("text", x = LEX2_start, y = 7.1, angle = 90, label = "4",
                             vjust = 1.2, parse = TRUE)+
                         ggplot2::geom_vline(xintercept = LEX2_end, color = "gray", linetype = "dashed")+
-                            annotate("text", x = LEX2_end, y = 7.1, angle = 90, label = "5",
+                        ggplot2::annotate("text", x = LEX2_end, y = 7.1, angle = 90, label = "5",
                         vjust = 1.2, parse = TRUE)+
                         ggplot2::ggtitle("pH")
                 #Arranging the plots into the same graph
                     p3 = ggpubr::ggarrange(p1,p2)
-                    p4 = ggpubr::annotate_figure(p3, i)
+                    p4 = ggpubr::annotate_figure(p3, input$Concat)
                     print(p4)
                  }
     #Binding all of the growth parameters to the output data frame
-            parameters = cbind(u1_slope,u2_slope,RAc_slope,RBa_slope,LLP_length,LEX1_length,LTP_length,LEX2_length)
+            parameters = cbind(Sample.ID = as.character(i),as.data.frame(cbind(u1_slope,u2_slope,RAc_slope,RBa_slope,LLP_length,LEX1_length,LTP_length,LEX2_length)))
+
             output = rbind(output,parameters)
 }
-    return(output)
+    metadata$Sample.ID = as.character(metadata$Sample.ID)
+    output$Sample.ID = as.character(output$Sample.ID)
+    final_data = inner_join(output, metadata, by = "Sample.ID")
+    return(final_data)
 }
 
