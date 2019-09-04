@@ -1,0 +1,36 @@
+---
+title: "Untitled"
+author: "Charlie Bayne"
+date: "8/30/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data = read.csv("tests/testdata/G798_tidy_data.csv")
+
+metadata = read.csv("tests/testdata/G798_Metadata.csv")
+
+
+output = phgrobiome(data,metadata = metadata,unique_graphs = TRUE)
+```
+
+
+```{r}
+metadata = read.csv("tests/testdata/G798_Metadata.csv")
+compound_info = read.csv("tests/testdata/G798_Compound_info.csv")
+
+tidy_data = read.csv("tests/testdata/G798_tidy_data.csv")
+metadata = read.csv("tests/testdata/G798_Metadata.csv")
+
+phgrobiome_output = phgrobiome(tidy_data,metadata)
+
+compound_info = read.csv("tests/testdata/G798_Compound_info.csv")
+
+annotated_data = meta_combine(phgrobiome_output, metadata = metadata,compound_info = compound_info)
+cols_with_color_label = c("Community","Compound")
+```
+
