@@ -1,4 +1,3 @@
-
 cluster = function(annotated_data,cols_with_color_label){
 
 
@@ -19,10 +18,9 @@ cluster = function(annotated_data,cols_with_color_label){
     ###Creating a function to generate a list of colors that will be used to overlay metadata onto the dendrogram ###
     color_label = function(column_name){
 
-        num = length(unique(annotated_data[,column_name]))
+        number = length(unique(annotated_data[,column_name]))
 
-        #For some reason colors is getting stuck at the previous num
-        colors = grDevices::palette(grDevices::rainbow(num))
+        colors = grDevices::rainbow(number)
 
         factor_num = as.numeric(as.factor(annotated_data[,column_name]))
 
@@ -36,12 +34,6 @@ cluster = function(annotated_data,cols_with_color_label){
     }
 
 
-    test1 = color_label("Community")
-    test1 = color_label("Compound")
-
-
-    final = cbind(test1,test2)
-    cols_with_color_label = c("Compound","Community")
 
      ###Applying the color labeling function to all of the necessary media components###
 
@@ -55,14 +47,47 @@ for(i in cols_with_color_label){
     list[[i]] = color_output
 }
 
-#Conerverting list to a data frame
+#Coneverting the list to a data frame
 colors = dplyr::bind_rows(list)
 
-#ploting the dendrogram
+#Defining all of the legend names in order to loop through in the futuree
+legend_names = names(list)
+
+#Initalizing a list
+legend_list = list()
+
+#Creating a list with all of the legend and fill values.
+for(i in legend_names){
+    fill = unique(list[[i]])
+    legend = unique(names(list[[i]]))
+    df = cbind(legend, fill)
+    legend_list[[i]] = df
+}
+
+
+par = par(mar = c(5,4,4,8))
 plot(dendrogram)
 
-#Adding the colored pars
-dendextend::colored_bars(coloring,dendogram,rowLabels = names(colors))
+
+#Adding the colors
+dendextend::colored_bars(colors,dendrogram,rowLabels = names(colors))
+
+
+#Adding the legends
+count = -1
+for(i in legend_names){
+    #Excluding compounds because there are too many and it is
+    #pretty much impossible to see them
+
+    if(i != "Compound"){
+    count = count + 1
+
+    #par = par(cex = 0.7)
+    legend(390,(33-(20 * count)),legend = legend_list[[i]][,1],
+           fill = legend_list[[i]][,2],title = i,
+           inset=c(-0.50,0), xpd = TRUE,cex = 0.9)
+    }
+}
 
 }
 
