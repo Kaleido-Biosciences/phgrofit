@@ -1,4 +1,4 @@
-cluster = function(annotated_data,cols_with_color_label){
+cluster = function(annotated_data,cols_with_color_label,num_of_clusters = 0,legend_name = "Community"){
 
 
    ###Defining the numeric part of the matrix###
@@ -13,6 +13,7 @@ cluster = function(annotated_data,cols_with_color_label){
 
     #creating a dendrogram using this data
       dendrogram = as.dendrogram(hclust(dist))
+
 
 
     ###Creating a function to generate a list of colors that will be used to overlay metadata onto the dendrogram ###
@@ -50,8 +51,8 @@ for(i in cols_with_color_label){
 #Coneverting the list to a data frame
 colors = dplyr::bind_rows(list)
 
-#Defining all of the legend names in order to loop through in the futuree
-legend_names = names(list)
+#Defining all of the legend names in order to loop through in the future
+
 
 #Initalizing a list
 legend_list = list()
@@ -65,31 +66,39 @@ for(i in legend_names){
 }
 
 
-par = par(mar = c(5,4,4,8))
+#Adding a nice color scheme
+dendrogram = dendextend::highlight_branches_col(dendrogram)
+
+par(mar = c(15,5,2,2))
+
+
 plot(dendrogram)
 
+#allowing for the option to higlight a set number of clusters
+if(num_of_clusters > 0){
+dendextend::rect.dendrogram(dendrogram,k = num_of_clusters,
+                            border = "black", lty = 5, lwd = 2)
+
+}
 
 #Adding the colors
 dendextend::colored_bars(colors,dendrogram,rowLabels = names(colors))
 
 
 #Adding the legends
-count = -1
-for(i in legend_names){
-    #Excluding compounds because there are too many and it is
-    #pretty much impossible to see them
 
-    if(i != "Compound"){
+    if(length(legend_name) <= 1){
     count = count + 1
 
-    #par = par(cex = 0.7)
-    legend(390,(33-(20 * count)),legend = legend_list[[i]][,1],
-           fill = legend_list[[i]][,2],title = i,
-           inset=c(-0.50,0), xpd = TRUE,cex = 0.9)
-    }
+    legend("bottomleft",legend = legend_list[[legend_name]][,1],
+           fill = legend_list[[legend_name]][,2],title = i,
+           xpd = TRUE,cex = 0.9,inset=c(0,-0.5),ncol = 2)
+
+    }else{
+        print("Only one legend is supported. Pick one factor to label the legend by.")}
 }
 
-}
+
 
 
 
