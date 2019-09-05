@@ -23,9 +23,10 @@ cluster = function(annotated_data,cols_with_color_label,num_of_clusters = 0,lege
 
         colors = grDevices::rainbow(number)
 
-        factor_num = as.numeric(as.factor(annotated_data[,column_name]))
+        drop_levels = droplevels(annotated_data[,column_name])
+        factor_num = as.numeric(as.factor(drop_levels))
 
-        names = annotated_data[,column_name]
+        names = as.character(annotated_data[,column_name])
 
         output = colors[factor_num]
 
@@ -47,6 +48,7 @@ for(i in cols_with_color_label){
     color_output = color_label(i)
     list[[i]] = color_output
 }
+
 
 #Coneverting the list to a data frame
 colors = dplyr::bind_rows(list)
@@ -91,8 +93,8 @@ dendextend::colored_bars(colors,dendrogram,rowLabels = names(colors))
     count = count + 1
 
     legend("bottomleft",legend = legend_list[[legend_name]][,1],
-           fill = legend_list[[legend_name]][,2],title = i,
-           xpd = TRUE,cex = 0.9,inset=c(0,-0.5),ncol = 2)
+           fill = legend_list[[legend_name]][,2],title = legend_name,
+           xpd = TRUE,cex = 0.9,inset=c(0,-0.8),ncol = 4)
 
     }else{
         print("Only one legend is supported. Pick one factor to label the legend by.")}
