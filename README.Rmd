@@ -32,12 +32,70 @@ devtools::install_git('cbayne/phgrofit', auth_user = <USER_NAME>, password = <PW
 <!-- badges: start -->
 <!-- badges: end -->
 
+#Using this package!
+
+First let's load all of the necessary data into R and process the raw data, model with phgrobiome, and then annotate the modeling data with experimental metadata and compound information using meta_combine.   
+
+```{r}
+#Loading the necessary data
+tidy_data = phgrofit::phgropro("tests/testdata/G798_Raw_Data.txt",Plate_Type = 384)
+metadata = read.csv("tests/testdata/G798_Metadata.csv")
+compound_info = read.csv("tests/testdata/G798_updated_compound_info.csv")
+
+#Conducting the modeling
+model_data = phgrofit::phgrobiome(tidy_data,metadata)
+
+#Combining the relevant metadata
+annotated_data = meta_combine(phgrobiome_output = model_data,metadata = metadata, compound_info = compound_info)
+
+```
+
+Now let's plot a colored dendrogram!  
+
+```{r,fig.height = 7,fig.width = 12}
+#ploting the entire dendrogram
+
+phgrofit::colored_dendro(annotated_data = annotated_data,
+                         cols_with_color_label = c("Compound","Composition","Manual_Curation","Community"),
+                         legend_name = "Community")
+
+
+```
+
+What if we were only interested in E.coli?
+```{r,fig.height = 7,fig.width = 12}
+#if we just wanted to look at one strain
+ECO.38 = filter(annotated_data, Community == "ECO.38")
+
+phgrofit::colored_dendro(annotated_data = ECO.38,
+                         cols_with_color_label = c("Compound","Composition","Manual_Curation","Community"),
+                         legend_name = "Manual_Curation")
+```
+
+If we wanted to see a heat map, we could use the heatmapper function. As a bonus, it is interactive which allows you to get a much better idea of where the relevant conditions cluster. When using heatmapper, you typically want to avoid conditions with two many levels because the color pallete doesn't handle it well. 
+
+
+```{r}
+phgrofit::heatmapper(annotated_data = annotated_data, labels = c("Community","Manual_Curation","Composition"))
+```
+
 #Function List
 
-phgropro() : used to process kinetic pH and OD600 data resulting from a standardized export from the Biotek Gen5 software. 
+1. phgropro() : Used to process kinetic pH and OD600 data resulting from a standardized export from the Biotek Gen5 software. 
 
-phgrofit() : used to take a tidy data frame containing Sample_ID, Time, pH, and OD600 and extract relevant physiological parameters by conducting spline interpolation. 
+2. phgrofit() : Takes a tidy data (ouput of phgrofit::phgropro()) frame containing Sample_ID, Time, pH, and OD600 and extracts relevant physiological parameters by conducting spline interpolation. This function is intended to completely mimic the processing done in HEUX ET AL. We have found this type of modeling to not be very robust across the wide variety of kinetic curve types that we typically encounter when looking at growth profiles across many strains, communities, and carbon sources. As such, phgrobiome was developed in order to be more robust with respect to different growth profiles.
 
+3. phgrobiome() : Takes a tidy data (ouput of phgrofit::phgropro()) frame containing Sample_ID, Time, pH, and OD600 and extracts relevant physiological parameters by conducting spline interpolation. **This function is intended to be more applicable to growth and ph curves typically generated at Kaleido than phgrofit.**
+
+4. meta_combine(): Combines the output of phgrobiome with experimental metadata and compound information.
+
+
+5. colored_dendro(): Creates a dendrogram with colored bars based on user input.
+
+
+6. heatmapper(): Creates an interactive heat map with associated dendogram that has colored bars based on user input. 
+
+Also included are some helper functions that are phgrobiome relies on.
 
 ##phgropro()
 
@@ -71,7 +129,6 @@ This pattern then repeats for the number of plates in the experiment
 
 *Plate_Type*, 96 or 384 to specify the type of plate that was run on the plate reader. **It is crucial to specify the correct plate type.**  
 
-
 **Output:**
 A tidy data frame containing the columns "Sample.ID", "Time", "OD600", "pH". Each row is an observation at a given time point. 
 
@@ -81,8 +138,6 @@ A tidy data frame containing the columns "Sample.ID", "Time", "OD600", "pH". Eac
 #This code processes exported data from a 96 well plate and assigns it to a tidy data frame called output.
 output = phgropro(pathtofile.txt,Plate_Type = 96)
 ```
-
-
 
 ##phgrofit()
 
@@ -112,10 +167,91 @@ Uses [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) 
 output = phgrofit(data=tidydata,graphs = 10)
 ```
 
-#phgropro .txt input
+##phgrobiome
+
+Uses [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) to extract physiological parameters from kinetic OD600 and pH curves. This is intended to be robust across all types of kinetic od600 and pH curves. 
+
+The parameters that are extracted from the spline interpolation are as follows:
+
+**Input:**
+1. data: This is the input data that has been loaded into r that you would like to model. It is a tidy dataframe containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.  
+
+2. metadata: This is the metadata that has been previously loaded into r. Must contain columns labeled "Community", "Compound","Compound_Concentration","Media" at the minimum. These are the only parameters that will be used to determine if a condition is unique or not.  
+
+3.unique_graphs: This is a TRUE or false input. If true, a plot from all distinct conditions will be printed in order to allow for spot checking model fit. If FALSE, no graphs will be plotted. Either way, a data frame containing all of the model fitted parameters will be returned.  
+
+**Output:** A tidy data frame of 8 values extracted from the spline interpolation.If unique_graphs = TRUE then a randomly sampled distinct graph is printed from each distinct condition. This graph displays model fit and relevant extracted parameters and is intended to spot check the model fit.   
+
+1. "od600_lag_length". This is the length of the calculated lag phase. Calculated by determining the time where the tangent line at the point of the max growth rate meets the starting od600
+
+2. "od600_max_gr" This is the maximum growth rate that is observed. Calculated by determining the max derivitive of the spline fit for OD600
+
+3. "max_od600" This is the maximum od600 observed by the spline fit
+
+4. "difference_between_max_and_end_od600" This is the difference between the maximum and end od600. Higher values should correspond to a "death phase". Or one could argue the cells are getting smaller.
+
+5. "max acidification rate" This is the max acidification rate observed in the spline fit. Calculated by determining the min derivitive of the spline fit for pH.
+
+6. "min pH" This is the minimum pH that is observed in the spline fit.
+
+7. "time_of_min_pH " This is the time that the minimum pH occurs in the spline fit.
+
+8. "max_basification_rate" This is the max basification rate observed in the spline fit. Calculated by determining the max derivitive of the spline fit for pH.
+
+9. "max_pH" This is the max pH observed in the spline fit.
+
+10. "difference_between_end_and_min_pH" This is the difference between the end and the minimum pH. A higher value corresponds to a greater pH increase. Higher values may reflect an increased proteolytic state
+
+##meta_combine
+
+This function is intended to be a convinent way to add relevant categorical data (experimental metadata and compound information) to the output of phgrobiome. This results in a tidy data frame that is easily manipulated via dplyr before visualization or further analysis. 
+
+**Input:**
+1. phgrobiome_output: This is a data frame that is loaded into R that contains the Sample.IDs and all of the values resulting from the phgrobiome modeling. This is the output of the phgrobiome function.  
+
+2. metadata: This is a data frame that has been loaded into R containing metadata from the experiment. This datatable contains at least columns labeled Sample.ID, Community, Compound, Compound_Concentration, and Media.   
+
+3.compound_info: This is a data table that has been loaded into R that contains information about compounds. This data table contains at least a column labeled Compound, Composition,AveDP, and Manual_Curation. Manual_Curation represents a user created column that specifies some sort of note about the compounds. I found this to be necessary because the compound information in LIMS seemed to be lacking/ missing important categorical information. 
+
+**Output:**
+1. an easily manipulatable data frame containing physiological parameters and categorical data. 
+
+##colored_dendro
+
+This function creates a dendrogram using the output from the meta_combine function using the manhatten distance as the distance method. The ploted dendogram will have a colored bar representing different categorical features of the data as specified by the cols_with_color_label parameter A specified number of clusters can be highlighted via boxes by the num_of clusters parameter. This function can plot a colored legend for a categorical feature as specified by the user.
+
+**Input:**
+1. annotated_data: output of meta_combine
+2. cols_with_color_labels: columns that you would like to display a colored bar that has been annotated with categorical data. 
+3. num_of_clusters: The number of clusters that you would like to highlight with a box. 
+4. legend_name: The categorical data that you would like to display a colored legend for 
+
+**Output:**
+1. a dendrogram with colored bar annotation and a user specified colored legend
+
+
+##heatmapper
+
+This function creates an interactive heatmap with user specified colored categorical labels.
+
+**Input:**
+1. annotated_data: output of meta_combine
+2. labels: a vector of categorical variables that you would like to display colored bars of.
+
+**Output:**
+1. a plotly heatmap created via heatmaply.  
+
+#phgropro .txt input example
 ```{r}
 biotek_export = "tests/testdata/phgropro_96_test.txt"
 raw_data = read.delim(biotek_export,row.names = NULL,header = FALSE,col.names = 1:97,na.strings = c("?????",""),stringsAsFactors = FALSE)
 
 print(raw_data[,1:5])
 ```
+
+
+#96 examples of model performance
+```{r}
+model_data = phgrofit::phgrobiome(tidy_data,metadata,unique_graphs = TRUE)
+```
+

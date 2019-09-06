@@ -2,7 +2,7 @@
 % Please edit documentation in R/phgropro.R
 \name{phgropro}
 \alias{phgropro}
-\title{Tidying data from biotek plate reader}
+\title{phgropro: Tidying kinetic od600 and pH data from biotek plate reader.}
 \usage{
 phgropro(biotek_export, Plate_Type = 96)
 }
@@ -19,5 +19,8 @@ phgropro- pH growh processing- takes the export from a standardized biotek plate
 }
 \examples{
 ### When we want to extract the data from from a 96 well plate run on the plate reader.
-output = phgropro(data = filepath.txt,Plate_Type = 96)
+output_96 = phgropro(data = filepath.txt,Plate_Type = 96)
+
+### When we want to extract the data from from a 384 well plate run on the plate reader.
+output_384 = phgropro(data = filepath.txt,Plate_Type = 384)
 }

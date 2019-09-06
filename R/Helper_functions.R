@@ -1,5 +1,4 @@
 ###Function that will calculate for OD600:  length of lag, max growth rate, min growth rate###
-
 rate_parameters = function(data,measurement){
 
     model = smooth.spline(y = data[,measurement], x=data[,"Time"],spar = 0.70)
@@ -52,8 +51,6 @@ rate_parameters = function(data,measurement){
     }
 }
 
-
-
 ###Function to calculate max OD600, Difference between max and end OD600, min pH,
 #time the min pH occurs, max pH, difference between the end and min pH.
 
@@ -93,8 +90,8 @@ Combine_parameters = function(input){
 
     input$Sample.ID = as.character(input$Sample.ID)
 
-    Sample.ID = distinct(input,Sample.ID) %>%
-        pull()
+    Sample.ID = dplyr::distinct(input,Sample.ID) %>%
+        dplyr::pull()
 
 
     params = as.data.frame(cbind(cbind(step_1,step_2,step_3,step_4)))
@@ -163,9 +160,4 @@ return(p3)
 
 }
 
-random = sample(data$Sample.ID,1)
 
-test_input = dplyr::filter(data,Sample.ID == random)
-
-test = Combine_parameters(test_input)
-graph_check(test_input,test)

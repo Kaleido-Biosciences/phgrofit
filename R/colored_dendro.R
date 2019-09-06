@@ -1,4 +1,4 @@
-#' colored_dendro
+#' colored_dendro: Create a dendrogram with colored bars.
 #'
 #'This function creates a dendrogram using the output from the meta_combine function using the manhatten distance as the distance method.
 #'The ploted dendogram will have a colored bar representing different categorical features of the data as specified by the cols_with_color_label parameter

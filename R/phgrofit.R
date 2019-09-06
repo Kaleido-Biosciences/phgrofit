@@ -1,6 +1,8 @@
-#' Extract physiological parameters from kinetic pH and OD600 data
+#' phgrofit: Extract physiological parameters from kinetic pH and OD600 data
 #'
 #'phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
+#'This function was created to replicate the work done in Heux Et Al. It may not be the most appropriate for analyzing microbiome data.
+#'For microbiome data, it is suggested to use the phgrobiome function.
 #' @param data This is the input data that you would like to model. It is a tidy dataframe containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.
 #' @param graphs This is the number specifying how many graphs you would like to print to console. This is useful for visually inspecting the modeling.
 #'
@@ -28,7 +30,7 @@ phgrofit <- function(data,metadata) {
 output = data.frame()
 
 #Binding the data and metadata
-data = inner_join(data,metadata, by = "Sample.ID") %>%
+data = dplyr::inner_join(data,metadata, by = "Sample.ID") %>%
     mutate(Concat = paste0(Community,".",Compound,".",Compound_Concentration,".",Media))
 
 #Looking at each distinct combination of Community, Compound, Compound Concentration, and Media present in the data set so that each can be plotted.

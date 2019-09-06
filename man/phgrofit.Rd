@@ -2,7 +2,7 @@
 % Please edit documentation in R/phgrofit.R
 \name{phgrofit}
 \alias{phgrofit}
-\title{Extract physiological parameters from kinetic pH and OD600 data}
+\title{phgrofit: Extract physiological parameters from kinetic pH and OD600 data}
 \usage{
 phgrofit(data, metadata)
 }
@@ -27,6 +27,8 @@ A tidy data frame of 8 values extracted from the spline interpolation.If graphs 
 }
 \description{
 phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
+This function was created to replicate the work done in Heux Et Al. It may not be the most appropriate for analyzing microbiome data.
+For microbiome data, it is suggested to use the phgrobiome function.
 }
 \examples{
 ### When we want 10 random graphs to be generated from a tidy data frame named data.

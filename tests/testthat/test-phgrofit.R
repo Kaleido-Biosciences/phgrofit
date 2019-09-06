@@ -19,7 +19,7 @@ test_that("The calculated u1 values are correct",{
     output = phgrofit(data,metadata)
 
 
-        expect_equal(final_data[30,2],0.1849, tolerance = 0.001)
+        expect_equal(output[30,2],0.1849, tolerance = 0.001)
 })
 
 

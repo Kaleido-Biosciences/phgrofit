@@ -1,24 +1,35 @@
-#'  Extract physiological parameters from kinetic pH and OD600 data using multiple strains and complex carbon sources
+#' phgrobiome: Extract physiological parameters from kinetic pH and OD600 data across diverse samples.
 #'
-#' phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
+#' phgrobiome takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
+#' This is different from the phgrofit modeling because the modeling parameters used are more robust to deviations from an idealized growth and ph profile.
 #' @param data This is the input data that has been loaded into r that you would like to model. It is a tidy dataframe containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.
-#' @param metadata This is the metadata that has been previously loaded into r
-#'
-#' @return A tidy data frame of 8 values extracted from the spline interpolation.If graphs > 0 then x number of randomly sampled graphs are generated displaying the model fit and relevant parameters.
+#' @param metadata This is the metadata that has been previously loaded into r. Must contain columns labeled "Community", "Compound","Compound_Concentration","Media" at the minimum.
+#' These are the only parameters that will be used to determine if a condition is unique or not.
+#' @param unique_graphs This is a TRUE or false input. If true, a plot from all distinct conditions will be printed in order to allow for spot checking model fit.
+#' If FALSE, no graphs will be plotted. Either way, a data frame containing all of the model fitted parameters will be returned.
+#' @return A tidy data frame of 10 values extracted from the spline interpolation.If unique_graphs = TRUE then a randomly sampled graph of a distinct condition will be printed to the console.
 #' \itemize{
-#'  \item{"u1"}{ max growth rate during LEX1.}
-#'  \item{"u2"}{ max growth rate during LEX2}
-#'  \item{"RAc"}{ max rate of acidification during LEX1}
-#'  \item{"RBa"}{ max rate of basification during LEX2}
-#'  \item{"LLP_length"}{ length of lag phase}
-#'  \item{"LEX1_length"}{ length of first growth phase}
-#'  \item{"LTP_length "}{ length of transition phase}
-#'  \item{"LEX2_length"}{ length of 2nd growth phase occuring durring the basification.}
+#'  \item{"od600_lag_length"}{This is the length of the calculated lag phase.
+#'  Calculated by determining the time where the tangent line at the point of the max growth rate meets the starting od600 }
+#'  \item{"od600_max_gr"}{ This is the maximum growth rate that is observed. Calculated by determining the max derivitive of the spline fit for OD600}
+#'  \item{"max_od600"}{ This is the maximum od600 observed by the spline fit}
+#'  \item{"difference_between_max_and_end_od600"}{ This is the difference between the maximum and end od600. Higher values should correspond to a "death phase". Or one could argue the cells are getting smaller.}
+#'  \item{"max acidification rate"}{ This is the max acidification rate observed in the spline fit. Calculated by determining the min derivitive of the spline fit for pH.}
+#'  \item{"min pH"}{ This is the minimum pH that is observed in the spline fit.}
+#'  \item{"time_of_min_pH "}{ This is the time that the minimum pH occurs in the spline fit.}
+#'  \item{"max_basification_rate"}{ This is the max basification rate observed in the spline fit. Calculated by determining the max derivitive of the spline fit for pH.}
+#'  \item{"max_pH"}{ This is the max pH observed in the spline fit.}
+#'  \item{"difference_between_end_and_min_pH"}{ This is the difference between the end and the minimum pH. A higher value corresponds to a greater pH increase. Higher values may reflect an increased proteolytic state}
 #' }
-#'  \if{html}{\figure{phgrofit_example.png}}{Test}
 #' @export
-#'
+#' @importFrom magrittr %>%
 #' @examples
+#' data = read.csv("Filepath")
+#'
+#' metadata = read.csv("Filepath")
+#'
+#' physiological_parameters = phgrobiome(data,metadata,unique_graphs = TRUE)
+#' This will return a data frame of physiological parameters and print a randomly sampled replicate of each unique condition to the console.
 phgrobiome <- function(data,metadata,unique_graphs = FALSE) {
     #Initializing the final data frame
     output = data.frame()
