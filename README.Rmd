@@ -48,7 +48,8 @@ compound_info = read.csv("tests/testdata/G798_updated_compound_info.csv")
 model_data = phgrofit::phgrobiome(tidy_data,metadata)
 
 #Combining the relevant metadata
-annotated_data = phgrofit::meta_combine(phgrobiome_output = model_data,metadata = metadata, compound_info = compound_info)
+annotated_data = phgrofit::meta_combine(phgrobiome_output = model_data,metadata = metadata,
+                                        compound_info = compound_info)
 
 ```
 
@@ -168,7 +169,8 @@ Uses [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) 
 **Examples.** 
 
 ```{r,eval= FALSE}
-#This code condct spline interpolation from data called tidydata here and extracts the relevant parameters to a data table called output. 10 randomly sampled graphs are printed to the console for spot checking. 
+#This code condct spline interpolation from data called tidydata here and extracts the relevant parameters 
+#to a data table called output. 10 randomly sampled graphs would be printed to the console for spot checking. 
 output = phgrofit(data=tidydata,graphs = 10)
 ```
 
@@ -212,7 +214,8 @@ The parameters that are extracted from the spline interpolation are as follows:
 
 This function is intended to be a convinent way to add relevant categorical data (experimental metadata and compound information) to the output of phgrobiome. This results in a tidy data frame that is easily manipulated via dplyr before visualization or further analysis. 
 
-**Input:**
+**Input:**  
+
 1. phgrobiome_output: This is a data frame that is loaded into R that contains the Sample.IDs and all of the values resulting from the phgrobiome modeling. This is the output of the phgrobiome function.    
 
 2. metadata: This is a data frame that has been loaded into R containing metadata from the experiment. This datatable contains at least columns labeled Sample.ID, Community, Compound, Compound_Concentration, and Media.   
@@ -252,7 +255,8 @@ This function creates an interactive heatmap with user specified colored categor
 #phgropro .txt input example
 ```{r}
 biotek_export = "tests/testdata/phgropro_96_test.txt"
-raw_data = read.delim(biotek_export,row.names = NULL,header = FALSE,col.names = 1:97,na.strings = c("?????",""),stringsAsFactors = FALSE)
+raw_data = read.delim(biotek_export,row.names = NULL,header = FALSE,col.names = 1:97,
+                      na.strings = c("?????",""),stringsAsFactors = FALSE)
 
 print(raw_data[,1:5])
 ```
