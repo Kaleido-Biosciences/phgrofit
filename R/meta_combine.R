@@ -34,16 +34,16 @@
 meta_combine = function(phgrobiome_output,metadata,compound_info){
 
     metadata = metadata %>%
-        select(Sample.ID,Community,Compound, Compound_Concentration,Media)
+        dplyr::select(Sample.ID,Community,Compound, Compound_Concentration,Media)
 
     compound_info = compound_info %>%
         dplyr::select(Compound,Composition,AveDP,Manual_Curation) %>%
-        mutate(AveDP = round(AveDP,0))
+        dplyr::mutate(AveDP = round(AveDP,0))
 
     all_metadata = dplyr::left_join(metadata,compound_info, by = c("Compound"))
 
 
-    output = left_join(all_metadata,phgrobiome_output,by = "Sample.ID")
+    output = dplyr::left_join(all_metadata,phgrobiome_output,by = "Sample.ID")
 
     return(output)
 }

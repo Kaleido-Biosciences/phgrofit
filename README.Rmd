@@ -1,5 +1,7 @@
 ---
 output: github_document
+always_allow_html: yes
+
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -17,7 +19,7 @@ knitr::opts_chunk$set(
 
 phgrofit is a R package designed to provide tools for making kinetic analysis of OD600 and pH data easy.
 
-The motivation for this package comes from the desire to process kinetic pH and OD600 data as described in this published [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3187081/). 
+The motivation for this package comes from the desire to process kinetic pH and OD600 data in a similar manner as in this [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3187081/). 
 
 In short, this package is designed to take OD600 and pH (gained using the BCECF method described in the paper above) kinetic readouts in either a 96 or 384 well format and process the data, extract physiological parameters, and cluster these parameters to infer relationships between compounds. 
 
@@ -46,7 +48,7 @@ compound_info = read.csv("tests/testdata/G798_updated_compound_info.csv")
 model_data = phgrofit::phgrobiome(tidy_data,metadata)
 
 #Combining the relevant metadata
-annotated_data = meta_combine(phgrobiome_output = model_data,metadata = metadata, compound_info = compound_info)
+annotated_data = phgrofit::meta_combine(phgrobiome_output = model_data,metadata = metadata, compound_info = compound_info)
 
 ```
 
@@ -65,7 +67,7 @@ phgrofit::colored_dendro(annotated_data = annotated_data,
 What if we were only interested in E.coli?
 ```{r,fig.height = 7,fig.width = 12}
 #if we just wanted to look at one strain
-ECO.38 = filter(annotated_data, Community == "ECO.38")
+ECO.38 = dplyr::filter(annotated_data, Community == "ECO.38")
 
 phgrofit::colored_dendro(annotated_data = ECO.38,
                          cols_with_color_label = c("Compound","Composition","Manual_Curation","Community"),
@@ -78,6 +80,9 @@ If we wanted to see a heat map, we could use the heatmapper function. As a bonus
 ```{r}
 phgrofit::heatmapper(annotated_data = annotated_data, labels = c("Community","Manual_Curation","Composition"))
 ```
+
+You can't see the plot because it is a html file that can not be viewed in the format of this readme.  
+
 
 #Function List
 
@@ -173,12 +178,13 @@ Uses [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) 
 
 The parameters that are extracted from the spline interpolation are as follows:
 
-**Input:**
+**Input:**  
+
 1. data: This is the input data that has been loaded into r that you would like to model. It is a tidy dataframe containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.  
 
 2. metadata: This is the metadata that has been previously loaded into r. Must contain columns labeled "Community", "Compound","Compound_Concentration","Media" at the minimum. These are the only parameters that will be used to determine if a condition is unique or not.  
 
-3.unique_graphs: This is a TRUE or false input. If true, a plot from all distinct conditions will be printed in order to allow for spot checking model fit. If FALSE, no graphs will be plotted. Either way, a data frame containing all of the model fitted parameters will be returned.  
+3. unique_graphs: This is a TRUE or false input. If true, a plot from all distinct conditions will be printed in order to allow for spot checking model fit. If FALSE, no graphs will be plotted. Either way, a data frame containing all of the model fitted parameters will be returned.  
 
 **Output:** A tidy data frame of 8 values extracted from the spline interpolation.If unique_graphs = TRUE then a randomly sampled distinct graph is printed from each distinct condition. This graph displays model fit and relevant extracted parameters and is intended to spot check the model fit.   
 
@@ -207,13 +213,14 @@ The parameters that are extracted from the spline interpolation are as follows:
 This function is intended to be a convinent way to add relevant categorical data (experimental metadata and compound information) to the output of phgrobiome. This results in a tidy data frame that is easily manipulated via dplyr before visualization or further analysis. 
 
 **Input:**
-1. phgrobiome_output: This is a data frame that is loaded into R that contains the Sample.IDs and all of the values resulting from the phgrobiome modeling. This is the output of the phgrobiome function.  
+1. phgrobiome_output: This is a data frame that is loaded into R that contains the Sample.IDs and all of the values resulting from the phgrobiome modeling. This is the output of the phgrobiome function.    
 
 2. metadata: This is a data frame that has been loaded into R containing metadata from the experiment. This datatable contains at least columns labeled Sample.ID, Community, Compound, Compound_Concentration, and Media.   
 
-3.compound_info: This is a data table that has been loaded into R that contains information about compounds. This data table contains at least a column labeled Compound, Composition,AveDP, and Manual_Curation. Manual_Curation represents a user created column that specifies some sort of note about the compounds. I found this to be necessary because the compound information in LIMS seemed to be lacking/ missing important categorical information. 
+3. compound_info: This is a data table that has been loaded into R that contains information about compounds. This data table contains at least a column labeled Compound, Composition,AveDP, and Manual_Curation. Manual_Curation represents a user created column that specifies some sort of note about the compounds. I found this to be necessary because the compound information in LIMS seemed to be lacking/ missing important categorical information. 
 
-**Output:**
+**Output:**  
+
 1. an easily manipulatable data frame containing physiological parameters and categorical data. 
 
 ##colored_dendro
@@ -221,12 +228,13 @@ This function is intended to be a convinent way to add relevant categorical data
 This function creates a dendrogram using the output from the meta_combine function using the manhatten distance as the distance method. The ploted dendogram will have a colored bar representing different categorical features of the data as specified by the cols_with_color_label parameter A specified number of clusters can be highlighted via boxes by the num_of clusters parameter. This function can plot a colored legend for a categorical feature as specified by the user.
 
 **Input:**
-1. annotated_data: output of meta_combine
-2. cols_with_color_labels: columns that you would like to display a colored bar that has been annotated with categorical data. 
-3. num_of_clusters: The number of clusters that you would like to highlight with a box. 
-4. legend_name: The categorical data that you would like to display a colored legend for 
+1. annotated_data: output of meta_combine  
+2. cols_with_color_labels: columns that you would like to display a colored bar that has been annotated with categorical data.  
+3. num_of_clusters: The number of clusters that you would like to highlight with a box.   
+4. legend_name: The categorical data that you would like to display a colored legend for.  
 
-**Output:**
+**Output:**  
+
 1. a dendrogram with colored bar annotation and a user specified colored legend
 
 
@@ -234,11 +242,11 @@ This function creates a dendrogram using the output from the meta_combine functi
 
 This function creates an interactive heatmap with user specified colored categorical labels.
 
-**Input:**
+**Input:**  
 1. annotated_data: output of meta_combine
 2. labels: a vector of categorical variables that you would like to display colored bars of.
 
-**Output:**
+**Output:**  
 1. a plotly heatmap created via heatmaply.  
 
 #phgropro .txt input example

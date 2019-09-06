@@ -37,18 +37,18 @@ phgrobiome <- function(data,metadata,unique_graphs = FALSE) {
     #Binding the data and metadata
     metadata$Sample.ID = as.character(metadata$Sample.ID)
 
-    data = inner_join(data,metadata, by = "Sample.ID") %>%
-        mutate(Concat = paste0(Community,".",Compound,".",Compound_Concentration,".",Media))
+    data = dplyr::inner_join(data,metadata, by = "Sample.ID") %>%
+        dplyr::mutate(Concat = paste0(Community,".",Compound,".",Compound_Concentration,".",Media))
 
     #Looking at each distinct combination of Community, Compound, Compound Concentration, and Media present in the data set so that each can be plotted.
-    distinct_metadata = distinct(data,Concat) %>%
-        pull(Concat)
+    distinct_metadata = dplyr::distinct(data,Concat) %>%
+        dplyr::pull(Concat)
 
     #Looping through to determine what wells are distinct, randomly picking one to plot.
 
     randomized_unique = vector()
     for(i in distinct_metadata){
-        t0 = filter(data, Time == 0)
+        t0 = dplyr::filter(data, Time == 0)
         all_values = which(t0$Concat == i)
         temp_randomized_unique = sample(all_values,1)
         randomized_unique = cbind(randomized_unique,temp_randomized_unique)
