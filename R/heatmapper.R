@@ -25,12 +25,18 @@ Sample_Labels = annotated_data %>%
 #Setting row names to be sample.ID
 row.names(Sample_Labels) = Sample_Labels$Sample.ID
 
-
 all = cbind(Sample_Labels,scaled_data)
 
 #Setting the row names to be Sample.IDs
 row.names(scaled_data) = all$Sample.ID
+
+#Setting up custom hovertext to contain compound information
+compound_vector = rep(Sample_Labels$Compound,length(numeric_data))
+
+hover_text = matrix(compound_vector, nrow = length(Sample_Labels$Compound), ncol = length(numeric_data))
+
 #Plotting the interactive heatmap
-heatmaply::heatmaply(scaled_data,dist_method = "manhattan",row_side_colors = Sample_Labels[,labels],cexRow = 0.1,cexCol = 0.7)
+heatmaply::heatmaply(scaled_data,dist_method = "manhattan",row_side_colors = Sample_Labels[,labels],
+                     cexRow = 0.1,cexCol = 0.7,custom_hovertext = hover_text)
 
 }
