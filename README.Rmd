@@ -26,15 +26,16 @@ In short, this package is designed to take OD600 and pH (gained using the BCECF 
 ## Installation
 
 ```{r installation, eval = FALSE}
-install.packages("devtools")
-devtools::install_git('cbayne/phgrofit', auth_user = <USER_NAME>, password = <PW>)
+devtools::install_gitlab("cbayne/phgrofit", 
+                         auth_token = "Your auth token from gitlab",
+                         host = "gitlab.kaleidobio.com")
 
 ```
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-#Using this package!
+#Using this package
 
 First let's load all of the necessary data into R and process the raw data, model with phgrobiome, and then annotate the modeling data with experimental metadata and compound information using meta_combine.   
 
@@ -53,7 +54,7 @@ annotated_data = phgrofit::meta_combine(phgrobiome_output = model_data,metadata 
 
 ```
 
-Now let's plot a colored dendrogram!  
+Now let's plot a colored dendrogram. 
 
 ```{r,fig.height = 7,fig.width = 12}
 #ploting the entire dendrogram
@@ -100,6 +101,9 @@ You can't see the plot because it is a html file that can not be viewed in the f
 
 
 6. heatmapper(): Creates an interactive heat map with associated dendogram that has colored bars based on user input. 
+
+
+7. simplify(): Summarizes the model fit by takeing the averages across distinct groups. 
 
 Also included are some helper functions that are phgrobiome relies on.
 
@@ -230,11 +234,12 @@ This function is intended to be a convinent way to add relevant categorical data
 
 This function creates a dendrogram using the output from the meta_combine function using the manhatten distance as the distance method. The ploted dendogram will have a colored bar representing different categorical features of the data as specified by the cols_with_color_label parameter A specified number of clusters can be highlighted via boxes by the num_of clusters parameter. This function can plot a colored legend for a categorical feature as specified by the user.
 
-**Input:**
-1. annotated_data: output of meta_combine  
+**Input:**  
+
+1. annotated_data: output of meta_combine   
 2. cols_with_color_labels: columns that you would like to display a colored bar that has been annotated with categorical data.  
 3. num_of_clusters: The number of clusters that you would like to highlight with a box.   
-4. legend_name: The categorical data that you would like to display a colored legend for.  
+4. legend_name: The categorical data that you would like to display a colored legend for.   
 
 **Output:**  
 
@@ -246,11 +251,27 @@ This function creates a dendrogram using the output from the meta_combine functi
 This function creates an interactive heatmap with user specified colored categorical labels.
 
 **Input:**  
-1. annotated_data: output of meta_combine
+1. annotated_data: output of meta_combine, or simplify.
 2. labels: a vector of categorical variables that you would like to display colored bars of.
 
 **Output:**  
 1. a plotly heatmap created via heatmaply.  
+
+
+##simplify  
+
+This function allows the user to simplify the data by grouping and summarising by distinct groups.   
+
+
+**Input:**  
+
+1. annotated_data: output of meta_combine.  
+2. groups: This is a vector input containing the names of the columns that the data will be grouped by and the mean will subsequently be taken across these groups.  
+
+
+**Output:**   
+
+1. A data frame containing the averaged summarized fits across the groups provided by the user. The Sample.IDs have been changed to row names in order to ensure compatibility with the heatmapper function. 
 
 #phgropro .txt input example
 ```{r}

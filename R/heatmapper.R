@@ -40,3 +40,7 @@ heatmaply::heatmaply(scaled_data,dist_method = "manhattan",row_side_colors = Sam
                      cexRow = 0.1,cexCol = 0.7,custom_hovertext = hover_text)
 
 }
+
+
+
+
