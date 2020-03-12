@@ -64,7 +64,7 @@ phgrobiome <- function(data,metadata,unique_graphs = FALSE) {
 
     #Pulling distinct Sample IDs that don't have too many NAs so that this the fit is applied for every well
     Samples = dplyr::distinct(data,Sample.ID) %>%
-        dplyr::filter(data,Sample.ID %!in% NA_Samples) %>%
+        dplyr::filter(Sample.ID %!in% NA_Samples) %>%
         dplyr::pull(Sample.ID)
 
     #Initializing a count so we can keep track of which iteration we are on
