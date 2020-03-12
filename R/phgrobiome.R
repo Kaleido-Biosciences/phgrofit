@@ -54,8 +54,17 @@ phgrobiome <- function(data,metadata,unique_graphs = FALSE) {
         randomized_unique = cbind(randomized_unique,temp_randomized_unique)
     }
 
-    #Pulling distinct Sample IDs so that this the fit is applied for every well
+    #Removing samples that have 25% or more NA pH values
+    NA_Samples = dplyr::group_by(data,Sample.ID) %>%
+        dplyr::summarise(n_na = sum(is.na(pH))) %>%
+        dplyr::filter(n_na > (0.25 * length(data$pH)/length(unique(data$Sample.ID)))) %>%
+        dplyr::pull(Sample.ID)
+
+    `%!in%` = Negate(`%in%`)
+
+    #Pulling distinct Sample IDs that don't have too many NAs so that this the fit is applied for every well
     Samples = dplyr::distinct(data,Sample.ID) %>%
+        dplyr::filter(data,Sample.ID %!in% NA_Samples) %>%
         dplyr::pull(Sample.ID)
 
     #Initializing a count so we can keep track of which iteration we are on
@@ -66,7 +75,9 @@ phgrobiome <- function(data,metadata,unique_graphs = FALSE) {
 
         count = count + 1
 
-        input = dplyr::filter(data,Sample.ID == i)
+    #Removing rows with NA pH values so that a spline can be fit despite a few wonky timepoints that may be present in pH values
+        input = dplyr::filter(data,Sample.ID == i) %>%
+            dplyr::filter(!is.na(pH))
 
         parameters = Combine_parameters(input = input)
 

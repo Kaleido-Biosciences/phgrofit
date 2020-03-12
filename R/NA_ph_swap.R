@@ -16,15 +16,18 @@
 #' data_containing_no_pH_NAs =
 NA_ph_swap = function(phgropro_output){
 
-    for(i in 1:length(phgropro_output$pH)){
-        if(is.na(phgropro_output$pH[i]) == TRUE){
-            if(i == 1){
-                phgropro_output$pH[i] = phgropro_output$pH[i + 1]
-            }
-            else{
-                phgropro_output$pH[i] = phgropro_output$pH[i-1]
-            }
+    pH_vector = phgropro_output$pH
+
+    for(i in 1:length(pH_vector)){
+        if(is.na(pH_vector[i])){
+            pH_vector[i] = pH_vector[i+1]
+        }
+        else{
+            pH_vector[i] = pH_vector[i]
         }
     }
+
+    phgropro_output$pH = pH_vector
+
     return(phgropro_output)
 }
