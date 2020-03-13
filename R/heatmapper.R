@@ -40,7 +40,7 @@ heatmapper = function(annotated_data,labels = "Community"){
                          cexRow = 0.1,cexCol = 0.7,custom_hovertext = hover_text)
 
 }
-}
+
 
 
 
