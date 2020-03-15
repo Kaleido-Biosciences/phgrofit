@@ -2,6 +2,7 @@
 #'
 #'phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format will oftern serve as the input to phgrofit.
 #' @param biotek_export .txt file that results from a specific format of exporting data from the Biotek Gen5 software.
+#' @param metadata .csv file that contains information about the contents of the samples. Must contain a column called Sample.ID.
 #' @param Plate_Type 96 or 384 specifying which plate type was ran on the plate reader.
 #'
 #' @return tidy data frame with a column for Sample ID, Time, OD600, and pH.
@@ -15,7 +16,7 @@
 #'
 #' ### When we want to extract the data from from a 384 well plate run on the plate reader.
 #' output_384 = phgropro(data = filepath.txt,Plate_Type = 384)
-phgropro = function(biotek_export,Plate_Type = 96){
+phgropro = function(biotek_export,metadata,Plate_Type = 96){
 
     #Determining how to input the data based on plate type
     if(Plate_Type == 384){
@@ -105,7 +106,12 @@ phgropro = function(biotek_export,Plate_Type = 96){
     combined_data$Time = Hours
     combined_data$OD600 = as.numeric(combined_data$OD600)
     combined_data$pH = as.numeric(combined_data$pH)
-    # Writing the file as a csv to conduct analysis on later.
-    return(combined_data)
+
+    #Combining with the metadata
+    metadata = read.csv(metadata,stringsAsFactors = FALSE)
+
+    final_data = dplyr::right_join(metadata,combined_data,by = "Sample.ID")
+    # returning the final data frame.
+    return(final_data)
 }
 
