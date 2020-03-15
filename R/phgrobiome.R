@@ -30,29 +30,11 @@
 #'
 #' physiological_parameters = phgrobiome(data,metadata,unique_graphs = TRUE)
 #' This will return a data frame of physiological parameters and print a randomly sampled replicate of each unique condition to the console.
-phgrobiome <- function(data,metadata,unique_graphs = FALSE) {
-    #Initializing the final data frame
-    output = data.frame()
-
-    #Binding the data and metadata
-    metadata$Sample.ID = as.character(metadata$Sample.ID)
-
-    data = dplyr::inner_join(data,metadata, by = "Sample.ID") %>%
-        dplyr::mutate(Concat = paste0(Community,".",Compound,".",Compound_Concentration,".",Media))
-
-    #Looking at each distinct combination of Community, Compound, Compound Concentration, and Media present in the data set so that each can be plotted.
-    distinct_metadata = dplyr::distinct(data,Concat) %>%
-        dplyr::pull(Concat)
-
-    #Looping through to determine what wells are distinct, randomly picking one to plot.
-
-    randomized_unique = vector()
-    for(i in distinct_metadata){
-        t0 = dplyr::filter(data, Time == 0)
-        all_values = which(t0$Concat == i)
-        temp_randomized_unique = sample(all_values,1)
-        randomized_unique = cbind(randomized_unique,temp_randomized_unique)
-    }
+phgrobiome = function(phgropro_output) {
+    #Spliting the phgropro input into data and metadata
+    data = dplyr::select(phgropro_output,Sample.ID,Time,OD600,pH)
+    metadata = dplyr::select(phgropro_output,-Time,-OD600,-pH)   %>%
+        dplyr::distinct()
 
     #Removing samples that have 25% or more NA pH values
     NA_Samples = dplyr::group_by(data,Sample.ID) %>%
@@ -67,34 +49,21 @@ phgrobiome <- function(data,metadata,unique_graphs = FALSE) {
         dplyr::filter(Sample.ID %!in% NA_Samples) %>%
         dplyr::pull(Sample.ID)
 
-    #Initializing a count so we can keep track of which iteration we are on
-    count = 0
+    #Initializing the final data frame
+    output = data.frame()
 
     #Looping through each sample ID to apply the model and graph if unique combination of parameters
     for(i in Samples){
-
-        count = count + 1
-
-    #Removing rows with NA pH values so that a spline can be fit despite a few wonky timepoints that may be present in pH values
+        #Removing rows with NA pH values so that a spline can be fit despite a few wonky timepoints that may be present in pH values
         input = dplyr::filter(data,Sample.ID == i) %>%
             dplyr::filter(!is.na(pH))
-
-        parameters = Combine_parameters(input = input)
-
+        parameters = phgrofit:::Combine_parameters(input = input)
         #Selecting only the necessary parameters for further analysis
-
-
         physiological_parameters = dplyr::select(parameters,Sample.ID,od600_lag_length,od600_max_gr,max_od600,difference_between_max_and_end_od600,
                                                  max_acidification_rate,min_pH,time_of_min_pH,max_basification_rate,max_pH,difference_between_end_and_min_pH)
-
-        output = rbind(output,physiological_parameters)
-
-        if(count %in% randomized_unique & unique_graphs == TRUE){
-
-            p1 = graph_check(input,parameters)
-            p2 = ggpubr::annotate_figure(p1,paste0(input$Concat))
-            print(p2)
-        }
+        output = rbind(output,physiological_parameters) %>%
+            dplyr::mutate(Sample.ID = as.character(Sample.ID))
     }
-    return(output)
+    final = dplyr::inner_join(metadata,output,by = "Sample.ID")
+    return(final)
 }
