@@ -57,7 +57,7 @@ phgrobiome = function(phgropro_output) {
         #Removing rows with NA pH values so that a spline can be fit despite a few wonky timepoints that may be present in pH values
         input = dplyr::filter(data,Sample.ID == i) %>%
             dplyr::filter(!is.na(pH))
-        parameters = phgrofit:::Combine_parameters(input = input)
+        parameters = Combine_parameters(input = input)
         #Selecting only the necessary parameters for further analysis
         physiological_parameters = dplyr::select(parameters,Sample.ID,od600_lag_length,od600_max_gr,max_od600,difference_between_max_and_end_od600,
                                                  max_acidification_rate,min_pH,time_of_min_pH,max_basification_rate,max_pH,difference_between_end_and_min_pH)

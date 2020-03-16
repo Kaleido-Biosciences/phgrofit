@@ -104,60 +104,61 @@ Combine_parameters = function(input){
 
 ###Function to generate a plot checking all of the parameters that were derived from the model fit
 
-graph_check = function(data,all_parameters){
+graph_check = function(data){
 
-#Setting my preferred theme
-ggplot2::theme_set(ggplot2::theme_bw()+ ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
+    parameters = phgrofit:::Combine_parameters(input = data)
+
+    #Setting my preferred theme
+    ggplot2::theme_set(ggplot2::theme_bw()+ ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
 
 
-###Generating OD600 Plot###
-OD600_model = smooth.spline(y = data[,"OD600"], x=data[,"Time"],spar = 0.70)
-OD600_pred = as.data.frame(predict(OD600_model,x=data[,"Time"]))
+    ###Generating OD600 Plot###
+    OD600_model = smooth.spline(y = data[,"OD600"], x=data[,"Time"],spar = 0.70)
+    OD600_pred = as.data.frame(predict(OD600_model,x=data[,"Time"]))
 
 
     OD_x = seq(min(data$Time),max(data$Time), by = 0.1)
-    OD_y = OD_x * all_parameters$od600_max_gr + all_parameters$b_of_max_od600_gr_tangent_line
+    OD_y = OD_x * parameters$od600_max_gr + parameters$b_of_max_od600_gr_tangent_line
     OD_tangent = data.frame(OD_x,OD_y) %>%
         dplyr::filter(OD_y > min(data$OD600) & OD_y < max(data$OD600))
 
 
-p1 = ggplot2::ggplot(data,ggplot2::aes(Time,OD600))+
-     ggplot2::geom_point()+
-     ggplot2::geom_line(data = OD600_pred, ggplot2::aes(x,y))+
-     ggplot2::geom_hline(yintercept = all_parameters$max_od600,color = "green",linetype = "dashed")+
-     ggplot2::geom_vline(xintercept = all_parameters$od600_lag_length,color = "blue",linetype = "dashed")+
-     ggplot2::geom_line(data = OD_tangent, ggplot2::aes(OD_x,OD_y),linetype ="dashed",color = "red")+
-     ggplot2::ggtitle("OD600")
+    p1 = ggplot2::ggplot(data,ggplot2::aes(Time,OD600))+
+        ggplot2::geom_point()+
+        ggplot2::geom_line(data = OD600_pred, ggplot2::aes(x,y))+
+        ggplot2::geom_hline(yintercept = parameters$max_od600,color = "green",linetype = "dashed")+
+        ggplot2::geom_vline(xintercept = parameters$od600_lag_length,color = "blue",linetype = "dashed")+
+        ggplot2::geom_line(data = OD_tangent, ggplot2::aes(OD_x,OD_y),linetype ="dashed",color = "red")+
+        ggplot2::ggtitle("OD600")
 
-###Generating pH plot###
-pH_model = smooth.spline(y = data[,"pH"], x=data[,"Time"],spar = 0.70)
-pH_pred = as.data.frame(predict(pH_model,x=data[,"Time"]))
+    ###Generating pH plot###
+    pH_model = smooth.spline(y = data[,"pH"], x=data[,"Time"],spar = 0.70)
+    pH_pred = as.data.frame(predict(pH_model,x=data[,"Time"]))
 
-#Generating acidification rate tangent line
+    #Generating acidification rate tangent line
     ar_x = seq(min(data$Time),max(data$Time), by = 0.1)
-    ar_y = ar_x * all_parameters$max_acidification_rate + all_parameters$b_of_max_ar_tangent_line
+    ar_y = ar_x * parameters$max_acidification_rate + parameters$b_of_max_ar_tangent_line
     ar_tangent = data.frame(ar_x,ar_y) %>%
         dplyr::filter(ar_y > min(data$pH) & ar_y < max(data$pH))
 
-#Generating basificiation rate tangent line
+    #Generating basificiation rate tangent line
     br_x = seq(min(data$Time),max(data$Time), by = 0.1)
-    br_y = br_x * all_parameters$max_basification_rate + all_parameters$b_of_max_br_tangent_line
+    br_y = br_x * parameters$max_basification_rate + parameters$b_of_max_br_tangent_line
     br_tangent = data.frame(br_x,br_y) %>%
         dplyr::filter(br_y > min(data$pH) & br_y < max(data$pH))
 
-p2 = ggplot2::ggplot(data,ggplot2::aes(Time,pH))+
-    ggplot2::geom_point()+
-    ggplot2::geom_line(data = pH_pred, ggplot2::aes(x,y))+
-    ggplot2::geom_hline(yintercept = all_parameters$max_pH,color = "green",linetype = "dashed")+
-    ggplot2::geom_hline(yintercept = all_parameters$min_pH,color = "blue",linetype = "dashed")+
-    ggplot2::geom_line(data = ar_tangent, ggplot2::aes(ar_x,ar_y),linetype ="dashed",color = "red")+
-    ggplot2::geom_line(data = br_tangent, ggplot2::aes(br_x,br_y),linetype ="dashed",color = "red")+
-    ggplot2::ggtitle("pH")
+    p2 = ggplot2::ggplot(data,ggplot2::aes(Time,pH))+
+        ggplot2::geom_point()+
+        ggplot2::geom_line(data = pH_pred, ggplot2::aes(x,y))+
+        ggplot2::geom_hline(yintercept = parameters$max_pH,color = "green",linetype = "dashed")+
+        ggplot2::geom_hline(yintercept = parameters$min_pH,color = "blue",linetype = "dashed")+
+        ggplot2::geom_line(data = ar_tangent, ggplot2::aes(ar_x,ar_y),linetype ="dashed",color = "red")+
+        ggplot2::geom_line(data = br_tangent, ggplot2::aes(br_x,br_y),linetype ="dashed",color = "red")+
+        ggplot2::ggtitle("pH")
 
-p3 = ggpubr::ggarrange(p1,p2)
+    p3 = ggpubr::ggarrange(p1,p2)
 
-return(p3)
-
+    return(p3)
 }
 
 
