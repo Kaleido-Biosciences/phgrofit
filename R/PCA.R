@@ -19,7 +19,7 @@ PCA = function(annotated_data,group){
     groups = dplyr::select_if(annotated_data,function(x){is.factor(x) | is.character(x)})
 
     #Selecting specified groups
-    sel_group = select(groups,group)
+    sel_group = dplyr::select(groups,group)
 
     #Getting PCA values
     PCA_df = predict(PCA_vals,PCA_data) %>%
@@ -27,6 +27,9 @@ PCA = function(annotated_data,group){
 
     #extracting proportion of varience explained by the PCAs
     Prop_of_var = data.frame(summary(PCA_vals)$importance)[2,]
+
+    #Setting my perferred theme
+    ggplot2::theme_set(ggplot2::theme_bw()+ ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
 
     #Plotting with 95% confidence interval
     p1 = ggplot2::ggplot(PCA_df,ggplot2::aes_string("PC1","PC2",color = group))+

@@ -38,7 +38,6 @@ heatmapper = function(annotated_data,labels = "Community"){
     #Plotting the interactive heatmap
     heatmaply::heatmaply(scaled_data,dist_method = "manhattan",row_side_colors = Sample_Labels[,labels],
                          cexRow = 0.1,cexCol = 0.7,custom_hovertext = hover_text)
-
 }
 
 
