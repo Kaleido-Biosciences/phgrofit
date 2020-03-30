@@ -35,7 +35,9 @@ data with phgropro.
 
 ``` r
 #Loading the necessary data
-phgropro_output = phgrofit::phgropro("tests/testdata/G798_Raw_Data.txt","tests/testdata/G798_Metadata.csv",Plate_Type = 384)
+phgropro_output = phgrofit::phgropro("tests/testdata/G798_Raw_Data.txt",
+                                     "tests/testdata/G798_Metadata.csv",
+                                     Plate_Type = 384)
 ```
 
 Now we can model with phgrofit.
@@ -99,7 +101,8 @@ p1
 4.  heatmapper(): Creates an interactive heat map with associated
     dendogram that has colored bars based on user input.
 
-5.  PCA(): Visualizes t
+5.  PCA(): Visualizes the first two principle components and the 95%
+    confidence interval for any specified group.
 
 Also included are some helper functions that are phgrobiome relies on.
 
