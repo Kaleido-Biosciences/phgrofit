@@ -5,17 +5,17 @@
 #' @param metadata .csv file that contains information about the contents of the samples. Must contain a column called Sample.ID.
 #' @param Plate_Type 96 or 384 specifying which plate type was ran on the plate reader.
 #'
-#' @return tidy data frame with a column for Sample ID, Time, OD600, and pH.
+#' @return tidy data frame with a column for Sample ID, any metadata columns present,Time, OD600, and pH.
 #'
 #' @importFrom magrittr %>%
 #' @export
 #'
 #' @examples
 #' ### When we want to extract the data from from a 96 well plate run on the plate reader.
-#' output_96 = phgropro(data = filepath.txt,Plate_Type = 96)
+#' output_96 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
 #'
 #' ### When we want to extract the data from from a 384 well plate run on the plate reader.
-#' output_384 = phgropro(data = filepath.txt,Plate_Type = 384)
+#' output_384 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 384)
 phgropro = function(biotek_export,metadata,Plate_Type = 96){
 
     #Determining how to input the data based on plate type

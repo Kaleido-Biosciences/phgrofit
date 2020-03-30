@@ -5,10 +5,12 @@
 #' @param phgropro_output This is the output from phgropro. It contains tidy pH and OD600 data.
 #' @param grouping_vars This contains the variables you would like to see the fit for a randomly sampled replicate of.
 #'
-#' @return prints a randomly sampled plot from each condition to the console as specified.
+#' @return prints a randomly sampled plot from each condition to the console as specified by grouping_vars.
 #' @export
-#'
 #' @examples
+#'phgropro_output = phgrofit::phgropro_output("Filepath of biotek export.txt","filepath of metadata.csv,Plate_Type = 384)
+#'model_fit_check(phgropro_output,grouping_vars = c("Community","Compound))
+#'###This would print graphs from a randomly sampled replicate of each combination of variables specified by grouping_vars.
 model_fit_check = function(phgropro_output,grouping_vars = "Sample.ID"){
 
 #extracting the grouping vars in order to work with dplyr framework
@@ -40,7 +42,7 @@ NA_Samples = dplyr::group_by(kin_and_mod,Sample.ID) %>%
 #Filtering and looping
 for(i in randomized_unique){
 
-#getting rid of NAs so we dont have a problem with fitting splines
+#getting rid of NAs so we do not have a problem with fitting splines
     input = dplyr::filter(kin_and_mod,Sample.ID == i) %>%
         dplyr::filter(!is.na(pH))
 

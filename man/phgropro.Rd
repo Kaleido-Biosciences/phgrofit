@@ -4,23 +4,25 @@
 \alias{phgropro}
 \title{phgropro: Tidying kinetic od600 and pH data from biotek plate reader.}
 \usage{
-phgropro(biotek_export, Plate_Type = 96)
+phgropro(biotek_export, metadata, Plate_Type = 96)
 }
 \arguments{
 \item{biotek_export}{.txt file that results from a specific format of exporting data from the Biotek Gen5 software.}
 
+\item{metadata}{.csv file that contains information about the contents of the samples. Must contain a column called Sample.ID.}
+
 \item{Plate_Type}{96 or 384 specifying which plate type was ran on the plate reader.}
 }
 \value{
-tidy data frame with a column for Sample ID, Time, OD600, and pH.
+tidy data frame with a column for Sample ID, any metadata columns present,Time, OD600, and pH.
 }
 \description{
 phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format will oftern serve as the input to phgrofit.
 }
 \examples{
 ### When we want to extract the data from from a 96 well plate run on the plate reader.
-output_96 = phgropro(data = filepath.txt,Plate_Type = 96)
+output_96 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
 
 ### When we want to extract the data from from a 384 well plate run on the plate reader.
-output_384 = phgropro(data = filepath.txt,Plate_Type = 384)
+output_384 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 384)
 }

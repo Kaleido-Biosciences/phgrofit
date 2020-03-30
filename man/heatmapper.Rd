@@ -4,16 +4,27 @@
 \alias{heatmapper}
 \title{heatmapper: Creating an interactive heatmap with colored categorical labels.}
 \usage{
-heatmapper(annotated_data, labels = "Community")
+heatmapper(phgrofit_output, labels = "Sample.ID")
 }
 \arguments{
-\item{annotated_data}{This is the annotated data that results from merging the modeling data with relevant metadata using the meta_combine function.}
+\item{phgrofit_output}{This is the output from phgrofit}
 
-\item{labels}{This is a vector specifiying what colored labels you would like to be displayed beside the heatmap}
+\item{labels}{This is a charachter vector specifiying what colored labels you would like to be displayed beside the heatmap. There can be several labels, but the color palette will get overwhelmed if there are too many labels.}
 }
 \value{
 a plotly heatmap via heatmaply.
 }
 \description{
 heatmapper: Creating an interactive heatmap with colored categorical labels.
+}
+\examples{
+### phgropro processing
+phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+
+### phgrofit processing
+phgrofit_output = phgrofit(phgropro_output)
+
+### printing heatmap with colored labels for community
+community_heatmap = heatmapper(phgrofit_output,"Community")
+print(community_heatmap)
 }

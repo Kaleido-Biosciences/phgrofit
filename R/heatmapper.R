@@ -1,25 +1,33 @@
 #' heatmapper: Creating an interactive heatmap with colored categorical labels.
 #'
-#' @param annotated_data This is the annotated data that results from merging the modeling data with relevant metadata using the meta_combine function.
-#' @param labels This is a vector specifiying what colored labels you would like to be displayed beside the heatmap
+#' @param phgrofit_output This is the output from phgrofit
+#' @param labels This is a charachter vector specifiying what colored labels you would like to be displayed beside the heatmap. There can be several labels, but the color palette will get overwhelmed if there are too many labels.
 #'
 #' @return a plotly heatmap via heatmaply.
 #'
 #' @importFrom magrittr %>%
 #' @export
-#'
 #' @examples
-heatmapper = function(annotated_data,labels = "Community"){
+#' ### phgropro processing
+#' phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+#'
+#' ### phgrofit processing
+#' phgrofit_output = phgrofit(phgropro_output)
+#'
+#' ### printing heatmap with colored labels for community
+#' community_heatmap = heatmapper(phgrofit_output,"Community")
+#' print(community_heatmap)
+heatmapper = function(phgrofit_output,labels = "Sample.ID"){
 
     #Selecting just the numeric data
-    numeric_data = annotated_data %>%
+    numeric_data = phgrofit_output %>%
         dplyr::select_if(is.numeric)
 
     #Scaling the numeric data
     scaled_data = sapply(numeric_data,scale)
 
     #Selecting just the categorical data
-    Sample_Labels = annotated_data %>%
+    Sample_Labels = phgrofit_output %>%
         dplyr::select_if(function(x){is.factor(x) | is.character(x)})
 
     #Setting row names to be sample.ID

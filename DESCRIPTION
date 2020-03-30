@@ -11,13 +11,13 @@ Imports:
     ggplot2 (>= 3.2.0),
     lubridate (>= 1.7.4),
     stringr (>= 1.4.0),
-    ggpubr (>= 0.2.999),
+    ggpubr (>= 0.2.5),
     dendextend (>= 1.12.0),
     heatmaply (>= 0.16.0),
     magrittr
 License: None
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests: 
     testthat (>= 2.1.0)

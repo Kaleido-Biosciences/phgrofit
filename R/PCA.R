@@ -1,22 +1,31 @@
 #' PCA: Easily making a PCA plot with phgrofit data
 #'
-#' @param annotated_data this is annotated data.
-#' @param group this is the factor that you would like to color the ordination by. A 95% confidence interval for this group is assigned.
+#' @param phgrofit_output this is output from the phgrofit
+#' @param group this is the factor that you would like to color the ordination by. A 95 percent confidence interval for this group will be assigned.
 #'
-#' @return a ggplot2 object
+#' @return a ggplot2 object containing the 95 percent confidence interval for any group specfied in gorup.
 #' @export
-#'
+#' @importFrom magrittr %>%
 #' @examples
-PCA = function(annotated_data,group){
+#' ### phgropro processing
+#' phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+#'
+#' ### phgrofit processing
+#' phgrofit_output = phgrofit(phgropro_output)
+#'
+#' ### printing PCA plot with colored confidence intervals for community
+#' community_PCA = PCA(phgrofit_output,"Community")
+#' print(community_PCA)
+PCA = function(phgrofit_output,group="Sample.ID"){
 
     #Selecting numeric data
-    PCA_data = dplyr::select_if(annotated_data, is.numeric)
+    PCA_data = dplyr::select_if(phgrofit_output, is.numeric)
 
     #PCA
     PCA_vals = prcomp(PCA_data,center = TRUE, scale = TRUE)
 
     #Selecting things that may be groups
-    groups = dplyr::select_if(annotated_data,function(x){is.factor(x) | is.character(x)})
+    groups = dplyr::select_if(phgrofit_output,function(x){is.factor(x) | is.character(x)})
 
     #Selecting specified groups
     sel_group = dplyr::select(groups,group)

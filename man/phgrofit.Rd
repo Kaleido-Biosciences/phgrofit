@@ -2,35 +2,37 @@
 % Please edit documentation in R/phgrofit.R
 \name{phgrofit}
 \alias{phgrofit}
-\title{phgrofit: Extract physiological parameters from kinetic pH and OD600 data}
+\title{phgrofit: Extract physiological parameters from kinetic pH and OD600 data across diverse samples.}
 \usage{
-phgrofit(data, metadata)
+phgrofit(phgropro_output)
 }
 \arguments{
-\item{data}{This is the input data that you would like to model. It is a tidy dataframe containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.}
-
-\item{graphs}{This is the number specifying how many graphs you would like to print to console. This is useful for visually inspecting the modeling.}
+\item{phgropro_output}{This is the output of phgropro which is a tidy dataframe containing columns for the Sample.ID, any metadata passed to phgropro, and the}
 }
 \value{
-A tidy data frame of 8 values extracted from the spline interpolation.If graphs > 0 then x number of randomly sampled graphs are generated displaying the model fit and relevant parameters.
+A tidy data frame of 10 values extracted from the spline interpolation.
 \itemize{
- \item{"u1"}{ max growth rate during LEX1.}
- \item{"u2"}{ max growth rate during LEX2}
- \item{"RAc"}{ max rate of acidification during LEX1}
- \item{"RBa"}{ max rate of basification during LEX2}
- \item{"LLP_length"}{ length of lag phase}
- \item{"LEX1_length"}{ length of first growth phase}
- \item{"LTP_length "}{ length of transition phase}
- \item{"LEX2_length"}{ length of 2nd growth phase occuring durring the basification.}
-}
- \if{html}{\figure{phgrofit_example.png}}{Test}
+ \item{"od600_lag_length"}{This is the length of the calculated lag phase.
+ Calculated by determining the time where the tangent line at the point of the max growth rate meets the starting od600 }
+ \item{"od600_max_gr"}{ This is the maximum growth rate that is observed. Calculated by determining the max derivitive of the spline fit for OD600}
+ \item{"max_od600"}{ This is the maximum od600 observed by the spline fit}
+ \item{"difference_between_max_and_end_od600"}{ This is the difference between the maximum and end od600. Higher values should correspond to a "death phase". Or one could argue the cells are getting smaller.}
+ \item{"max acidification rate"}{ This is the max acidification rate observed in the spline fit. Calculated by determining the min derivitive of the spline fit for pH.}
+ \item{"min pH"}{ This is the minimum pH that is observed in the spline fit.}
+ \item{"time_of_min_pH "}{ This is the time that the minimum pH occurs in the spline fit.}
+ \item{"max_basification_rate"}{ This is the max basification rate observed in the spline fit. Calculated by determining the max derivitive of the spline fit for pH.}
+ \item{"max_pH"}{ This is the max pH observed in the spline fit.}
+ \item{"difference_between_end_and_min_pH"}{ This is the difference between the end and the minimum pH. A higher value corresponds to a greater pH increase. Higher values may reflect an increased proteolytic state}
+ }
 }
 \description{
 phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
-This function was created to replicate the work done in Heux Et Al. It may not be the most appropriate for analyzing microbiome data.
-For microbiome data, it is suggested to use the phgrobiome function.
+This is different from the phgrofit modeling because the modeling parameters used are more robust to deviations from an idealized growth and ph profile.
 }
 \examples{
-### When we want 10 random graphs to be generated from a tidy data frame named data.
-phgrofit(data, graphs = 10)
+### phgropro processing
+phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+
+### phgrofit processing
+phgrofit_output = phgrofit(phgropro_output)
 }
