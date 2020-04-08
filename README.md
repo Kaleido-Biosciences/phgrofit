@@ -200,8 +200,9 @@ categorical variables that you would like to display colored bars of.
 ## PCA
 
 **Input:**  
-1\. phgrofit\_output: output of phgrofit\_output. 2. group: a string
-specifying the name of the column that you would like to color by
+1\. phgrofit\_output: output of phgrofit\_output.  
+2\. group: a string specifying the name of the column that you would
+like to color by
 
 **Output:**  
 1\. a ggplot2 object, with colors and 95% confidence intervals shown for

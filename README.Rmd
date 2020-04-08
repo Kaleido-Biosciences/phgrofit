@@ -149,7 +149,7 @@ This function creates an interactive heat map with user specified colored catego
 
 ## PCA 
 **Input:**  
-1. phgrofit_output: output of phgrofit_output.
+1. phgrofit_output: output of phgrofit_output.  
 2. group: a string specifying the name of the column that you would like to color by
 
 **Output:**  
