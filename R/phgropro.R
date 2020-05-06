@@ -111,7 +111,7 @@ phgropro = function(biotek_export,metadata,Plate_Type = 96){
     metadata = read.csv(metadata,stringsAsFactors = FALSE)
     metadata = as.data.frame(apply(metadata, 2, as.character),stringsAsFactors = FALSE)
 
-    final_data = dplyr::right_join(metadata,combined_data,by = "Sample.ID")
+    final_data = dplyr::inner_join(metadata,combined_data,by = "Sample.ID")
     # returning the final data frame.
     return(final_data)
 }

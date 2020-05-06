@@ -34,7 +34,7 @@ phgrofit = function(phgropro_output) {
     #Removing samples that have 25% or more NA pH values
     NA_Samples = dplyr::group_by(data,Sample.ID) %>%
         dplyr::summarise(n_na = sum(is.na(pH))) %>%
-        dplyr::filter(n_na > (0.25 * length(data$pH)/length(unique(data$Sample.ID)))) %>%
+        dplyr::filter(n_na > (0.5 * length(data$pH)/length(unique(data$Sample.ID)))) %>%
         dplyr::pull(Sample.ID)
 
     `%!in%` = Negate(`%in%`)

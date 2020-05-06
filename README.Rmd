@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 phgrofit is a R package designed to provide tools for making kinetic analysis of OD600 and pH data easy.
 
-The motivation for this package comes from the desire to process kinetic pH and OD600 data in a similar manner as in this [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3187081/). 
+The motivation for this package comes from the desire to process kinetic pH and OD600 data in a somewhat similar manner to this [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3187081/). 
 
 In short, this package is designed to take OD600 and pH (gained using the BCECF method described in the paper above) kinetic readouts in either a 96 or 384 well format and process the data, extract physiological parameters, and cluster these parameters to infer relationships between compounds. 
 
@@ -35,45 +35,141 @@ devtools::install_gitlab("cbayne/phgrofit",
 <!-- badges: start -->
 <!-- badges: end -->
 
+
 # Using this package 
 
-First let's load all of the necessary data into R and format the raw data with phgropro.
+## Processing raw data with phgropro
+
+Phgropro was built to take raw data that is exported from a biotek plate reader and has very specific structure. The output of phgropro serves as the input to all of the other phgrofit functions. Thus, you need to have data in the format produced from phgropro to use the rest of the phgrofit package.
+
+The easiest way to get data in this format is to use the plate reader protocols that are in the biotek_plate_reader_protocols folder of this repository and use the export provided. Unfortunatly, this will only be usefull if the user happens to have acess to a Biotek Synergy H1 plate reader.    
+
+Alternatively, the user can generate a dataframe in R through their own means that is compatible with the other phgrofit functions. Such a data frame would need to have "Sample.ID","Time","OD600",and "pH" as column names, and each row should represent a timepoint for a given Sample.ID. Other columns containing other metadata could be included as well.  
+
+Okay, let's start by formatting our data using phgropro. Here we need to specify the file path of a file containing the raw data.txt, the file path of a file containing the metadata for each Sample.ID, and the plate type that was used (96 or 384).  
+
 ```{r}
+library(phgrofit)
 #Loading the necessary data
-phgropro_output = phgrofit::phgropro("tests/testdata/G798_Raw_Data.txt",
-                                     "tests/testdata/G798_Metadata.csv",
-                                     Plate_Type = 384)
+phgropro_output = phgropro("tests/testdata/phgrofit_test_raw_data.txt",
+                           "tests/testdata/phgrofit_test_metadata.csv",
+                           Plate_Type = 384)
 ```
 
-Now we can model with phgrofit.
+The resulting data frame looks like this:
+
+```{r}
+DT::datatable(head(phgropro_output))
+```
+## Modeling with phgrofit  
+
+Now we can use the phgrofit to model each curve and extract the physiologically relevant features.
 ```{r}
 #Conducting the modeling
-phgrofit_output = phgrofit::phgrofit(phgropro_output)
+phgrofit_output = phgrofit(phgropro_output)
 ```
 
-Now let's check to see how the model fit is performing using the model_fit_check function
+This will produce the following data frame. 
 
 ```{r}
-phgrofit::model_fit_check(phgropro_output,grouping_vars = c("Community"))
+DT::datatable(head(phgrofit_output))
 ```
 
-^ Here we are just looking at an example for each community, but you can adjust the  grouping_vars to display plots for any combination of variables that you may wish to see
+## Visually Checking Model Fit  
 
-Now lets look to see how the data clusters. Here we can color by compound and community. In this README, you will only see a static image because the function returns a html file that can not be viewed in the format of this README. When you go to use the function in your R session it will return a interactive plotly image 
+Now we can check to see how the model fit is performing using the model_fit_check function. Since there are so many different kinetic curves, this function allows the user to specify conditions to group by and subsequently plot a randomly sampled plot from each distinct member of the grouping. This allows the user to check as many conditions as they may wish. To check all of them, you can simpily group by Sample.ID.
+
+In this case, we will just check a plot from each community. 
+
+Note that there are 3 features that are being extracted that aren't displayed on the graph because they were hard to overlay visually.
+
+```{r}
+model_fit_check(phgropro_output,grouping_vars = c("Community"))
+```
+
+We can see from the above plots that the modeling appears to be working well.
+
+## Transforming data
+
+### Averaging
+
+Oftentimes, the user may wish to average kinetic or modeling data. This can easily be done with the avg_phgropro and avg_phgrofit functions repectively. The user just has to specify the name of the colums that they wish to group by and then take the average for. Here it makes sense to group by Community and Compound
+
+```{r}
+averaged_phgropro = avg_phgropro(phgropro_output,c("Community","Compound"))
+
+averaged_phgrofit = avg_phgrofit(phgrofit_output,c("Community","Compound"))
+```
+
+### Scaling 
+
+For many applications such as heatmaps or PCA plots, the user will need to scale the data. This can be accomplished with the scale_phgrofit function. 
+
+This function offers the option to scale for each specified group independantly.
+
+```{r}
+# All model parameters are scaled 
+scaled = averaged_phgrofit %>%
+    scale_phgrofit()
+
+# All model parameters are scaled for each community independantly
+scaled_by_community = averaged_phgrofit %>% 
+    scale_phgrofit("Community")
+```
+
+## Visualizations
+
+### Heatmapper
+
+Now lets look to see how the data clusters. Here we can color by compound and community. Be sure to use scaled data!
+
+In this README, you will only see a static image because the function returns a html file that can not be viewed in the format of this README. When you go to use the function in your R session it will return a interactive plotly image 
 
 ```{r,eval = FALSE}
-p1 = phgrofit::heatmapper(phgrofit_output,labels = c("Compound","Community"))
+p1 = heatmapper(scaled,labels = c("Compound","Community"))
 p1
 ```
 
-![](images/heatmapper.png)
-Lastly, let's generate a PCA plot. Here we can see the 95% confidence interval for any group we would like to specify. In this example, let's color by community 
+![](images/heatmapper.png) 
+
+### PCA
+
+We can generate a PCA plot using the PCA function. We can specify to show the 95% confidence interval for any group. In this example, let's show the 95% confidence intervals for each community. Be sure to use scaled data here!
 
 ```{r}
-p1 = phgrofit::PCA(phgrofit_output,"Community")
+p1 = PCA(scaled,"Community")
 p1
 ```
 
+
+### Dendrogram and associated kinetic curves
+
+It is often times hard to look at a dendrogram and get a good idea about what the clusters actually mean. The dendrospect function allows 
+the user to color the dendrogram into k number of cluster and look at the average kinetic pH and OD600 profile within each cluster. The function also allows for the user to label the dendogram by a colored bar for a specified variable. 
+
+```{r,fig.height=10,fig.width=12}
+p1 = dendrospect(scaled,averaged_phgropro,"Community", k = 4)
+
+p1
+```
+
+### Looking closer at data corresponding with clusters
+
+Oftentimes the user will want to be able to inspect the data displayed in the above plot more thoroughly. That is the purpose of the  dendropsect_kinetic and dendorospect_model functions. The dendrospect_kinetic function returns kinetic data with the dendogram_cluster each observation belongs to. 
+
+
+```{r}
+d1 = dendrospect_kinetic(averaged_phgropro,scaled,k=4)
+
+DT::datatable(head(d1))
+```
+
+The dendrospect_model function returns the modeling data with the dendogram cluster each observation belongs to.
+
+```{r}
+d2 = dendrospect_model(scaled,k = 8)
+DT::datatable(d2)
+```
 
 # Function List 
 
@@ -83,74 +179,21 @@ p1
 
 3. model_fit_check(): Allows for visual checking of the modeling fit by printing graphs for the combination of conditions the user supplies.
 
-3. heatmapper(): Creates an interactive heat map with associated dendogram that has colored bars based on user input. 
+4. avg_phgropro(): Allows the user to easily average phgropro data for the specified grouping.
 
-5. PCA(): Visualizes the first two principle components and the 95% confidence interval for any specified group.
+5. avg_phgrofit(): Allows the user to easily average phgrofit data for the specified grouping.
 
-Also included are some helper functions that are phgrobiome relies on.
+6. scale_phgrofit(): Allows the user to easily scale phgrofit modeling data. Can be done individually per specified group
 
-## phgropro() 
+7. heatmapper(): Creates an interactive heat map with associated dendogram that has colored bars based on user input. 
 
-Processes data from a biotek plate reader into a tidy format "Sample.ID", "Time", "OD600", and "pH". This function only works with the specific format of exported .txt file type, and there are many possible combinations that could be exported using the Gen5 software. The correct file input can be generated by using either the 96 or 384 well versions of the biotek protocol template found in the folder of the phgrofit repo named biotek_export_protocols.
+8. PCA(): Visualizes the first two principle components and the 95% confidence interval for any specified group.
 
-**Input:**  
-*biotek_export* : A specifically formatted .txt file resulting from an export of data using the biotek GEN5 software.
+9. dendrospect(): Returns a plot visualizing a dendogram that is colored by cluster number, and the corresponding average kinetic curves for each cluster.
 
-*Plate_Type*, 96 or 384 to specify the type of plate that was run on the plate reader. **It is crucial to specify the correct plate type.**  
+10. dendrospect_kinetic(): Returns a data frame of the kinetic data with the cluster that each Sample.ID would correspond to based on hierchical clustering of the modeling data.  
 
-**Output:**
-A tidy data frame containing the columns "Sample.ID", "Time", "OD600", "pH". Each row is an observation at a given time point. 
-
-**Examples:**
-
-## phgrofit() 
-
-Uses [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) to extract physiological parameters from kinetic OD600 and pH curves. This is intended to be robust across all types of kinetic OD600 and pH curves. 
-
-The parameters that are extracted from the spline interpolation are as follows:
-
-**Input:**  
-
-1. phgropro_output: This is the input data that has been loaded into r that you would like to model. It is a tidy data frame containing a column for Sample.ID, OD600,pH, and time. This will most often be the output off phgropro.  
-
-**Output:** A tidy data frame of 8 values extracted from the spline interpolation.
-
-1. "od600_lag_length". This is the length of the calculated lag phase. Calculated by determining the time where the tangent line at the point of the max growth rate meets the starting od600
-
-2. "od600_max_gr" This is the maximum growth rate that is observed. Calculated by determining the max derivative of the spline fit for OD600
-
-3. "max_od600" This is the maximum od600 observed by the spline fit
-
-4. "difference_between_max_and_end_od600" This is the difference between the maximum and end od600. Higher values should correspond to a "death phase". Or one could argue the cells are getting smaller.
-
-5. "max acidification rate" This is the max acidification rate observed in the spline fit. Calculated by determining the min derivative of the spline fit for pH.
-
-6. "min pH" This is the minimum pH that is observed in the spline fit.
-
-7. "time_of_min_pH " This is the time that the minimum pH occurs in the spline fit.
-
-8. "max_basification_rate" This is the max basification rate observed in the spline fit. Calculated by determining the max derivative of the spline fit for pH.
-
-9. "max_pH" This is the max pH observed in the spline fit.
-
-10. "difference_between_end_and_min_pH" This is the difference between the end and the minimum pH. A higher value corresponds to a greater pH increase. Higher values may reflect an increased proteolytic state.
-
-## heatmapper 
-
-This function creates an interactive heat map with user specified colored categorical labels.
-
-**Input:**  
-1. phgrofit_output: output of phgrofit_output.
-2. labels: a vector of categorical variables that you would like to display colored bars of.
-
-**Output:**  
-1. a plotly heat map created via heatmaply.  
+11. dendrospect_model(): Returns a data frame with the modeling data from phgrofit with the cluster that each Sample.ID would correspond to based on hierchical clustering of the data.
 
 
-## PCA 
-**Input:**  
-1. phgrofit_output: output of phgrofit_output.  
-2. group: a string specifying the name of the column that you would like to color by
 
-**Output:**  
-1. a ggplot2 object, with colors and 95% confidence intervals shown for the groups that you have specified.

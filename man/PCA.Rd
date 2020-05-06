@@ -2,20 +2,22 @@
 % Please edit documentation in R/PCA.R
 \name{PCA}
 \alias{PCA}
-\title{PCA: Easily making a PCA plot with phgrofit data}
+\title{PCA: Easily making a PCA plot with phgrofit data
+Intended to allow the user to easily generate PCA plots from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()}
 \usage{
-PCA(phgrofit_output, group = "Sample.ID")
+PCA(phgrofit_data, group = "Sample.ID", mouse_over = "Compound")
 }
 \arguments{
-\item{phgrofit_output}{this is output from the phgrofit}
+\item{phgrofit_data}{This is the output origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
 
-\item{group}{this is the factor that you would like to color the ordination by. A 95 percent confidence interval for this group will be assigned.}
+\item{group}{This is the name of the column that you would like to color the ordination by. A 95 percent confidence interval for this group will be assigned.}
 }
 \value{
-a ggplot2 object containing the 95 percent confidence interval for any group specfied in gorup.
+a ggplot2 object containing the 95 percent confidence interval for the group specified.
 }
 \description{
 PCA: Easily making a PCA plot with phgrofit data
+Intended to allow the user to easily generate PCA plots from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
 }
 \examples{
 ### phgropro processing
@@ -24,7 +26,10 @@ phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,
 ### phgrofit processing
 phgrofit_output = phgrofit(phgropro_output)
 
+## scaling phgrofit data
+phgrofit_data = scale_phgrofit(phgrofit_output)
+
 ### printing PCA plot with colored confidence intervals for community
-community_PCA = PCA(phgrofit_output,"Community")
+community_PCA = PCA(phgrofit_data,"Community")
 print(community_PCA)
 }

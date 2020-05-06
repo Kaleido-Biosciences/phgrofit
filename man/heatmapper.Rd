@@ -2,29 +2,36 @@
 % Please edit documentation in R/heatmapper.R
 \name{heatmapper}
 \alias{heatmapper}
-\title{heatmapper: Creating an interactive heatmap with colored categorical labels.}
+\title{heatmapper: Creating an interactive heatmap with colored categorical labels.
+Intended to allow the user to easily generate interactive heatmaps from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()}
 \usage{
-heatmapper(phgrofit_output, labels = "Sample.ID")
+heatmapper(phgrofit_data, labels = "Sample.ID", mouse_over = NULL)
 }
 \arguments{
-\item{phgrofit_output}{This is the output from phgrofit}
+\item{phgrofit_data}{This is the output origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
 
-\item{labels}{This is a charachter vector specifiying what colored labels you would like to be displayed beside the heatmap. There can be several labels, but the color palette will get overwhelmed if there are too many labels.}
+\item{labels}{This is a character vector specifiying what colored labels you would like to be displayed beside the heatmap. There can be several labels, but the color palette will get overwhelmed if there are too many values associated with the labels you choose.}
+
+\item{mouse_over}{This is the name of a column that you would like to include in a mouse over of the heatmap.}
 }
 \value{
-a plotly heatmap via heatmaply.
+a heatmaply heatmap.
 }
 \description{
 heatmapper: Creating an interactive heatmap with colored categorical labels.
+Intended to allow the user to easily generate interactive heatmaps from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
 }
 \examples{
-### phgropro processing
+# phgropro processing
 phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
 
-### phgrofit processing
+# phgrofit processing
 phgrofit_output = phgrofit(phgropro_output)
 
-### printing heatmap with colored labels for community
-community_heatmap = heatmapper(phgrofit_output,"Community")
-print(community_heatmap)
+## processing phgrofit data by averaging and scaling
+phgrofit_data = avg_phgrofti(phgrofit_output,c("Community","Compound")) \%>\%
+scale_phgrofit()
+### plotting heatmap with colored labels for community and mouse over information about the compounds.
+community_heatmap = heatmapper(phgrofit_data,"Community","Compound")
+community_heatmap
 }

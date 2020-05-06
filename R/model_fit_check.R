@@ -34,7 +34,7 @@ model_fit_check = function(phgropro_output,grouping_vars = "Sample.ID"){
     #Removing samples that have 25% or more NA pH values
     NA_Samples = dplyr::group_by(kin_and_mod,Sample.ID) %>%
         dplyr::summarise(n_na = sum(is.na(pH))) %>%
-        dplyr::filter(n_na > (0.25 * length(kin_and_mod$pH)/length(unique(kin_and_mod$Sample.ID)))) %>%
+        dplyr::filter(n_na > (0.5 * length(kin_and_mod$pH)/length(unique(kin_and_mod$Sample.ID)))) %>%
         dplyr::pull(Sample.ID)
 
     `%!in%` = Negate(`%in%`)
