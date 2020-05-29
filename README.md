@@ -19,7 +19,7 @@ relationships between compounds.
 ## Installation
 
 ``` r
-devtools::install_gitlab("cbayne/phgrofit", 
+devtools::install_gitlab("vl32/phgrofit", 
                          auth_token = "Your auth token from gitlab",
                          host = "gitlab.kaleidobio.com")
 ```
@@ -265,3 +265,6 @@ DT::datatable(d2)
 11. dendrospect\_model(): Returns a data frame with the modeling data
     from phgrofit with the cluster that each Sample.ID would correspond
     to based on hierchical clustering of the data.
+
+12. grofit(): Extracts relevant physiological parameters for just OD600
+    by conducting spline interpolation.

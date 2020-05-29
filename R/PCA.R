@@ -61,8 +61,7 @@ PCA = function(phgrofit_data,group="Sample.ID",mouse_over = "Compound"){
     #extracting proportion of varience explained by the PCAs
     Prop_of_var = data.frame(summary(PCA_vals)$importance)[2,]
 
-    #Setting my perferred theme
-    ggplot2::theme_set(ggplot2::theme_bw()+ ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
+
 
     #Plotting with 95% confidence interval
     p1 = ggplot2::ggplot(PCA_df,ggplot2::aes_string("PC1","PC2",color = group))+
@@ -71,7 +70,9 @@ PCA = function(phgrofit_data,group="Sample.ID",mouse_over = "Compound"){
         ggplot2::theme(legend.position = "bottom")+
         ggplot2::ggtitle(paste0("PCA Plot Colored by ",group))+
         ggplot2::xlab(paste0("PCA-1 ",round(Prop_of_var[1]*100,2),"%"))+
-        ggplot2::ylab(paste0("PCA-2 ",round(Prop_of_var[2]*100,2),"%"))
+        ggplot2::ylab(paste0("PCA-2 ",round(Prop_of_var[2]*100,2),"%"))+
+        ggplot2::theme_bw()+
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 
     return(p1)
 }

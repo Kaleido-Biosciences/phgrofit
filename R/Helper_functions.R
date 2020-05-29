@@ -101,16 +101,32 @@ Combine_parameters = function(input){
     return(output)
 }
 
+###Function to combine just OD600 rate and absolute parameters###
+Combine_OD600_parameters = function(input){
+
+    step_1 = rate_parameters(input,"OD600")
+    step_2 = absolute_parameters(input,"OD600")
+
+
+    input$Sample.ID = as.character(input$Sample.ID)
+
+    Sample.ID = dplyr::distinct(input,Sample.ID) %>%
+        dplyr::pull()
+
+
+    params = as.data.frame(cbind(cbind(step_1,step_2)))
+
+    output = cbind(Sample.ID,params)
+
+    return(output)
+}
+
 
 ###Function to generate a plot checking all of the parameters that were derived from the model fit
 
 graph_check = function(data){
 
     parameters = phgrofit:::Combine_parameters(input = data)
-
-    #Setting my preferred theme
-    ggplot2::theme_set(ggplot2::theme_bw()+ ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
-
 
     ###Generating OD600 Plot###
     OD600_model = smooth.spline(y = data[,"OD600"], x=data[,"Time"],spar = 0.70)
@@ -129,6 +145,8 @@ graph_check = function(data){
         ggplot2::geom_hline(yintercept = parameters$max_od600,color = "green",linetype = "dashed")+
         ggplot2::geom_vline(xintercept = parameters$od600_lag_length,color = "blue",linetype = "dashed")+
         ggplot2::geom_line(data = OD_tangent, ggplot2::aes(OD_x,OD_y),linetype ="dashed",color = "red")+
+        ggplot2::theme_bw()+
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))+
         ggplot2::ggtitle("OD600")
 
     ###Generating pH plot###
@@ -154,6 +172,8 @@ graph_check = function(data){
         ggplot2::geom_hline(yintercept = parameters$min_pH,color = "blue",linetype = "dashed")+
         ggplot2::geom_line(data = ar_tangent, ggplot2::aes(ar_x,ar_y),linetype ="dashed",color = "red")+
         ggplot2::geom_line(data = br_tangent, ggplot2::aes(br_x,br_y),linetype ="dashed",color = "red")+
+        ggplot2::theme_bw()+
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))+
         ggplot2::ggtitle("pH")
 
     p3 = ggpubr::ggarrange(p1,p2)
@@ -195,7 +215,9 @@ combined_dendro_plot = function(dend,cluster_data,colored_bar,k,colored_bar_labe
         ggplot2::geom_line()+
         ggplot2::geom_errorbar(ggplot2::aes(ymax = mean_OD600 + sd_OD600, ymin = mean_OD600 - sd_OD600)) +
         ggplot2::facet_grid(~dendrogram_cluster) +
-        ggplot2::theme(legend.position = "none") +
+        ggplot2::theme_bw()+
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                       legend.position = "none")+
         ggplot2::xlab("Time (hr)")
 
     #pH plot
@@ -205,7 +227,9 @@ combined_dendro_plot = function(dend,cluster_data,colored_bar,k,colored_bar_labe
         ggplot2::geom_line() +
         ggplot2::geom_errorbar(ggplot2::aes(ymax = mean_pH + sd_pH, ymin = mean_pH - sd_pH)) +
         ggplot2::facet_grid(~dendrogram_cluster) +
-        ggplot2::theme(legend.position = "none") +
+        ggplot2::theme_bw()+
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                       legend.position = "none")+
         ggplot2::xlab("Time (hr)")
 
     #Arranging the plots into a complete figure.

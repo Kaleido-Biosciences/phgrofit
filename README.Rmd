@@ -26,7 +26,7 @@ In short, this package is designed to take OD600 and pH (gained using the BCECF 
 ## Installation 
 
 ```{r installation, eval = FALSE}
-devtools::install_gitlab("cbayne/phgrofit", 
+devtools::install_gitlab("vl32/phgrofit", 
                          auth_token = "Your auth token from gitlab",
                          host = "gitlab.kaleidobio.com")
 
@@ -61,7 +61,7 @@ The resulting data frame looks like this:
 ```{r}
 DT::datatable(head(phgropro_output))
 ```
-## Modeling with phgrofit  
+## Modeling with phgrofit   
 
 Now we can use the phgrofit to model each curve and extract the physiologically relevant features.
 ```{r}
@@ -194,6 +194,8 @@ DT::datatable(d2)
 10. dendrospect_kinetic(): Returns a data frame of the kinetic data with the cluster that each Sample.ID would correspond to based on hierchical clustering of the modeling data.  
 
 11. dendrospect_model(): Returns a data frame with the modeling data from phgrofit with the cluster that each Sample.ID would correspond to based on hierchical clustering of the data.
+
+12. grofit(): Extracts relevant physiological parameters for just OD600 by conducting spline interpolation. 
 
 
 
