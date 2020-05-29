@@ -28,11 +28,11 @@ grofit = function(gropro_output){
             error = function(cnd) {
                 # code to run when error is thrown
                 col_1 = data.frame(matrix(i,ncol =1, nrow =1),stringsAsFactors = F)
-                col_2 = data.frame(matrix(c(rep(NA_real_,8)),nrow = 1, ncol = 8))
+                col_2 = data.frame(matrix(c(rep(NA_real_,10)),nrow = 1, ncol = 8))
                 error_df = cbind(col_1,col_2)
                 #Giving the columns the right names
-                names(error_df) = c("Sample.ID","od600_max_gr","time_of_od600_max_gr","b_of_max_od600_gr_tangent_line","od600_min_gr",
-                                    "time_of_od600_min_gr","od600_lag_length","max_od600","difference_between_max_and_end_od600")
+                names(error_df) = c("Sample.ID","starting_od600","od600_max_gr","time_of_od600_max_gr","b_of_max_od600_gr_tangent_line","od600_min_gr",
+                                    "time_of_od600_min_gr","od600_lag_length","max_od600","difference_between_max_and_end_od600","auc_od600")
                 return(error_df)
             },
             # code to run while handler is active
@@ -40,7 +40,7 @@ grofit = function(gropro_output){
         )
 
         #Selecting only the necessary parameters for further analysis
-        physiological_parameters = dplyr::select(parameters,Sample.ID,od600_lag_length,od600_max_gr,max_od600,difference_between_max_and_end_od600)
+        physiological_parameters = dplyr::select(parameters,Sample.ID,starting_od600,od600_lag_length,od600_max_gr,max_od600,difference_between_max_and_end_od600,auc_od600)
         output = rbind(output,physiological_parameters) %>%
             dplyr::mutate(Sample.ID = as.character(Sample.ID))
     }

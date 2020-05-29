@@ -29,7 +29,7 @@ rate_parameters = function(data,measurement){
         Lag_length = Lag_end - min(data[,"Time"])
 
         #binding together all of the important parameters
-        output = cbind("od600_max_gr" = max_slope,"time_of_od600_max_gr" = max_time,"b_of_max_od600_gr_tangent_line" = max_b,"od600_min_gr" = min_slope,
+        output = cbind("starting_od600" = Starting_OD600,"od600_max_gr" = max_slope,"time_of_od600_max_gr" = max_time,"b_of_max_od600_gr_tangent_line" = max_b,"od600_min_gr" = min_slope,
                        "time_of_od600_min_gr" = min_time,"od600_lag_length" = Lag_length)
         return(output)
     }
@@ -67,18 +67,37 @@ absolute_parameters = function(data,measurement){
     }
 
     if(measurement == "pH"){
+        starting_pH = pred$y[which(min(pred$x) == pred$x)]
         min_pH = min(pred$y)
         end_min_diff = pred[which(max(pred$x) == pred$x),2] - min_pH
         min_pH_time = pred[which(min_pH == pred$y),1]
         max_pH = max(pred$y)
 
-        output = cbind(min_pH,"time_of_min_pH" = min_pH_time, max_pH, "difference_between_end_and_min_pH" = end_min_diff)
+        output = cbind(starting_pH,min_pH,"time_of_min_pH" = min_pH_time, max_pH, "difference_between_end_and_min_pH" = end_min_diff)
         return(output)
     }else{
         print(("enter `OD600` or `pH` as a measurement"))
     }
 }
 
+###Function to calculate auc###
+auc_parameters = function(data,measurement){
+
+    model = smooth.spline(y = data[,measurement], x=data[,"Time"],spar = 0.70)
+    pred = as.data.frame(predict(model,x=data[,"Time"]))
+    # Calculating the area according to the trapezoidal rule
+    auc = MESS::auc(pred$x,pred$y,type = "linear")
+    if(measurement == "OD600"){
+        output = cbind("auc_od600"= auc)
+        return(output)
+    }
+    if(measurement == "pH"){
+        output = cbind("auc_pH"= auc)
+        return(output)
+    }else{
+        print(("enter `OD600` or `pH` as a measurement"))
+    }
+}
 
 ###Function to combine the rate and absolute parameters###
 Combine_parameters = function(input){
@@ -87,6 +106,8 @@ Combine_parameters = function(input){
     step_2 = rate_parameters(input,"OD600")
     step_3 = absolute_parameters(input,"pH")
     step_4 = absolute_parameters(input,"OD600")
+    step_5 = auc_parameters(input,"pH")
+    step_6 = auc_parameters(input,"OD600")
 
     input$Sample.ID = as.character(input$Sample.ID)
 
@@ -94,7 +115,7 @@ Combine_parameters = function(input){
         dplyr::pull()
 
 
-    params = as.data.frame(cbind(cbind(step_1,step_2,step_3,step_4)))
+    params = as.data.frame(cbind(step_1,step_2,step_3,step_4,step_5,step_6))
 
     output = cbind(Sample.ID,params)
 
@@ -106,6 +127,7 @@ Combine_OD600_parameters = function(input){
 
     step_1 = rate_parameters(input,"OD600")
     step_2 = absolute_parameters(input,"OD600")
+    step_3 = auc_parameters(input,"OD600")
 
 
     input$Sample.ID = as.character(input$Sample.ID)
@@ -114,7 +136,7 @@ Combine_OD600_parameters = function(input){
         dplyr::pull()
 
 
-    params = as.data.frame(cbind(cbind(step_1,step_2)))
+    params = as.data.frame(cbind(step_1,step_2,step_3))
 
     output = cbind(Sample.ID,params)
 

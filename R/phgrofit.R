@@ -54,8 +54,8 @@ phgrofit = function(phgropro_output) {
             dplyr::filter(!is.na(pH))
         parameters = Combine_parameters(input = input)
         #Selecting only the necessary parameters for further analysis
-        physiological_parameters = dplyr::select(parameters,Sample.ID,od600_lag_length,od600_max_gr,max_od600,difference_between_max_and_end_od600,
-                                                 max_acidification_rate,min_pH,time_of_min_pH,max_basification_rate,max_pH,difference_between_end_and_min_pH)
+        physiological_parameters = dplyr::select(parameters,Sample.ID,starting_od600,od600_lag_length,od600_max_gr,max_od600,difference_between_max_and_end_od600,auc_od600,starting_pH,
+                                                 max_acidification_rate,min_pH,time_of_min_pH,max_basification_rate,max_pH,difference_between_end_and_min_pH,auc_pH)
         output = rbind(output,physiological_parameters) %>%
             dplyr::mutate(Sample.ID = as.character(Sample.ID))
     }

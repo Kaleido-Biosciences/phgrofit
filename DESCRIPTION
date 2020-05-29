@@ -14,6 +14,7 @@ Imports:
     ggpubr (>= 0.2.5),
     dendextend (>= 1.12.0),
     heatmaply (>= 0.16.0),
+    MESS (>= 0.5.6),
     magrittr
 License: None
 Encoding: UTF-8
