@@ -2,10 +2,7 @@
 % Please edit documentation in R/dendrospect_kinetic.R
 \name{dendrospect_kinetic}
 \alias{dendrospect_kinetic}
-\title{dendrospect_kinetic
-Allows the user to easily acess the OD600 and pH kinetic data corresponding with a given cluster.
-This is intended to allow for easier examination of the underlying data that is produced with the dendrospect function.
-Note that the phgrofit_data should first be scaled before using this function. This can be acomplished with scale_phgrofit() function.}
+\title{dendrospect_kinetic}
 \usage{
 dendrospect_kinetic(phgropro_data, phgrofit_data, k = 8)
 }
@@ -20,7 +17,6 @@ dendrospect_kinetic(phgropro_data, phgrofit_data, k = 8)
 a dataframe containing the phgropro data with a column named dendrogram_cluster that represents the cluster the observations correspond to.
 }
 \description{
-dendrospect_kinetic
 Allows the user to easily acess the OD600 and pH kinetic data corresponding with a given cluster.
 This is intended to allow for easier examination of the underlying data that is produced with the dendrospect function.
 Note that the phgrofit_data should first be scaled before using this function. This can be acomplished with scale_phgrofit() function.

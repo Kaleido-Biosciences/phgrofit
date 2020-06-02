@@ -2,10 +2,7 @@
 % Please edit documentation in R/avg_phgropro.R
 \name{avg_phgropro}
 \alias{avg_phgropro}
-\title{avg_phgropro
-This function is intended to make averaging OD600 and pH values from phgropro across groups very easy.
-This functiuon also returns the standard deviation for OD600 and pH.
-New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit}
+\title{avg_phgropro}
 \usage{
 avg_phgropro(phgropro_output, group_by = "Sample.ID")
 }
@@ -18,10 +15,9 @@ avg_phgropro(phgropro_output, group_by = "Sample.ID")
 a data frame with mean_OD600, sd_OD600, mean_pH, sd_pH across the groups specified
 }
 \description{
-avg_phgropro
 This function is intended to make averaging OD600 and pH values from phgropro across groups very easy.
 This functiuon also returns the standard deviation for OD600 and pH.
-New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit
+New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit.
 }
 \examples{
 #This would return a data frame with the average and sd pH and OD600 values when grouped by Community and Compound.

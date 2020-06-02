@@ -7,27 +7,41 @@
 phgrofit(phgropro_output)
 }
 \arguments{
-\item{phgropro_output}{This is the output of phgropro which is a tidy dataframe containing columns for the Sample.ID, any metadata passed to phgropro, and the}
+\item{phgropro_output}{This is the output of phgropro which is a tidy dataframe containing columns exactly named Sample.ID, Time, OD600, and pH at minimum. There may also be any other columns representing any other metadata.}
 }
 \value{
-A tidy data frame of 10 values extracted from the spline interpolation.
+A tidy data frame of several features that were extracted from a smoothing spline fit. The data frame also contains information that can be used to assess model fit.
+Physiologial features:
 \itemize{
+ \item{"starting_od600"}{This is the starting od600}
  \item{"od600_lag_length"}{This is the length of the calculated lag phase.
  Calculated by determining the time where the tangent line at the point of the max growth rate meets the starting od600 }
  \item{"od600_max_gr"}{ This is the maximum growth rate that is observed. Calculated by determining the max derivitive of the spline fit for OD600}
  \item{"max_od600"}{ This is the maximum od600 observed by the spline fit}
  \item{"difference_between_max_and_end_od600"}{ This is the difference between the maximum and end od600. Higher values should correspond to a "death phase". Or one could argue the cells are getting smaller.}
+ \item{"auc_od600"}{This is the area under the curve of the OD600 curves. It is calculated using the trapezoidal rule on fitted values from smooth.spline.}
+ \item{"starting_pH"}{This is the starting pH}
  \item{"max acidification rate"}{ This is the max acidification rate observed in the spline fit. Calculated by determining the min derivitive of the spline fit for pH.}
  \item{"min pH"}{ This is the minimum pH that is observed in the spline fit.}
  \item{"time_of_min_pH "}{ This is the time that the minimum pH occurs in the spline fit.}
  \item{"max_basification_rate"}{ This is the max basification rate observed in the spline fit. Calculated by determining the max derivitive of the spline fit for pH.}
  \item{"max_pH"}{ This is the max pH observed in the spline fit.}
  \item{"difference_between_end_and_min_pH"}{ This is the difference between the end and the minimum pH. A higher value corresponds to a greater pH increase. Higher values may reflect an increased proteolytic state}
+ \item{"auc_pH"}{This is the area under the curve of the pH curves. It is calculated using the trapezoidal rule on fitted values from smooth.spline.}
+ }
+ Model fit:
+ \itemize{
+ \item{"percent_NA_od600"}{The percent of wells that were NA when fitting the spline to the kinetic od600 data}
+ \item{"percent_NA_pH"}{The percent of wells that were NA when fitting the spline to the kinetic pH data}
+ \item{"rmse_od600"}{The Root-mean-square deviation for od600}
+ \item{"rmse_pH"}{The Root-mean-square deviation for pH}
  }
 }
 \description{
-phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
-This is different from the phgrofit modeling because the modeling parameters used are more robust to deviations from an idealized growth and ph profile.
+phgrofit takes pH and OD600 data that has been formated by phgropro and applies a smoothing spline to extract relevant physiological data.
+Importantly, this function drops any NA values that may exist when fitting the spline.
+These values occasionally occur when measuring pH, either from an erratic read or if the pH is outside of the standard curve.
+The columns percent_NA_od600 and percent_NA_pH contain the percent of timepoints that were NA for a given well.
 }
 \examples{
 ### phgropro processing

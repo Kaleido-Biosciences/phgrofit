@@ -1,4 +1,5 @@
 #' PCA: Easily making a PCA plot with phgrofit data
+#'
 #' Intended to allow the user to easily generate PCA plots from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
 #' @param phgrofit_data This is the output origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.
 #' @param group This is the name of the column that you would like to color the ordination by. A 95 percent confidence interval for this group will be assigned.
@@ -20,19 +21,22 @@
 #' community_PCA = PCA(phgrofit_data,"Community")
 #' print(community_PCA)
 PCA = function(phgrofit_data,group="Sample.ID",mouse_over = "Compound"){
-
+    if("min_pH" %in% names(phgrofit_data)){
+    #if it is phgrofit data
     #Selecting numeric data
     PCA_data = dplyr::select(phgrofit_data,
                              od600_lag_length,
                              od600_max_gr,
                              max_od600,
                              difference_between_max_and_end_od600,
+                             auc_od600,
                              max_acidification_rate,
                              min_pH,
                              time_of_min_pH,
                              max_basification_rate,
                              max_pH,
-                             difference_between_end_and_min_pH
+                             difference_between_end_and_min_pH,
+                             auc_pH
     )
 
     #PCA
@@ -40,17 +44,37 @@ PCA = function(phgrofit_data,group="Sample.ID",mouse_over = "Compound"){
 
     #Selecting things that may be groups
     groups = dplyr::select(phgrofit_data,-c(od600_lag_length,
-                                              od600_max_gr,
-                                              max_od600,
-                                              difference_between_max_and_end_od600,
-                                              max_acidification_rate,
-                                              min_pH,
-                                              time_of_min_pH,
-                                              max_basification_rate,
-                                              max_pH,
-                                              difference_between_end_and_min_pH)
+                                            od600_max_gr,
+                                            max_od600,
+                                            difference_between_max_and_end_od600,
+                                            auc_od600,
+                                            max_acidification_rate,
+                                            min_pH,
+                                            time_of_min_pH,
+                                            max_basification_rate,
+                                            max_pH,
+                                            difference_between_end_and_min_pH,
+                                            auc_pH)
     )
+    }else{
+    # else it is grofit data
+    PCA_data = dplyr::select(phgrofit_data,
+                             od600_lag_length,
+                             od600_max_gr,
+                             max_od600,
+                             difference_between_max_and_end_od600,
+                             auc_od600)
+    #PCA
+    PCA_vals = prcomp(PCA_data,center = FALSE, scale = FALSE)
 
+    #Selecting things that may be groups
+    groups = dplyr::select(phgrofit_data,-c(od600_lag_length,
+                                            od600_max_gr,
+                                            max_od600,
+                                            difference_between_max_and_end_od600,
+                                            auc_od600))
+
+}
     #Selecting specified groups
     sel_group = dplyr::select(groups,group)
 

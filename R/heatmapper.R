@@ -1,4 +1,5 @@
 #' heatmapper: Creating an interactive heatmap with colored categorical labels.
+#'
 #'Intended to allow the user to easily generate interactive heatmaps from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
 #' @param phgrofit_data This is the output origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.
 #' @param labels This is a character vector specifiying what colored labels you would like to be displayed beside the heatmap. There can be several labels, but the color palette will get overwhelmed if there are too many values associated with the labels you choose.
@@ -23,18 +24,22 @@
 #'community_heatmap = heatmapper(phgrofit_data,"Community","Compound")
 #'community_heatmap
 heatmapper = function(phgrofit_data,labels = "Sample.ID",mouse_over = NULL){
+    #if it is phgrofit data
+    if("min_pH" %in% names(phgrofit_data)){
     #Selecting just the numeric data
     model_data = phgrofit_data %>%
         dplyr::select(od600_lag_length,
                       od600_max_gr,
                       max_od600,
                       difference_between_max_and_end_od600,
+                      auc_od600,
                       max_acidification_rate,
                       min_pH,
                       time_of_min_pH,
                       max_basification_rate,
                       max_pH,
-                      difference_between_end_and_min_pH)
+                      difference_between_end_and_min_pH,
+                      auc_pH)
 
     #Selecting just the categorical data
     Sample_Labels = phgrofit_data %>%
@@ -42,13 +47,33 @@ heatmapper = function(phgrofit_data,labels = "Sample.ID",mouse_over = NULL){
                          od600_max_gr,
                          max_od600,
                          difference_between_max_and_end_od600,
+                         auc_od600,
                          max_acidification_rate,
                          min_pH,
                          time_of_min_pH,
                          max_basification_rate,
                          max_pH,
-                         difference_between_end_and_min_pH)
+                         difference_between_end_and_min_pH,
+                         auc_pH)
         )
+    }else{
+        #Else it is grofit data
+        model_data = phgrofit_data %>%
+            dplyr::select(od600_lag_length,
+                          od600_max_gr,
+                          max_od600,
+                          difference_between_max_and_end_od600,
+                          auc_od600)
+
+        #Selecting just the categorical data
+        Sample_Labels = phgrofit_data %>%
+            dplyr::select(-c(od600_lag_length,
+                             od600_max_gr,
+                             max_od600,
+                             difference_between_max_and_end_od600,
+                             auc_od600)
+            )
+    }
 
     #Setting row names to be sample.ID
     row.names(Sample_Labels) = 1:nrow(Sample_Labels)

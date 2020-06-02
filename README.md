@@ -69,8 +69,9 @@ The resulting data frame looks like this:
 DT::datatable(head(phgropro_output))
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /> \#\#
-Modeling with phgrofit
+![](man/figures/README-unnamed-chunk-3-1.png)<!-- -->
+
+## Modeling with phgrofit
 
 Now we can use the phgrofit to model each curve and extract the
 physiologically relevant features.
@@ -86,20 +87,87 @@ This will produce the following data frame.
 DT::datatable(head(phgrofit_output))
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->
 
-## Visually Checking Model Fit
+## Checking Model Fit
 
-Now we can check to see how the model fit is performing using the
-model\_fit\_check function. Since there are so many different kinetic
-curves, this function allows the user to specify conditions to group by
-and subsequently plot a randomly sampled plot from each distinct member
-of the grouping. This allows the user to check as many conditions as
-they may wish. To check all of them, you can simpily group by Sample.ID.
+We can use the function flag to look at the data and see if there are
+any obvious problems with our curves.
+
+``` r
+flag = flag(phgrofit_output)
+DT::datatable(flag)
+```
+
+![](man/figures/README-unnamed-chunk-6-1.png)<!-- -->
+
+Here we can see there are a few wells that may be a problem. Based on
+what flag returned, we can see that the lag length was calculated to be
+negative.
+
+Let’s look to see if this is actually a problem or not using the
+model\_fit\_check function. This function will allow you to visually
+check the model fit.
+
+``` r
+problem_wells = phgropro_output %>% 
+  dplyr::filter(Sample.ID %in% flag$Sample.ID)
+
+model_fit_check(problem_wells)
+```
+
+![](man/figures/README-unnamed-chunk-7-1.png)<!-- -->![](man/figures/README-unnamed-chunk-7-2.png)<!-- -->
+
+Here we can see that even though the lag length was estimated to be
+below 0, it was very close to 0 and is an adequate representation of the
+data.
+
+What if we had a different problem? Let’s say for some reason all of the
+pH data between 0.5 and 24 hrs was NA.
+
+``` r
+phgropro_prob = phgropro_output %>% 
+  dplyr::mutate(pH = ifelse(dplyr::between(Time,0.5,24),NA,pH))
+
+phgrofit_prob = phgrofit(phgropro_prob)
+
+problem_flag = flag(phgrofit_prob)
+
+DT::datatable(head(problem_flag))
+```
+
+![](man/figures/README-unnamed-chunk-8-1.png)<!-- -->
+
+Now we can see that there is missing\_pH data. This returns TRUE only if
+25% or more of the data is NA. Let’s visually check using
+model\_fit\_check now.
+
+I didn’t mention this before, but if you pass a grouping\_vars argument
+to model\_fit\_check, it will only return a randomly sampled plot from
+the distinct conditions of your group. Let’s use this trick to look at a
+distinct randomly sampled well with different values for
+missing\_pH\_data
+
+``` r
+comb = dplyr::left_join(phgropro_prob,problem_flag,by = "Sample.ID")
+model_fit_check(comb,"missing_pH_data")
+```
+
+![](man/figures/README-unnamed-chunk-9-1.png)<!-- -->
+
+Here we can clearly see that there is as problem with the data, we are
+missing a bunch of pH values\!
+
+You can also use the model\_fit\_check function independantly of flag.
+Like I mentioned before, this function allows the user to specify
+conditions to group by and subsequently plot a randomly sampled plot
+from each distinct member of the grouping. This allows the user to check
+as many conditions as they may wish. To check all of them, you can
+simpily group by Sample.ID.
 
 In this case, we will just check a plot from each community.
 
-Note that there are 3 features that are being extracted that aren’t
+Note that there are a few features that are being extracted that aren’t
 displayed on the graph because they were hard to overlay
 visually.
 
@@ -107,10 +175,14 @@ visually.
 model_fit_check(phgropro_output,grouping_vars = c("Community"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-6-3.png" width="100%" /><img src="man/figures/README-unnamed-chunk-6-4.png" width="100%" />
+![](man/figures/README-unnamed-chunk-10-1.png)<!-- -->![](man/figures/README-unnamed-chunk-10-2.png)<!-- -->![](man/figures/README-unnamed-chunk-10-3.png)<!-- -->![](man/figures/README-unnamed-chunk-10-4.png)<!-- -->
 
 We can see from the above plots that the modeling appears to be working
 well.
+
+Also, please note that phgrofit returns the root-mean-square deviation
+for both pH and OD600. This should allow the user to specifically look
+into values that they think are too high.
 
 ## Transforming data
 
@@ -161,11 +233,10 @@ When you go to use the function in your R session it will return a
 interactive plotly image
 
 ``` r
-p1 = heatmapper(scaled,labels = c("Compound","Community"))
-p1
+heatmapper(scaled,labels = c("Compound","Community"))
 ```
 
-![](images/heatmapper.png)
+![](images/phgrofit_heatmap.png)
 
 ### PCA
 
@@ -180,7 +251,7 @@ p1 = PCA(scaled,"Community")
 p1
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-14-1.png)<!-- -->
 
 ### Dendrogram and associated kinetic curves
 
@@ -197,7 +268,7 @@ p1 = dendrospect(scaled,averaged_phgropro,"Community", k = 4)
 p1
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-15-1.png)<!-- -->
 
 ### Looking closer at data corresponding with clusters
 
@@ -213,7 +284,7 @@ d1 = dendrospect_kinetic(averaged_phgropro,scaled,k=4)
 DT::datatable(head(d1))
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-16-1.png)<!-- -->
 
 The dendrospect\_model function returns the modeling data with the
 dendogram cluster each observation belongs to.
@@ -223,7 +294,93 @@ d2 = dendrospect_model(scaled,k = 8)
 DT::datatable(d2)
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-17-1.png)<!-- -->
+
+# OD600 data alone
+
+Say you aren’t interested in pH data and you would like to use these
+tools with just OD600 data. That is exactly the case that grofit was
+made to solve. It operates on the same type of data as phgrofit, just
+without the pH column. Right now there isn’t a dedicated parser
+homologous to phgropro, but I may make one in the future if the need
+arises (would be called gropro.)
+
+``` r
+#Pretending that we only have OD600 data
+gropro_output = phgropro_output %>% 
+  dplyr::select(-pH)
+
+grofit_output = gropro_output %>% 
+  grofit()
+```
+
+We are able to detect whether you have used phgrofit or grofit by the
+presence or absence of columns that only occur in phgrofit. This means
+that you can use all of the functions that you would use with phgrofit
+with grofit instead.
+
+Let’s first look at a randomly sampled model fit from each
+community
+
+``` r
+model_fit_check(gropro_output,"Community")
+```
+
+![](man/figures/README-unnamed-chunk-19-1.png)<!-- -->![](man/figures/README-unnamed-chunk-19-2.png)<!-- -->![](man/figures/README-unnamed-chunk-19-3.png)<!-- -->![](man/figures/README-unnamed-chunk-19-4.png)<!-- -->
+
+Let’s average and scale the grofit data just like we would with
+phgrofit.
+
+``` r
+avg_grofit = avg_phgrofit(grofit_output,c("Community","Compound"))
+avg_gropro = avg_phgropro(gropro_output,c("Community","Compound"))
+
+scaled_grofit = scale_phgrofit(avg_grofit)
+```
+
+Now let’s look at a PCA
+
+``` r
+PCA(scaled_grofit,"Community")
+#> Warning: Ignoring unknown aesthetics: text
+```
+
+![](man/figures/README-unnamed-chunk-21-1.png)<!-- -->
+
+Here we can see similar clustering to what we had observed previously.
+Now we can make a heatmap.
+
+``` r
+heatmapper(scaled_grofit,c("Community","Compound"))
+```
+
+![](images/grofit_heatmap.png)
+
+And we can even make a dendrogram with associated kinetic profiles.
+
+``` r
+dendrospect(scaled_grofit,avg_gropro,"Community",k=4)
+```
+
+![](man/figures/README-unnamed-chunk-23-1.png)<!-- -->
+
+Lastly, if you want to see which data corresponds with a cluster, you
+can use the other dendrospect functions.
+
+``` r
+grofit_clusters = dendrospect_model(scaled_grofit,k = 4)
+gropro_clusters = dendrospect_kinetic(phgropro_data = avg_gropro,phgrofit_data = scaled_grofit, k =3)
+
+DT::datatable(head(grofit_clusters,5))
+```
+
+![](man/figures/README-unnamed-chunk-24-1.png)<!-- -->
+
+``` r
+DT::datatable(head(gropro_clusters,5))
+```
+
+![](man/figures/README-unnamed-chunk-24-2.png)<!-- -->
 
 # Function List
 
@@ -232,8 +389,7 @@ DT::datatable(d2)
     with user supplied metadata.
 
 2.  phgrofit() : Takes the output of phgrofit::phgropro()) and extracts
-    relevant physiological parameters by conducting spline
-    interpolation.
+    relevant physiological features by fitting a smoothing spline.
 
 3.  model\_fit\_check(): Allows for visual checking of the modeling fit
     by printing graphs for the combination of conditions the user
@@ -266,5 +422,6 @@ DT::datatable(d2)
     from phgrofit with the cluster that each Sample.ID would correspond
     to based on hierchical clustering of the data.
 
-12. grofit(): Extracts relevant physiological parameters for just OD600
-    by conducting spline interpolation.
+12. grofit(): Extracts relevant physiological features for just OD600 by
+    fitting a smoothing spline. All other functions expecting
+    phgrofit\_output can also take grofit\_output instead.

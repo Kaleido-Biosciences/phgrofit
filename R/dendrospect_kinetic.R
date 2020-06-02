@@ -1,4 +1,5 @@
 #' dendrospect_kinetic
+#'
 #'Allows the user to easily acess the OD600 and pH kinetic data corresponding with a given cluster.
 #'This is intended to allow for easier examination of the underlying data that is produced with the dendrospect function.
 #'Note that the phgrofit_data should first be scaled before using this function. This can be acomplished with scale_phgrofit() function.
@@ -12,18 +13,32 @@
 #' #Returns a dataframe mapping which of the 8 clusters a Sample.ID belongs to.
 #' df = dendrospect_model(phgropro_data,k = 8)
 dendrospect_kinetic = function(phgropro_data,phgrofit_data,k = 8){
-    model_data = dplyr::select(phgrofit_data,Sample.ID,
-                               od600_lag_length,
-                               od600_max_gr,
-                               max_od600,
-                               difference_between_max_and_end_od600,
-                               max_acidification_rate,
-                               min_pH,
-                               time_of_min_pH,
-                               max_basification_rate,
-                               max_pH,
-                               difference_between_end_and_min_pH) %>%
-        tibble::column_to_rownames("Sample.ID")
+    if("min_pH" %in% names(phgrofit_data)){
+        model_data = dplyr::select(phgrofit_data,
+                                   Sample.ID,
+                                   od600_lag_length,
+                                   od600_max_gr,
+                                   max_od600,
+                                   difference_between_max_and_end_od600,
+                                   auc_od600,
+                                   max_acidification_rate,
+                                   min_pH,
+                                   time_of_min_pH,
+                                   max_basification_rate,
+                                   max_pH,
+                                   difference_between_end_and_min_pH,
+                                   auc_pH) %>%
+            tibble::column_to_rownames("Sample.ID")
+    }else{
+        model_data = dplyr::select(phgrofit_data,
+                                   Sample.ID,
+                                   od600_lag_length,
+                                   od600_max_gr,
+                                   max_od600,
+                                   difference_between_max_and_end_od600,
+                                   auc_od600) %>%
+            tibble::column_to_rownames("Sample.ID")
+    }
 
     #Creating a dendogram
     dend = hclust(dist(model_data, method = "manhattan"), method = "complete")

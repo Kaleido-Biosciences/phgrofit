@@ -10,7 +10,7 @@
 #' @examples
 #'phgropro_output = phgrofit::phgropro_output("Filepath of biotek export.txt","filepath of metadata.csv,Plate_Type = 384)
 #'model_fit_check(phgropro_output,grouping_vars = c("Community","Compound))
-#'###This would print graphs from a randomly sampled replicate of each combination of variables specified by grouping_vars.
+#'#This would print graphs from a randomly sampled replicate of each combination of variables specified by grouping_vars
 model_fit_check = function(phgropro_output,grouping_vars = "Sample.ID"){
 
     #extracting the grouping vars in order to work with dplyr framework
@@ -30,32 +30,27 @@ model_fit_check = function(phgropro_output,grouping_vars = "Sample.ID"){
         randomized_unique = c(randomized_unique,temp_randomized_unique)
     }
 
-    #fixing the NA problem
-    #Removing samples that have 25% or more NA pH values
-    NA_Samples = dplyr::group_by(kin_and_mod,Sample.ID) %>%
-        dplyr::summarise(n_na = sum(is.na(pH))) %>%
-        dplyr::filter(n_na > (0.5 * length(kin_and_mod$pH)/length(unique(kin_and_mod$Sample.ID)))) %>%
-        dplyr::pull(Sample.ID)
-
-    `%!in%` = Negate(`%in%`)
-
-
-    randomized_unique_NA_rm = randomized_unique[randomized_unique %!in% NA_Samples]
 
     #Filtering and looping
-    for(i in randomized_unique_NA_rm){
-
-        #getting rid of NAs so we do not have a problem with fitting splines
-        input = dplyr::filter(kin_and_mod,Sample.ID == i) %>%
-            dplyr::filter(!is.na(pH))
-
-        #excluding graphs with all NA
-        if(length(!is.na(input$pH)) > 0 ){
-
+    for(i in randomized_unique){
+        #if pH and od600
+        if("pH" %in% names(kin_and_mod)){
+            #getting rid of NAs just like we do in the actual modeling
+            input = dplyr::filter(kin_and_mod,Sample.ID == i)
+            p1 = graph_check(input)
+            p2 = ggpubr::annotate_figure(p1,paste0(input$Concat))
+            print(p2)
+        }else{
+            #else growth only
+            #getting rid of NAs just like we do in the actual modeling
+            input = dplyr::filter(kin_and_mod,Sample.ID == i) %>%
+                dplyr::filter(!is.na(OD600))
             p1 = graph_check(input)
             p2 = ggpubr::annotate_figure(p1,paste0(input$Concat))
             print(p2)
         }
     }
-
 }
+
+
+

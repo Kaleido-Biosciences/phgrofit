@@ -2,9 +2,7 @@
 % Please edit documentation in R/dendrospect.R
 \name{dendrospect}
 \alias{dendrospect}
-\title{dendrospect
-Allows the user to easily see what the average kinetic profile corresponding with a given cluster is.
-Note that data should be scaled before using this function.}
+\title{dendrospect}
 \usage{
 dendrospect(phgrofit_data, phgropro_data, colored_bar_label = NULL, k = 8)
 }
@@ -21,7 +19,6 @@ dendrospect(phgrofit_data, phgropro_data, colored_bar_label = NULL, k = 8)
 A ggplot2 object containin a colored dendogram whith a colored bar label and the corresponding kinetic OD600 and pH data.
 }
 \description{
-dendrospect
 Allows the user to easily see what the average kinetic profile corresponding with a given cluster is.
 Note that data should be scaled before using this function.
 }

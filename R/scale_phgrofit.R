@@ -1,5 +1,7 @@
 #' scale_phgrofit
+#'
 #' This function allows the user to scale the results of phgrofit. This should be used upstream of functions requiring a standardization of data.
+#' Note that starting_od600 and starting pH are not scaled because they are not physiologically interesting parameters. Likewise, columns dealing with model error are ignored here.
 #' Scaling is done outside of the plotting functions in order to allow more transparancy as to what is acutally being plotted than would be apparent otherwise.
 #' Additionally, this will allow the user to choose the appropriate scaling function for their application.
 #'
@@ -23,16 +25,26 @@
 #'
 scale_phgrofit = function(phgrofit_output,group_by = NULL){
 
-    model_parmeters = dplyr::vars(od600_lag_length,
-                                  od600_max_gr,
-                                  max_od600,
-                                  difference_between_max_and_end_od600,
-                                  max_acidification_rate,
-                                  min_pH,
-                                  time_of_min_pH,
-                                  max_basification_rate,
-                                  max_pH,
-                                  difference_between_end_and_min_pH)
+    if("min_pH" %in% names(phgrofit_output)){
+        model_parmeters = dplyr::vars(od600_lag_length,
+                                      od600_max_gr,
+                                      max_od600,
+                                      difference_between_max_and_end_od600,
+                                      auc_od600,
+                                      max_acidification_rate,
+                                      min_pH,
+                                      time_of_min_pH,
+                                      max_basification_rate,
+                                      max_pH,
+                                      difference_between_end_and_min_pH,
+                                      auc_pH)
+    }else{
+        model_parmeters = dplyr::vars(od600_lag_length,
+                                      od600_max_gr,
+                                      max_od600,
+                                      difference_between_max_and_end_od600,
+                                      auc_od600)
+    }
     if(is.null(group_by)){
         scaled_data = phgrofit_output %>%
             dplyr::mutate_at(model_parmeters, scale)

@@ -2,10 +2,7 @@
 % Please edit documentation in R/scale_phgrofit.R
 \name{scale_phgrofit}
 \alias{scale_phgrofit}
-\title{scale_phgrofit
-This function allows the user to scale the results of phgrofit. This should be used upstream of functions requiring a standardization of data.
-Scaling is done outside of the plotting functions in order to allow more transparancy as to what is acutally being plotted than would be apparent otherwise.
-Additionally, this will allow the user to choose the appropriate scaling function for their application.}
+\title{scale_phgrofit}
 \usage{
 scale_phgrofit(phgrofit_output, group_by = NULL)
 }
@@ -16,8 +13,8 @@ scale_phgrofit(phgrofit_output, group_by = NULL)
 a dataframe containing all of content of phgrofit with each model parameter scaled such that the mean = 0 and values represent Z scores.
 }
 \description{
-scale_phgrofit
 This function allows the user to scale the results of phgrofit. This should be used upstream of functions requiring a standardization of data.
+Note that starting_od600 and starting pH are not scaled because they are not physiologically interesting parameters. Likewise, columns dealing with model error are ignored here.
 Scaling is done outside of the plotting functions in order to allow more transparancy as to what is acutally being plotted than would be apparent otherwise.
 Additionally, this will allow the user to choose the appropriate scaling function for their application.
 }

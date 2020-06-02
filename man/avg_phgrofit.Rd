@@ -2,9 +2,7 @@
 % Please edit documentation in R/avg_phgrofit.R
 \name{avg_phgrofit}
 \alias{avg_phgrofit}
-\title{avg_phgrofit
-This function is intended to make averaging the model parameters from phgrofit across groups very easy.
-New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit}
+\title{avg_phgrofit}
 \usage{
 avg_phgrofit(phgrofit_output, group_by = c("Sample.ID"))
 }
@@ -17,9 +15,8 @@ avg_phgrofit(phgrofit_output, group_by = c("Sample.ID"))
 a data frame with mean values for each of the modeling parameters across the groups that were specified.
 }
 \description{
-avg_phgrofit
 This function is intended to make averaging the model parameters from phgrofit across groups very easy.
-New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit
+New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit.
 }
 \examples{
 #This would return a data frame with the average and sd pH and OD600 values when grouped by Community and Compound- names of columns in the phgropro_out data frame.

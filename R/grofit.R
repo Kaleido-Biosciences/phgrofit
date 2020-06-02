@@ -1,53 +1,70 @@
-#' grofit
-#' Allows the user to get modeling data for just OD600
-#' @param gropro_output : This is the output of gropro. This is a tidy data frame that has a column for Sample.ID and OD600.
-#' OD600 must be the only measurement that occurs at each time. Other metadata can be included as necessary.
+#' grofit: Extract physiological parameters from kinetic OD600 data.
 #'
-#' @return :Modeling
-#' @export
-#'
-#' @examples
-#'
-#' #This will return modeling information for each Sample.ID
-#' grofit_output = grofit(gropro_output)
-grofit = function(gropro_output){
+#' grofit takes OD600 data from a specific format and applies a smoothing spline to extract relevant physiological data.
+#' Importantly, this function drops any NA values that may exist when fitting the spline.
+#' These values occasionally occur when measuring pH, either from an erratic read or if the pH is outside of the standard curve.
+#' The column percent_NA_od600 contains the percent of time points that were NA for a given well.
+#' @param gropro_output This is a tidy dataframe containing columns exactly named Sample.ID, Time, and OD600 at a minimum. There may also be any other columns representing any other metadata.
+#' @return A tidy data frame of several features that were extracted from a smoothing spline fit. The data frame also contains information that can be used to assess model fit.
+#' Physiologial features:
+#' \itemize{
+#'  \item{"starting_od600"}{This is the starting od600}
+#'  \item{"od600_lag_length"}{This is the length of the calculated lag phase.
+#'  Calculated by determining the time where the tangent line at the point of the max growth rate meets the starting od600}
+#'  \item{"od600_max_gr"}{ This is the maximum growth rate that is observed. Calculated by determining the max derivitive of the spline fit for OD600}
+#'  \item{"max_od600"}{ This is the maximum od600 observed by the spline fit}
+#'  \item{"difference_between_max_and_end_od600"}{ This is the difference between the maximum and end od600. Higher values should correspond to a "death phase". Or one could argue the cells are getting smaller.}
+#'  \item{"auc_od600"}{This is the area under the curve of the OD600 curves. It is calculated using the trapezoidal rule on fitted values from smooth.spline.}
+#'}
+#'  Model fit:
+#'  \itemize{
+#'  \item{"percent_NA_od600"}{The percent of wells that were NA when fitting the spline to the kinetic od600 data}
+#'  \item{"rmse_od600"}{The Root-mean-square deviation for od600}
+#'  }
 
-    data = dplyr::select(gropro_output,Sample.ID,Time,OD600)
-    metadata = dplyr::select(gropro_output,-Time,-OD600)%>%
+#' @export
+#' @importFrom magrittr %>%
+#' @examples
+#' ### grofit ###
+#' grofit_output = grofit(gropro_output)
+grofit = function(data){
+
+    data = dplyr::select(phgropro_output,Sample.ID,Time,OD600,pH)
+    metadata = dplyr::select(phgropro_output,-Time,-OD600,-pH) %>%
         dplyr::distinct()
 
-    #Looping through each sample ID to apply the model
-    Samples = unique(metadata$Sample.ID)
-
     output = data.frame()
-    for(i in Samples){
-        #Removing rows with NA pH values so that a spline can be fit despite a few wonky timepoints that may be present in pH values
-        input = dplyr::filter(data,Sample.ID == i)
 
-        parameters = tryCatch(
-            error = function(cnd) {
-                # code to run when error is thrown
-                col_1 = data.frame(matrix(i,ncol =1, nrow =1),stringsAsFactors = F)
-                col_2 = data.frame(matrix(c(rep(NA_real_,10)),nrow = 1, ncol = 8))
-                error_df = cbind(col_1,col_2)
-                #Giving the columns the right names
-                names(error_df) = c("Sample.ID","starting_od600","od600_max_gr","time_of_od600_max_gr","b_of_max_od600_gr_tangent_line","od600_min_gr",
-                                    "time_of_od600_min_gr","od600_lag_length","max_od600","difference_between_max_and_end_od600","auc_od600")
-                return(error_df)
-            },
-            # code to run while handler is active
-            Combine_OD600_parameters(input = input)
-        )
+    for(i in unique(data$Sample.ID)){
+
+        input = data %>%
+            dplyr::filter(Sample.ID == i)
+
+        percent_NA_od600 = sum(is.na(input$OD600))/length(input$OD600) * 100
+
+        #Filtering out all of the OD600 values that returned NA
+        input_od600 = input %>%
+            dplyr::filter(!is.na(OD600))
 
         #Selecting only the necessary parameters for further analysis
-        physiological_parameters = dplyr::select(parameters,Sample.ID,starting_od600,od600_lag_length,od600_max_gr,max_od600,difference_between_max_and_end_od600,auc_od600)
-        output = rbind(output,physiological_parameters) %>%
-            dplyr::mutate(Sample.ID = as.character(Sample.ID))
+        od600_features = od600_features(input_od600) %>%
+            dplyr::mutate(Sample.ID = as.character(i),
+                          percent_NA_od600 = percent_NA_od600)
+
+        output = rbind(output,od600_features)
     }
+
+    output = output %>%
+        dplyr::select(Sample.ID,
+                      starting_od600,
+                      od600_lag_length,
+                      od600_max_gr,
+                      max_od600,
+                      difference_between_max_and_end_od600,
+                      auc_od600,
+                      percent_NA_od600,
+                      rmse_od600)
+
     final = dplyr::inner_join(metadata,output,by = "Sample.ID")
     return(final)
 }
-
-
-
-

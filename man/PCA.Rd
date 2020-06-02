@@ -2,8 +2,7 @@
 % Please edit documentation in R/PCA.R
 \name{PCA}
 \alias{PCA}
-\title{PCA: Easily making a PCA plot with phgrofit data
-Intended to allow the user to easily generate PCA plots from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()}
+\title{PCA: Easily making a PCA plot with phgrofit data}
 \usage{
 PCA(phgrofit_data, group = "Sample.ID", mouse_over = "Compound")
 }
@@ -16,7 +15,6 @@ PCA(phgrofit_data, group = "Sample.ID", mouse_over = "Compound")
 a ggplot2 object containing the 95 percent confidence interval for the group specified.
 }
 \description{
-PCA: Easily making a PCA plot with phgrofit data
 Intended to allow the user to easily generate PCA plots from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
 }
 \examples{

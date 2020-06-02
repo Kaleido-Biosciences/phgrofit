@@ -15,6 +15,7 @@ Imports:
     dendextend (>= 1.12.0),
     heatmaply (>= 0.16.0),
     MESS (>= 0.5.6),
+    ModelMetrics (>= 1.2.2.2),
     magrittr
 License: None
 Encoding: UTF-8

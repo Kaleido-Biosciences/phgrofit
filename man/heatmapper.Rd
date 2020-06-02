@@ -2,8 +2,7 @@
 % Please edit documentation in R/heatmapper.R
 \name{heatmapper}
 \alias{heatmapper}
-\title{heatmapper: Creating an interactive heatmap with colored categorical labels.
-Intended to allow the user to easily generate interactive heatmaps from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()}
+\title{heatmapper: Creating an interactive heatmap with colored categorical labels.}
 \usage{
 heatmapper(phgrofit_data, labels = "Sample.ID", mouse_over = NULL)
 }
@@ -18,7 +17,6 @@ heatmapper(phgrofit_data, labels = "Sample.ID", mouse_over = NULL)
 a heatmaply heatmap.
 }
 \description{
-heatmapper: Creating an interactive heatmap with colored categorical labels.
 Intended to allow the user to easily generate interactive heatmaps from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
 }
 \examples{

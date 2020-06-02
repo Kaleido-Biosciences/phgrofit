@@ -2,24 +2,38 @@
 % Please edit documentation in R/grofit.R
 \name{grofit}
 \alias{grofit}
-\title{grofit
-Allows the user to get modeling data for just OD600}
+\title{grofit: Extract physiological parameters from kinetic OD600 data.}
 \usage{
-grofit(gropro_output)
+grofit(data)
 }
 \arguments{
-\item{gropro_output}{: This is the output of gropro. This is a tidy data frame that has a column for Sample.ID and OD600.
-OD600 must be the only measurement that occurs at each time. Other metadata can be included as necessary.}
+\item{gropro_output}{This is a tidy dataframe containing columns exactly named Sample.ID, Time, and OD600 at a minimum. There may also be any other columns representing any other metadata.}
 }
 \value{
-:Modeling
+A tidy data frame of several features that were extracted from a smoothing spline fit. The data frame also contains information that can be used to assess model fit.
+Physiologial features:
+\itemize{
+ \item{"starting_od600"}{This is the starting od600}
+ \item{"od600_lag_length"}{This is the length of the calculated lag phase.
+ Calculated by determining the time where the tangent line at the point of the max growth rate meets the starting od600}
+ \item{"od600_max_gr"}{ This is the maximum growth rate that is observed. Calculated by determining the max derivitive of the spline fit for OD600}
+ \item{"max_od600"}{ This is the maximum od600 observed by the spline fit}
+ \item{"difference_between_max_and_end_od600"}{ This is the difference between the maximum and end od600. Higher values should correspond to a "death phase". Or one could argue the cells are getting smaller.}
+ \item{"auc_od600"}{This is the area under the curve of the OD600 curves. It is calculated using the trapezoidal rule on fitted values from smooth.spline.}
+}
+ Model fit:
+ \itemize{
+ \item{"percent_NA_od600"}{The percent of wells that were NA when fitting the spline to the kinetic od600 data}
+ \item{"rmse_od600"}{The Root-mean-square deviation for od600}
+ }
 }
 \description{
-grofit
-Allows the user to get modeling data for just OD600
+grofit takes OD600 data from a specific format and applies a smoothing spline to extract relevant physiological data.
+Importantly, this function drops any NA values that may exist when fitting the spline.
+These values occasionally occur when measuring pH, either from an erratic read or if the pH is outside of the standard curve.
+The column percent_NA_od600 contains the percent of time points that were NA for a given well.
 }
 \examples{
-
-#This will return modeling information for each Sample.ID
+### grofit ###
 grofit_output = grofit(gropro_output)
 }

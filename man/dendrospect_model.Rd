@@ -2,23 +2,19 @@
 % Please edit documentation in R/dendrospect_model.R
 \name{dendrospect_model}
 \alias{dendrospect_model}
-\title{dendrospect_model
-Allows the user to easily acess the modeling data corresponding with a given cluster.
-This is intended to allow for easier examination of the underlying data that is produced with the dendrospect function.
-Note that the phgrofit_data should first be scaled before using this function. This can be acomplished with scale_phgrofit() function.}
+\title{dendrospect_model}
 \usage{
 dendrospect_model(phgrofit_data, k = 8)
 }
 \arguments{
 \item{phgrofit_data}{This is the data origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
 
-\item{k:}{The number of clusters.}
+\item{k}{The number of clusters.}
 }
 \value{
 a dataframe containing the phgrofit data with a column named dendrogram_cluster that represents the cluster the observations correspond to.
 }
 \description{
-dendrospect_model
 Allows the user to easily acess the modeling data corresponding with a given cluster.
 This is intended to allow for easier examination of the underlying data that is produced with the dendrospect function.
 Note that the phgrofit_data should first be scaled before using this function. This can be acomplished with scale_phgrofit() function.
