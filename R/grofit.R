@@ -29,8 +29,8 @@
 #' grofit_output = grofit(gropro_output)
 grofit = function(data){
 
-    data = dplyr::select(phgropro_output,Sample.ID,Time,OD600,pH)
-    metadata = dplyr::select(phgropro_output,-Time,-OD600,-pH) %>%
+    data = dplyr::select(phgropro_output,Sample.ID,Time,OD600)
+    metadata = dplyr::select(phgropro_output,-Time,-OD600) %>%
         dplyr::distinct()
 
     output = data.frame()
