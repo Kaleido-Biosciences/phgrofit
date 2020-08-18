@@ -60,7 +60,7 @@ dendrospect = function(phgrofit_data,
             dplyr::inner_join(fermentation_clusters, by = "Sample.ID") %>%
             #Experimental_might want to remove later. Is the average of the average appropriate to do here?
             dplyr::group_by(Time,dendrogram_cluster) %>%
-            dplyr::mutate(sd_OD600 = sd(mean_OD600),
+            dplyr::summarise(sd_OD600 = sd(mean_OD600),
                           mean_OD600 = mean(mean_OD600),
                           sd_pH = sd(mean_pH,na.rm = TRUE),
                           mean_pH = mean(mean_pH,na.rm = TRUE)
@@ -100,7 +100,7 @@ dendrospect = function(phgrofit_data,
             dplyr::inner_join(fermentation_clusters, by = "Sample.ID") %>%
             #Experimental_might want to remove later. Is the average of the average appropriate to do here?
             dplyr::group_by(Time,dendrogram_cluster) %>%
-            dplyr::mutate(sd_OD600 = sd(mean_OD600),
+            dplyr::summarise(sd_OD600 = sd(mean_OD600),
                           mean_OD600 = mean(mean_OD600))
 
         ##Ordering data to use as colored bars
