@@ -1,4 +1,5 @@
 #' phgropro: Tidying kinetic od600 and pH data from biotek plate reader.
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format will oftern serve as the input to phgrofit.
 #' @param biotek_export .txt file that results from a specific format of exporting data from the Biotek Gen5 software.

@@ -1,4 +1,5 @@
 #'avg_phgrofit
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'This function is intended to make averaging the model parameters from phgrofit across groups very easy.
 #'New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit.

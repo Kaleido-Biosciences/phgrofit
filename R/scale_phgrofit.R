@@ -1,4 +1,5 @@
 #' scale_phgrofit
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #' This function allows the user to scale the results of phgrofit. This should be used upstream of functions requiring a standardization of data.
 #' Note that starting_od600 and starting pH are not scaled because they are not physiologically interesting parameters. Likewise, columns dealing with model error are ignored here.

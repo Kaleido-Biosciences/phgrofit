@@ -1,3 +1,4 @@
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 combined_dendro_plot = function(dend,cluster_data,colored_bar,k,colored_bar_label){
     if("mean_pH" %in% names(cluster_data)){
         #Dendogram plot

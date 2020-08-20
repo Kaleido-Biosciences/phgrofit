@@ -1,4 +1,6 @@
 #' grofit
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
+#'
 #' Allows the user to get modeling data for just OD600
 #' @param gropro_output : This is the output of gropro. This is a tidy data frame that has a column for Sample.ID and OD600.
 #' OD600 must be the only measurement that occurs at each time. Other metadata can be included as necessary.

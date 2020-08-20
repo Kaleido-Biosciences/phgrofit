@@ -1,4 +1,5 @@
 #' dendrospect_kinetic
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'Allows the user to easily acess the OD600 and pH kinetic data corresponding with a given cluster.
 #'This is intended to allow for easier examination of the underlying data that is produced with the dendrospect function.

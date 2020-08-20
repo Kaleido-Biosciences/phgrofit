@@ -1,4 +1,5 @@
 #' model_fit_check
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'This function prints graphs visually displaying the model fits from a randomly sampled set of variables of the users choosing.
 #'A replicate from each unique condition specified is randomly sampled and the fit and extracted parameters that are easy to visualize are shown.

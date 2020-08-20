@@ -1,3 +1,5 @@
+#Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
+#
 ###Function that will calculate for OD600:  length of lag, max growth rate, min growth rate###
 rate_parameters = function(data,measurement){
 

@@ -1,3 +1,4 @@
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 pH_features = function(data){
 
     # Fitting the spline

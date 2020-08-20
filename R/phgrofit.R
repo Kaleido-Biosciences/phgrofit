@@ -1,4 +1,5 @@
 #' phgrofit: Extract physiological parameters from kinetic pH and OD600 data across diverse samples.
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #' phgrofit takes pH and OD600 data that has been formated by phgropro and applies a smoothing spline to extract relevant physiological data.
 #' Importantly, this function drops any NA values that may exist when fitting the spline.

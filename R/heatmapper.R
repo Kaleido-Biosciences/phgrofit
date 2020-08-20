@@ -1,4 +1,5 @@
 #' heatmapper: Creating an interactive heatmap with colored categorical labels.
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'Intended to allow the user to easily generate interactive heatmaps from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
 #' @param phgrofit_data This is the output origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.

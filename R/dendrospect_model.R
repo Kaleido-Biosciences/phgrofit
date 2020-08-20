@@ -1,4 +1,5 @@
 #' dendrospect_model
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'Allows the user to easily acess the modeling data corresponding with a given cluster.
 #'This is intended to allow for easier examination of the underlying data that is produced with the dendrospect function.

@@ -1,4 +1,5 @@
 #'avg_phgropro
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'This function is intended to make averaging OD600 and pH values from phgropro across groups very easy.
 #'This functiuon also returns the standard deviation for OD600 and pH.

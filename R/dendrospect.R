@@ -1,4 +1,5 @@
 #' dendrospect
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #'Allows the user to easily see what the average kinetic profile corresponding with a given cluster is.
 #'Note that data should be scaled before using this function.

@@ -1,4 +1,5 @@
 #' grofit: Extract physiological parameters from kinetic OD600 data.
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #' grofit takes OD600 data from a specific format and applies a smoothing spline to extract relevant physiological data.
 #' Importantly, this function drops any NA values that may exist when fitting the spline.

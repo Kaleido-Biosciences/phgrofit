@@ -1,4 +1,5 @@
 #' graph_check
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #' This function is used in the exported function model_fit_check to generate a graphical representation of the model fit
 #'

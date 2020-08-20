@@ -1,4 +1,5 @@
 #' phgrofit: Extract physiological parameters from kinetic pH and OD600 data across diverse samples.
+#' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #' phgrofit takes pH and OD600 data that has been formated by phgropro and applies a spline interpolation to extract relevant physiological data.
 #' This is different from the phgrofit modeling because the modeling parameters used are more robust to deviations from an idealized growth and ph profile.
