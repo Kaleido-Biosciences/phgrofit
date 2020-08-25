@@ -19,9 +19,7 @@ relationships between compounds.
 ## Installation
 
 ``` r
-devtools::install_gitlab("vl32/phgrofit", 
-                         auth_token = "Your auth token from gitlab",
-                         host = "gitlab.kaleidobio.com")
+devtools::install_github("Kaleido-Biosciences/phgrofit")
 ```
 
 <!-- badges: start -->
@@ -168,8 +166,7 @@ simpily group by Sample.ID.
 In this case, we will just check a plot from each community.
 
 Note that there are a few features that are being extracted that aren’t
-displayed on the graph because they were hard to overlay
-visually.
+displayed on the graph because they were hard to overlay visually.
 
 ``` r
 model_fit_check(phgropro_output,grouping_vars = c("Community"))
@@ -192,8 +189,7 @@ Oftentimes, the user may wish to average kinetic or modeling data. This
 can easily be done with the avg\_phgropro and avg\_phgrofit functions
 repectively. The user just has to specify the name of the colums that
 they wish to group by and then take the average for. Here it makes sense
-to group by Community and
-Compound
+to group by Community and Compound
 
 ``` r
 averaged_phgropro = avg_phgropro(phgropro_output,c("Community","Compound"))
@@ -230,7 +226,7 @@ compound and community. Be sure to use scaled data\!
 In this README, you will only see a static image because the function
 returns a html file that can not be viewed in the format of this README.
 When you go to use the function in your R session it will return a
-interactive plotly image
+interactive plotly image.
 
 ``` r
 heatmapper(scaled,labels = c("Compound","Community"))
@@ -302,8 +298,7 @@ Say you aren’t interested in pH data and you would like to use these
 tools with just OD600 data. That is exactly the case that grofit was
 made to solve. It operates on the same type of data as phgrofit, just
 without the pH column. Right now there isn’t a dedicated parser
-homologous to phgropro, but I may make one in the future if the need
-arises (would be called gropro.)
+homologous to phgropro, but this may be a feature in the future.
 
 ``` r
 #Pretending that we only have OD600 data
@@ -319,8 +314,7 @@ presence or absence of columns that only occur in phgrofit. This means
 that you can use all of the functions that you would use with phgrofit
 with grofit instead.
 
-Let’s first look at a randomly sampled model fit from each
-community
+Let’s first look at a randomly sampled model fit from each community
 
 ``` r
 model_fit_check(gropro_output,"Community")

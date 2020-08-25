@@ -25,10 +25,7 @@ In short, this package is designed to take OD600 and pH (gained using the BCECF 
 ## Installation 
 
 ```{r installation, eval = FALSE}
-devtools::install_gitlab("vl32/phgrofit", 
-                         auth_token = "Your auth token from gitlab",
-                         host = "gitlab.kaleidobio.com")
-
+devtools::install_github("Kaleido-Biosciences/phgrofit")
 ```
 
 <!-- badges: start -->
@@ -171,7 +168,7 @@ scaled_by_community = averaged_phgrofit %>%
 
 Now lets look to see how the data clusters. Here we can color by compound and community. Be sure to use scaled data!
 
-In this README, you will only see a static image because the function returns a html file that can not be viewed in the format of this README. When you go to use the function in your R session it will return a interactive plotly image 
+In this README, you will only see a static image because the function returns a html file that can not be viewed in the format of this README. When you go to use the function in your R session it will return a interactive plotly image.
 
 ```{r,eval = FALSE}
 heatmapper(scaled,labels = c("Compound","Community"))
@@ -220,7 +217,7 @@ DT::datatable(d2)
 
 # OD600 data alone
 
-Say you aren't interested in pH data and you would like to use these tools with just OD600 data. That is exactly the case that grofit was made to solve. It operates on the same type of data as phgrofit, just without the pH column. Right now there isn't a dedicated parser homologous to phgropro, but I may make one in the future if the need arises (would be called gropro.)
+Say you aren't interested in pH data and you would like to use these tools with just OD600 data. That is exactly the case that grofit was made to solve. It operates on the same type of data as phgrofit, just without the pH column. Right now there isn't a dedicated parser homologous to phgropro, but this may be a feature in the future. 
 
 
 ```{r}
