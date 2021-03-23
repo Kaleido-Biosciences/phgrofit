@@ -2,7 +2,8 @@
 % Please edit documentation in R/PCA.R
 \name{PCA}
 \alias{PCA}
-\title{PCA: Easily making a PCA plot with phgrofit data}
+\title{PCA: Easily making a PCA plot with phgrofit data
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 PCA(phgrofit_data, group = "Sample.ID", mouse_over = "Compound")
 }

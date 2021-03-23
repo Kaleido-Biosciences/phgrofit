@@ -2,7 +2,8 @@
 % Please edit documentation in R/dendrospect_model.R
 \name{dendrospect_model}
 \alias{dendrospect_model}
-\title{dendrospect_model}
+\title{dendrospect_model
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 dendrospect_model(phgrofit_data, k = 8)
 }

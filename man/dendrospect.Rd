@@ -2,7 +2,8 @@
 % Please edit documentation in R/dendrospect.R
 \name{dendrospect}
 \alias{dendrospect}
-\title{dendrospect}
+\title{dendrospect
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 dendrospect(phgrofit_data, phgropro_data, colored_bar_label = NULL, k = 8)
 }

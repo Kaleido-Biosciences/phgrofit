@@ -2,9 +2,10 @@
 % Please edit documentation in R/grofit.R
 \name{grofit}
 \alias{grofit}
-\title{grofit: Extract physiological parameters from kinetic OD600 data.}
+\title{grofit: Extract physiological parameters from kinetic OD600 data.
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
-grofit(data)
+grofit(gropro_output)
 }
 \arguments{
 \item{gropro_output}{This is a tidy dataframe containing columns exactly named Sample.ID, Time, and OD600 at a minimum. There may also be any other columns representing any other metadata.}

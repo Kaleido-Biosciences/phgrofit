@@ -2,7 +2,8 @@
 % Please edit documentation in R/scale_phgrofit.R
 \name{scale_phgrofit}
 \alias{scale_phgrofit}
-\title{scale_phgrofit}
+\title{scale_phgrofit
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 scale_phgrofit(phgrofit_output, group_by = NULL)
 }

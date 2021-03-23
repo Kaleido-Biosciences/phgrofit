@@ -2,7 +2,8 @@
 % Please edit documentation in R/graph_check.R
 \name{graph_check}
 \alias{graph_check}
-\title{graph_check}
+\title{graph_check
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 graph_check(data)
 }

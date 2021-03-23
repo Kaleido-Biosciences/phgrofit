@@ -2,7 +2,8 @@
 % Please edit documentation in R/phgropro.R
 \name{phgropro}
 \alias{phgropro}
-\title{phgropro: Tidying kinetic od600 and pH data from biotek plate reader.}
+\title{phgropro: Tidying kinetic od600 and pH data from biotek plate reader.
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 phgropro(biotek_export, metadata, Plate_Type = 96)
 }

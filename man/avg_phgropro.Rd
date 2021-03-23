@@ -2,7 +2,8 @@
 % Please edit documentation in R/avg_phgropro.R
 \name{avg_phgropro}
 \alias{avg_phgropro}
-\title{avg_phgropro}
+\title{avg_phgropro
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 avg_phgropro(phgropro_output, group_by = "Sample.ID")
 }

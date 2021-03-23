@@ -2,7 +2,8 @@
 % Please edit documentation in R/model_fit_check.R
 \name{model_fit_check}
 \alias{model_fit_check}
-\title{model_fit_check}
+\title{model_fit_check
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 model_fit_check(phgropro_output, grouping_vars = "Sample.ID")
 }

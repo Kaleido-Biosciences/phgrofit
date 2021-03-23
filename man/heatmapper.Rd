@@ -2,7 +2,8 @@
 % Please edit documentation in R/heatmapper.R
 \name{heatmapper}
 \alias{heatmapper}
-\title{heatmapper: Creating an interactive heatmap with colored categorical labels.}
+\title{heatmapper: Creating an interactive heatmap with colored categorical labels.
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 heatmapper(phgrofit_data, labels = "Sample.ID", mouse_over = NULL)
 }

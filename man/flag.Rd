@@ -2,7 +2,8 @@
 % Please edit documentation in R/flag.R
 \name{flag}
 \alias{flag}
-\title{flag}
+\title{flag
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 flag(phgrofit_output)
 }

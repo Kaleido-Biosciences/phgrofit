@@ -2,7 +2,8 @@
 % Please edit documentation in R/avg_phgrofit.R
 \name{avg_phgrofit}
 \alias{avg_phgrofit}
-\title{avg_phgrofit}
+\title{avg_phgrofit
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 avg_phgrofit(phgrofit_output, group_by = c("Sample.ID"))
 }

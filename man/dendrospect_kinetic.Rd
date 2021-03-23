@@ -2,7 +2,8 @@
 % Please edit documentation in R/dendrospect_kinetic.R
 \name{dendrospect_kinetic}
 \alias{dendrospect_kinetic}
-\title{dendrospect_kinetic}
+\title{dendrospect_kinetic
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 dendrospect_kinetic(phgropro_data, phgrofit_data, k = 8)
 }

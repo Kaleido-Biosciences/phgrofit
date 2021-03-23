@@ -2,7 +2,8 @@
 % Please edit documentation in R/phgrofit.R
 \name{phgrofit}
 \alias{phgrofit}
-\title{phgrofit: Extract physiological parameters from kinetic pH and OD600 data across diverse samples.}
+\title{phgrofit: Extract physiological parameters from kinetic pH and OD600 data across diverse samples.
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 phgrofit(phgropro_output)
 }
