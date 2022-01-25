@@ -1,7 +1,7 @@
 Package: phgrofit
 Type: Package
 Title: Extracting Physiological Data From Kinetic OD600 and pH Curves
-Version: 0.1.0
+Version: 1.0.0
 Author: Charlie Bayne <charlie.bayne@kaleido.com>
 Maintainer: Charlie Bayne <charlie.bayne@kaleido.com>
 Description: Tools for extracting kinetic od600 and pH data from a file type exported from a Biotek plate reader and applying appropriate models to extract physiological data.
