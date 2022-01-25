@@ -9,12 +9,12 @@
 #'
 #' @examples
 #'
-#' for( i in Sample.ID){
+#' \dontrun{for( i in Sample.ID){
 #' loop_data = data %>%
 #' dplyr::filter(Sample.ID == i )
 #' # graph check is set up to plot each well independantly
 #' print(graph_check(loop_data))
-#' }
+#' }}
 graph_check = function(data){
     #if this is to include pH
     original_data = data

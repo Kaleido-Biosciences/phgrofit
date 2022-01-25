@@ -20,15 +20,15 @@ Intended to allow the user to easily generate PCA plots from phgrofit data. Note
 }
 \examples{
 ### phgropro processing
-phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+\dontrun{phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)}
 
 ### phgrofit processing
-phgrofit_output = phgrofit(phgropro_output)
+\dontrun{phgrofit_output = phgrofit(phgropro_output)}
 
 ## scaling phgrofit data
-phgrofit_data = scale_phgrofit(phgrofit_output)
+\dontrun{ phgrofit_data = scale_phgrofit(phgrofit_output)}
 
 ### printing PCA plot with colored confidence intervals for community
-community_PCA = PCA(phgrofit_data,"Community")
-print(community_PCA)
+\dontrun{community_PCA = PCA(phgrofit_data,"Community")
+print(community_PCA)}
 }

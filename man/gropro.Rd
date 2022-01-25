@@ -15,6 +15,6 @@ gropro: Formatting raw OD600 data from the biotek reader into a tidy data frame.
 \examples{
 #Need to format OD600 data exported from biotek plate reader in an experiment with a 96 well plate
 
-gropro_output = gropro("path_to_biotek_OD600_export", "path_to_metadata.csv",Plate_Type = 96)
+\dontrun{gropro_output = gropro("path_to_biotek_OD600_export", "path_to_metadata.csv",Plate_Type = 96)}
 
 }

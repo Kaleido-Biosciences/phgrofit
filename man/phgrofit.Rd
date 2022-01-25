@@ -46,8 +46,8 @@ The columns percent_NA_od600 and percent_NA_pH contain the percent of timepoints
 }
 \examples{
 ### phgropro processing
-phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+\dontrun{ phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)}
 
 ### phgrofit processing
-phgrofit_output = phgrofit(phgropro_output)
+\dontrun{phgrofit_output = phgrofit(phgropro_output)}
 }

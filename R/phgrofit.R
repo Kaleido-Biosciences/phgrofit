@@ -37,10 +37,10 @@
 #' @importFrom magrittr %>%
 #' @examples
 #' ### phgropro processing
-#' phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+#'\dontrun{ phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)}
 #'
 #' ### phgrofit processing
-#' phgrofit_output = phgrofit(phgropro_output)
+#' \dontrun{phgrofit_output = phgrofit(phgropro_output)}
 phgrofit = function(phgropro_output){
 
     data = dplyr::select(phgropro_output,Sample.ID,Time,OD600,pH)

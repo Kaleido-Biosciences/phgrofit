@@ -26,15 +26,15 @@ Note that data should be scaled before using this function.
 \examples{
 
 # phgropro processing
-phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+\dontrun{phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)}
 
 # phgrofit processing
-phgrofit_output = phgrofit(phgropro_output)
+\dontrun{phgrofit_output = phgrofit(phgropro_output)}
 
 ## processing phgrofit data by averaging and scaling
-phgrofit_data = avg_phgrofti(phgrofit_output,c("Community","Compound")) \%>\%
-scale_phgrofit()
+\dontrun{ phgrofit_data = avg_phgrofti(phgrofit_output,c("Community","Compound")) \%>\%
+scale_phgrofit()}
 ### plotting heatmap with colored labels for community and mouse over information about the compounds.
-plot = PCA(phgrofit_data,"Community")
-plot
+\dontrun{plot = PCA(phgrofit_data,"Community")
+plot}
 }

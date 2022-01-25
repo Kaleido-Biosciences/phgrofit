@@ -24,6 +24,6 @@ a data frame with a five columns corresponding to symptoms that may be indicativ
 This function was added in order to allow the user to easily flag wells that may have had problematic model fitting.
 }
 \examples{
-dataframe_exploring_potential_problems = flag(phgrofit_output)
+\dontrun{dataframe_exploring_potential_problems = flag(phgrofit_output)}
 # if there are no problems an empty data frame will be returned.
 }

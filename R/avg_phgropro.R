@@ -13,7 +13,9 @@
 #'
 #' @examples
 #' #This would return a data frame with the average and sd pH and OD600 values when grouped by Community and Compound.
+#' \dontrun{
 #' p1 = avg_phgropro(phgropro_output,c("Community","Compound"))
+#' }
 avg_phgropro = function(phgropro_output,group_by = "Sample.ID"){
     if("pH" %in% names(phgropro_output)){
         readouts = dplyr::vars(OD600,pH)

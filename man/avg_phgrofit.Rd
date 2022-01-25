@@ -19,7 +19,3 @@ a data frame with mean values for each of the modeling parameters across the gro
 This function is intended to make averaging the model parameters from phgrofit across groups very easy.
 New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit.
 }
-\examples{
-#This would return a data frame with the average and sd pH and OD600 values when grouped by Community and Compound- names of columns in the phgropro_out data frame.
-p1 = avg_phgropro(phgropro_output,c("Community","Compound"))
-}

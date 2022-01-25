@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' #Returns a dataframe mapping which of the 8 clusters a Sample.ID belongs to.
-#' df = dendrospect_model(phgropro_data,k = 8)
+#' \dontrun{df = dendrospect_model(phgropro_data,k = 8)}
 dendrospect_kinetic = function(phgropro_data,phgrofit_data,k = 8){
     if("min_pH" %in% names(phgrofit_data)){
         model_data = dplyr::select(phgrofit_data,

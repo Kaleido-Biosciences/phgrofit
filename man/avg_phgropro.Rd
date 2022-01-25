@@ -22,5 +22,7 @@ New Sample.IDs are assigned by concatanating the conditions that the user choose
 }
 \examples{
 #This would return a data frame with the average and sd pH and OD600 values when grouped by Community and Compound.
+\dontrun{
 p1 = avg_phgropro(phgropro_output,c("Community","Compound"))
+}
 }

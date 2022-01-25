@@ -13,10 +13,13 @@
 #'
 #' @examples
 #' ### When we want to extract the data from from a 96 well plate run on the plate reader.
+#' \dontrun{
 #' output_96 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
-#'
+#' }
 #' ### When we want to extract the data from from a 384 well plate run on the plate reader.
-#' output_384 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 384)
+#'\dontrun{
+#output_384 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 384)}
+
 phgropro = function(biotek_export,metadata,Plate_Type = 96){
 
     #Determining how to input the data based on plate type

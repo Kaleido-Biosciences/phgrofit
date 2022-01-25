@@ -11,7 +11,7 @@
 #' @export
 #' @examples
 #' #This would return a data frame with the average and sd pH and OD600 values when grouped by Community and Compound- names of columns in the phgropro_out data frame.
-#' p1 = avg_phgropro(phgropro_output,c("Community","Compound"))
+#' \dontrun{ p1 = avg_phgropro(phgropro_output,c("Community","Compound")))
 avg_phgrofit = function(phgrofit_output,group_by = c("Sample.ID")){
     if("min_pH" %in% names(phgrofit_output)){
         features = dplyr::vars(starting_od600,

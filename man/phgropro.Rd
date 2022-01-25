@@ -20,10 +20,3 @@ tidy data frame with a column for Sample ID, any metadata columns present,Time, 
 \description{
 phgropro- pH growh processing- takes the export from a standardized biotek plate reader and converts it into a tidy format that is convenient for data analysis. This tidy format will oftern serve as the input to phgrofit.
 }
-\examples{
-### When we want to extract the data from from a 96 well plate run on the plate reader.
-output_96 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
-
-### When we want to extract the data from from a 384 well plate run on the plate reader.
-output_384 = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 384)
-}

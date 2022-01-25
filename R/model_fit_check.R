@@ -9,8 +9,8 @@
 #' @return prints a randomly sampled plot from each condition to the console as specified by grouping_vars.
 #' @export
 #' @examples
-#'phgropro_output = phgrofit::phgropro_output("Filepath of biotek export.txt","filepath of metadata.csv,Plate_Type = 384)
-#'model_fit_check(phgropro_output,grouping_vars = c("Community","Compound))
+#'\dontrun{phgropro_output = phgrofit::phgropro_output("Filepath of biotek export.txt","filepath of metadata.csv,Plate_Type = 384)
+#'model_fit_check(phgropro_output,grouping_vars = c("Community","Compound))}
 #'#This would print graphs from a randomly sampled replicate of each combination of variables specified by grouping_vars
 model_fit_check = function(phgropro_output,grouping_vars = "Sample.ID"){
 

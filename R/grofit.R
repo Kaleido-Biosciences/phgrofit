@@ -27,7 +27,7 @@
 #' @importFrom magrittr %>%
 #' @examples
 #' ### grofit ###
-#' grofit_output = grofit(gropro_output)
+#' \dontrun{grofit_output = grofit(gropro_output)}
 grofit = function(gropro_output){
 
     data = dplyr::select(gropro_output,Sample.ID,Time,OD600)

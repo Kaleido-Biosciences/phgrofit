@@ -14,14 +14,14 @@
 #'
 #' @examples
 #'
-#' phgropro_output = phgrofit::phgropro("rawdata.txt","metadata.csv",384)
-#' phgrofit_output = phgrofit::phgrofit(phgropro_output)
+#' \dontrun{phgropro_output = phgrofit::phgropro("rawdata.txt","metadata.csv",384)
+#' phgrofit_output = phgrofit::phgrofit(phgropro_output)}
 #'
 #' #To get the scaled data
-#' scaled_phgrofit = phgrofit::scale_phgrofit(phgrofit_output)
+#' \dontrun{scaled_phgrofit = phgrofit::scale_phgrofit(phgrofit_output)}
 #'
 #' #To get data that has been independantly scaled per community
-#' scaled_phgrofit = phgrofit::scale_phgrofit(phgrofit_output,group_by = "Community")
+#' \dontrun{scaled_phgrofit = phgrofit::scale_phgrofit(phgrofit_output,group_by = "Community")}
 #'
 #'
 scale_phgrofit = function(phgrofit_output,group_by = NULL){

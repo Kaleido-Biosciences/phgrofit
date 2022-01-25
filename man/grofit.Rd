@@ -36,5 +36,5 @@ The column percent_NA_od600 contains the percent of time points that were NA for
 }
 \examples{
 ### grofit ###
-grofit_output = grofit(gropro_output)
+\dontrun{grofit_output = grofit(gropro_output)}
 }

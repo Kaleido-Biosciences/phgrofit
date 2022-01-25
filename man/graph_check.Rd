@@ -18,10 +18,10 @@ This function is used in the exported function model_fit_check to generate a gra
 }
 \examples{
 
-for( i in Sample.ID){
+\dontrun{for( i in Sample.ID){
 loop_data = data \%>\%
 dplyr::filter(Sample.ID == i )
 # graph check is set up to plot each well independantly
 print(graph_check(loop_data))
-}
+}}
 }

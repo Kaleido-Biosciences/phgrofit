@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-#' dataframe_exploring_potential_problems = flag(phgrofit_output)
+#' \dontrun{dataframe_exploring_potential_problems = flag(phgrofit_output)}
 #' # if there are no problems an empty data frame will be returned.
 flag = function(phgrofit_output){
     if("min_pH" %in% names(phgrofit_output)){

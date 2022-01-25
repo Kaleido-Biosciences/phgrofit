@@ -12,18 +12,18 @@
 #' @export
 #' @examples
 #' # phgropro processing
-#' phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)
+#' \dontrun{phgropro_output = phgropro(biotek_export = filepath.txt,metadata = metadata.csv,Plate_Type = 96)}
 #'
 #' # phgrofit processing
-#' phgrofit_output = phgrofit(phgropro_output)
+#' \dontrun{phgrofit_output = phgrofit(phgropro_output)}
 #'
 #' ## processing phgrofit data by averaging and scaling
-#' phgrofit_data = avg_phgrofti(phgrofit_output,c("Community","Compound")) %>%
-#' scale_phgrofit()
+#'\dontrun{ phgrofit_data = avg_phgrofti(phgrofit_output,c("Community","Compound")) %>%
+#' scale_phgrofit()}
 #
 #' ### plotting heatmap with colored labels for community and mouse over information about the compounds.
-#'community_heatmap = heatmapper(phgrofit_data,"Community","Compound")
-#'community_heatmap
+#'\dontrun{community_heatmap = heatmapper(phgrofit_data,"Community","Compound")
+#'community_heatmap}
 heatmapper = function(phgrofit_data,labels = "Sample.ID",mouse_over = NULL){
     #if it is phgrofit data
     if("min_pH" %in% names(phgrofit_data)){

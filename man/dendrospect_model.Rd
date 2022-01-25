@@ -23,5 +23,5 @@ Note that the phgrofit_data should first be scaled before using this function. T
 \examples{
 
 #Returns a dataframe mapping which of the 8 clusters each Sample.ID belongs to.
-df = dendrospect_model(phgrofit_data,k = 8)
+\dontrun{df = dendrospect_model(phgrofit_data,k = 8)}
 }
