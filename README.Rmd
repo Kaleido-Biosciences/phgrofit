@@ -29,6 +29,7 @@ devtools::install_github("Kaleido-Biosciences/phgrofit")
 ```
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/Kaleido-Biosciences/phgrofit/workflows/R-CMD-check/badge.svg)](https://github.com/Kaleido-Biosciences/phgrofit/actions)
 <!-- badges: end -->
 
 
