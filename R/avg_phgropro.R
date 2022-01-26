@@ -1,12 +1,16 @@
 #'avg_phgropro
 #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
-#'This function is intended to make averaging OD600 and pH values from phgropro across groups very easy.
+#'This function is intended to make averaging OD600 and pH values from phgropro
+#'across groups very easy.
 #'This functiuon also returns the standard deviation for OD600 and pH.
-#'New Sample.IDs are assigned by concatanating the conditions that the user chooses to group by in order to make it easy to match the output avg_phgropro to avg_phgrofit.
+#'New Sample.IDs are assigned by concatenating the conditions
+#'that the user chooses to group by in order to make it easy to match
+#'the output avg_phgropro to avg_phgrofit.
 #'
 #' @param phgropro_output The output of phgropro.
-#' @param group_by: Character vector of the names of the columns that you would like to group by.
+#' @param group_by: Character vector of the names of the columns
+#' that you would like to group by.
 #'
 #' @return a data frame with mean_OD600, sd_OD600, mean_pH, sd_pH across the groups specified
 #' @export

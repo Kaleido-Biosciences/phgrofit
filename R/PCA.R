@@ -1,9 +1,14 @@
 #' PCA: Easily making a PCA plot with phgrofit data
 #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
-#' Intended to allow the user to easily generate PCA plots from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
-#' @param phgrofit_data This is the output origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.
-#' @param group This is the name of the column that you would like to color the ordination by. A 95 percent confidence interval for this group will be assigned.
+#' Intended to allow the user to easily generate PCA plots from phgrofit data.
+#' Note that the values should first be scaled before using this function.
+#' This can be acomplished with scale_phgrofit()
+#' @param phgrofit_data This is the output origniating from phgrofit or one
+#' of it's modifying functions such as scale_phgrofit or avg_phgrofit.
+#' @param group This is the name of the column that you would like to color the ordination by.
+#' A 95 percent confidence interval for this group will be assigned.
+#' @param mouse_over Category for which you would like data on mouse over on the plot.
 #'
 #' @return a ggplot2 object containing the 95 percent confidence interval for the group specified.
 #' @export

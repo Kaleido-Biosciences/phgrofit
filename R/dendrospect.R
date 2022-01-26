@@ -1,14 +1,20 @@
 #' dendrospect
 #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
-#'Allows the user to easily see what the average kinetic profile corresponding with a given cluster is.
+#'Allows the user to easily see what the average kinetic profile
+#'corresponding with a given cluster is.
 #'Note that data should be scaled before using this function.
 #'
-#' @param phgrofit_data This is the data origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.
-#' @param phgropro_data This is the data origniating from phgropro or one of it's modifying functions such as avg_phgropro. It must contain the same Sample.IDs as phgrofit data.
-#' @param colored_bar_label This is the character name of a column that the user would like to include as colored bar below the dendogram.
+#' @param phgrofit_data This is the data originating from phgrofit
+#' or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.
+#' @param phgropro_data This is the data originating from phgropro
+#'  or one of it's modifying functions such as avg_phgropro.
+#'  It must contain the same Sample.IDs as phgrofit data.
+#' @param colored_bar_label This is the character name of a column that the user
+#' would like to include as colored bar below the dendogram.
 #' @param k The number of clusters.
-#' @return A ggplot2 object containin a colored dendogram whith a colored bar label and the corresponding kinetic OD600 and pH data.
+#' @return A ggplot2 object containing a colored dendrogram w
+#' ith a colored bar label and the corresponding kinetic OD600 and pH data.
 #' @export
 #'
 #' @examples

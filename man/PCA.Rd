@@ -8,15 +8,21 @@ Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 PCA(phgrofit_data, group = "Sample.ID", mouse_over = "Compound")
 }
 \arguments{
-\item{phgrofit_data}{This is the output origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
+\item{phgrofit_data}{This is the output origniating from phgrofit or one
+of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
 
-\item{group}{This is the name of the column that you would like to color the ordination by. A 95 percent confidence interval for this group will be assigned.}
+\item{group}{This is the name of the column that you would like to color the ordination by.
+A 95 percent confidence interval for this group will be assigned.}
+
+\item{mouse_over}{Category for which you would like data on mouse over on the plot.}
 }
 \value{
 a ggplot2 object containing the 95 percent confidence interval for the group specified.
 }
 \description{
-Intended to allow the user to easily generate PCA plots from phgrofit data. Note that the values should first be scaled before using this function. This can be acomplished with scale_phgrofit()
+Intended to allow the user to easily generate PCA plots from phgrofit data.
+Note that the values should first be scaled before using this function.
+This can be acomplished with scale_phgrofit()
 }
 \examples{
 ### phgropro processing

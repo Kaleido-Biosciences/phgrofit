@@ -8,19 +8,25 @@ Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 dendrospect(phgrofit_data, phgropro_data, colored_bar_label = NULL, k = 8)
 }
 \arguments{
-\item{phgrofit_data}{This is the data origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
+\item{phgrofit_data}{This is the data originating from phgrofit
+or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
 
-\item{phgropro_data}{This is the data origniating from phgropro or one of it's modifying functions such as avg_phgropro. It must contain the same Sample.IDs as phgrofit data.}
+\item{phgropro_data}{This is the data originating from phgropro
+or one of it's modifying functions such as avg_phgropro.
+It must contain the same Sample.IDs as phgrofit data.}
 
-\item{colored_bar_label}{This is the character name of a column that the user would like to include as colored bar below the dendogram.}
+\item{colored_bar_label}{This is the character name of a column that the user
+would like to include as colored bar below the dendogram.}
 
 \item{k}{The number of clusters.}
 }
 \value{
-A ggplot2 object containin a colored dendogram whith a colored bar label and the corresponding kinetic OD600 and pH data.
+A ggplot2 object containing a colored dendrogram w
+ith a colored bar label and the corresponding kinetic OD600 and pH data.
 }
 \description{
-Allows the user to easily see what the average kinetic profile corresponding with a given cluster is.
+Allows the user to easily see what the average kinetic profile
+corresponding with a given cluster is.
 Note that data should be scaled before using this function.
 }
 \examples{
