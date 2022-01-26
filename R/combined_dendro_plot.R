@@ -1,9 +1,15 @@
+#' 'combined dendro plot
 #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
-#'  @param dend dendrogram
-#'  @param cluster_data clustering data
-#'  @param colored_bar colored bar
-#'  @param k what is the k?
-#'  @param colored_bar_label what is the label of the colored bar
+#' @param dend dendrogram
+#' @param cluster_data clustering data
+#' @param colored_bar colored bar
+#' @param k what is the k?
+#' @param colored_bar_label what is the label of the colored bar
+#' @return a dendrogram plot
+#' @examples
+#' \dontrun{
+#' p1 = combined_dendro_plot(dend,cluster_data,colored_bar,k,colored_bar_label)
+#' }
 combined_dendro_plot = function(dend,cluster_data,colored_bar,k,colored_bar_label){
     if("mean_pH" %in% names(cluster_data)){
         #Dendogram plot

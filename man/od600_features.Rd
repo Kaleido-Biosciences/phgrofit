@@ -2,12 +2,15 @@
 % Please edit documentation in R/od600_features.R
 \name{od600_features}
 \alias{od600_features}
-\title{Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
- @param data data}
+\title{od600_features #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
+Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 \usage{
 od600_features(data)
 }
+\arguments{
+\item{data}{data}
+}
 \description{
+od600_features #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
- @param data data
 }

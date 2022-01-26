@@ -1,5 +1,6 @@
+#' od600_features #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
-#'  @param data data
+#' @param data data
 od600_features = function(data){
 
     # Fitting the spline
