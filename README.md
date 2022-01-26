@@ -3,8 +3,8 @@
 
 # phgrofit
 
-phgrofit is a R package designed to provide tools for making kinetic
-analysis of OD600 and pH data easy.
+phgrofit is a R package that is designed to provide tools for making
+kinetic analysis of OD600 and pH data easy.
 
 The motivation for this package comes from the desire to process kinetic
 pH and OD600 data in a somewhat similar manner to this
