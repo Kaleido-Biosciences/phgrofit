@@ -6,7 +6,7 @@
 #'Note that the phgrofit_data should first be scaled before using this function. This can be acomplished with scale_phgrofit() function.
 #' @param phgrofit_data This is the data origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.
 #' @param phgropro_data This is the data origniating from phgropro or one of it's modifying functions such as avg_phgropro. It must contain the same Sample.IDs as phgrofit data.
-#' @param k: The number of clusters.
+#' @param k The number of clusters.
 #' @return a dataframe containing the phgropro data with a column named dendrogram_cluster that represents the cluster the observations correspond to.
 #' @export
 #'

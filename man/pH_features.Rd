@@ -2,10 +2,12 @@
 % Please edit documentation in R/pH_features.R
 \name{pH_features}
 \alias{pH_features}
-\title{Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
+\title{Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
+ @param data data}
 \usage{
 pH_features(data)
 }
 \description{
 Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
+ @param data data
 }

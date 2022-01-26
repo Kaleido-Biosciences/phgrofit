@@ -1,6 +1,9 @@
 #' gropro: Formatting raw OD600 data from the biotek reader into a tidy data frame.
 #'
 #' @return tidy data frame
+#' @param biotek_export export from biotek plate reader
+#' @param metadata metadata
+#' @param Plate_Type type of plate 384 or 96
 #' @export
 #'
 #' @examples

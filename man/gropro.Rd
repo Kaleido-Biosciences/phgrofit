@@ -6,6 +6,13 @@
 \usage{
 gropro(biotek_export, metadata, Plate_Type = 96)
 }
+\arguments{
+\item{biotek_export}{export from biotek plate reader}
+
+\item{metadata}{metadata}
+
+\item{Plate_Type}{type of plate 384 or 96}
+}
 \value{
 tidy data frame
 }

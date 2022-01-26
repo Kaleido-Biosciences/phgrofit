@@ -6,8 +6,8 @@
 #' Scaling is done outside of the plotting functions in order to allow more transparancy as to what is acutally being plotted than would be apparent otherwise.
 #' Additionally, this will allow the user to choose the appropriate scaling function for their application.
 #'
-#' @param phgrofit_output: This is the output from the phgrofit
-#' @param phgrofit_output: This is a character vector of the groups that you would like to scale within
+#' @param phgrofit_output  This is the output from the phgrofit
+#' @param group_by This is a character vector of the groups that you would like to scale within
 #' @return a dataframe containing all of content of phgrofit with each model parameter scaled such that the mean = 0 and values represent Z scores.
 #' @export
 #' @importFrom magrittr %>%

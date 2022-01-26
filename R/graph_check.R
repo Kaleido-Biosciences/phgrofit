@@ -3,7 +3,7 @@
 #'
 #' This function is used in the exported function model_fit_check to generate a graphical representation of the model fit
 #'
-#' @param data: This is the OD600 + pH data from a single well. Contains Columns for Sample.ID, Time, OD600, and pH.
+#' @param data This is the OD600 + pH data from a single well. Contains Columns for Sample.ID, Time, OD600, and pH.
 #'
 #' @return a ggplot2 object
 #'

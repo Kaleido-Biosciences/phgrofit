@@ -8,7 +8,9 @@ Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 scale_phgrofit(phgrofit_output, group_by = NULL)
 }
 \arguments{
-\item{phgrofit_output:}{This is a character vector of the groups that you would like to scale within}
+\item{phgrofit_output}{This is the output from the phgrofit}
+
+\item{group_by}{This is a character vector of the groups that you would like to scale within}
 }
 \value{
 a dataframe containing all of content of phgrofit with each model parameter scaled such that the mean = 0 and values represent Z scores.

@@ -2,7 +2,7 @@
 #' Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
 #'
 #' This function was added in order to allow the user to easily flag wells that may have had problematic model fitting.
-#' @param phgrofit_output: a data frane with modeling information from phgrofit
+#' @param phgrofit_output a data frane with modeling information from phgrofit
 #' @return a data frame with a five columns corresponding to symptoms that may be indicative of poor model fit or weird growth curves
 #' \itemize{
 #'  \item{"negligable growth"}{ TRUE if max OD600 is less than 1.5x the starting od600}

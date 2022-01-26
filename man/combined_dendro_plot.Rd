@@ -2,10 +2,20 @@
 % Please edit documentation in R/combined_dendro_plot.R
 \name{combined_dendro_plot}
 \alias{combined_dendro_plot}
-\title{Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
+\title{Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
+ @param dend dendrogram
+ @param cluster_data clustering data
+ @param colored_bar colored bar
+ @param k what is the k?
+ @param colored_bar_label what is the label of the colored bar}
 \usage{
 combined_dendro_plot(dend, cluster_data, colored_bar, k, colored_bar_label)
 }
 \description{
 Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved
+ @param dend dendrogram
+ @param cluster_data clustering data
+ @param colored_bar colored bar
+ @param k what is the k?
+ @param colored_bar_label what is the label of the colored bar
 }

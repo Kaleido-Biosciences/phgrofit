@@ -8,7 +8,7 @@ Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 flag(phgrofit_output)
 }
 \arguments{
-\item{phgrofit_output:}{a data frane with modeling information from phgrofit}
+\item{phgrofit_output}{a data frane with modeling information from phgrofit}
 }
 \value{
 a data frame with a five columns corresponding to symptoms that may be indicative of poor model fit or weird growth curves

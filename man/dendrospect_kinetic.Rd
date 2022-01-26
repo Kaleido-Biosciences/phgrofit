@@ -12,7 +12,7 @@ dendrospect_kinetic(phgropro_data, phgrofit_data, k = 8)
 
 \item{phgrofit_data}{This is the data origniating from phgrofit or one of it's modifying functions such as scale_phgrofit or avg_phgrofit.}
 
-\item{k:}{The number of clusters.}
+\item{k}{The number of clusters.}
 }
 \value{
 a dataframe containing the phgropro data with a column named dendrogram_cluster that represents the cluster the observations correspond to.

@@ -8,7 +8,7 @@ Copyright (c) 2019. Kaleido Biosciences. All Rights Reserved}
 graph_check(data)
 }
 \arguments{
-\item{data:}{This is the OD600 + pH data from a single well. Contains Columns for Sample.ID, Time, OD600, and pH.}
+\item{data}{This is the OD600 + pH data from a single well. Contains Columns for Sample.ID, Time, OD600, and pH.}
 }
 \value{
 a ggplot2 object
