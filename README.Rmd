@@ -205,14 +205,14 @@ Oftentimes the user will want to be able to inspect the data displayed in the ab
 ```{r}
 d1 = dendrospect_kinetic(averaged_phgropro,scaled,k=4)
 
-DT::datatable(head(d1))
+head(d1)
 ```
 
 The dendrospect_model function returns the modeling data with the dendogram cluster each observation belongs to.
 
 ```{r}
 d2 = dendrospect_model(scaled,k = 8)
-DT::datatable(d2)
+head(d2)
 ```
 
 # OD600 data alone
@@ -270,8 +270,8 @@ Lastly, if you want to see which data corresponds with a cluster, you can use th
 grofit_clusters = dendrospect_model(scaled_grofit,k = 4)
 gropro_clusters = dendrospect_kinetic(phgropro_data = avg_gropro,phgrofit_data = scaled_grofit, k =3)
 
-DT::datatable(head(grofit_clusters,5))
-DT::datatable(head(gropro_clusters,5))
+print(head(grofit_clusters,5))
+
               
 ```
 
