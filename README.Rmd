@@ -1,7 +1,6 @@
 ---
 output: github_document
-always_allow_html: yes
-
+always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -56,7 +55,7 @@ phgropro_output = phgropro("tests/testdata/phgrofit_test_raw_data.txt",
 The resulting data frame looks like this:
 
 ```{r}
-DT::datatable(head(phgropro_output))
+print(head(phgropro_output))
 ```
 
 ## Modeling with phgrofit   
@@ -70,7 +69,7 @@ phgrofit_output = phgrofit(phgropro_output)
 This will produce the following data frame. 
 
 ```{r}
-DT::datatable(head(phgrofit_output))
+print(head(phgrofit_output))
 ```
 
 
@@ -80,7 +79,7 @@ We can use the function flag to look at the data and see if there are any obviou
 
 ```{r}
 flag = flag(phgrofit_output)
-DT::datatable(flag)
+print(head(flag))
 ```
 
 Here we can see there are a few wells that may be a problem. Based on what flag returned, we can see that the lag length was calculated to be negative.
@@ -106,7 +105,7 @@ phgrofit_prob = phgrofit(phgropro_prob)
 
 problem_flag = flag(phgrofit_prob)
 
-DT::datatable(head(problem_flag))
+print(head(problem_flag))
 ```
 
 Now we can see that there is missing_pH data. This returns TRUE only if 25% or more of the data is NA. Let's visually check using model_fit_check now.  
