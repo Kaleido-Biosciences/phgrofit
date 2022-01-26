@@ -9,7 +9,7 @@
 #'the output avg_phgropro to avg_phgrofit.
 #'
 #' @param phgropro_output The output of phgropro.
-#' @param group_by: Character vector of the names of the columns
+#' @param group_by Character vector of the names of the columns
 #' that you would like to group by.
 #'
 #' @return a data frame with mean_OD600, sd_OD600, mean_pH, sd_pH across the groups specified

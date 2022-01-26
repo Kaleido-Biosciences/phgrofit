@@ -10,7 +10,7 @@ avg_phgropro(phgropro_output, group_by = "Sample.ID")
 \arguments{
 \item{phgropro_output}{The output of phgropro.}
 
-\item{group_by:}{Character vector of the names of the columns
+\item{group_by}{Character vector of the names of the columns
 that you would like to group by.}
 }
 \value{
