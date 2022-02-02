@@ -25,6 +25,9 @@ devtools::install_github("Kaleido-Biosciences/phgrofit")
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Kaleido-Biosciences/phgrofit/workflows/R-CMD-check/badge.svg)](https://github.com/Kaleido-Biosciences/phgrofit/actions)
+[![DOI](https://zenodo.org/badge/288753400.svg)](https://zenodo.org/badge/latestdoi/288753400)
+
+
 <!-- badges: end -->
 
 # Using this package
